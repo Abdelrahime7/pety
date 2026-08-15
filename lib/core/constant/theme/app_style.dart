@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pet_care/core%20/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/app_colors.dart';
 
 abstract class AppStyle {
   static TextStyle title 
