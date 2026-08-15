@@ -11,6 +11,8 @@ import 'infrastructure/firebase/configue/firebase_options.dart';
 
 
 void main()async {
+
+   
    WidgetsFlutterBinding.ensureInitialized();
 
  await Firebase.initializeApp(
