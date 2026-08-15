@@ -9,5 +9,7 @@ class AuthNotifier extends Notifier<AuthStat> {
     throw UnimplementedError();
   }
 
+  
+
 
 }

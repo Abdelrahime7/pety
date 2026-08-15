@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pet_care/core%20/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
