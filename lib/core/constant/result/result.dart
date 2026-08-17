@@ -13,4 +13,7 @@ class Failure<T> extends Result<T> {
   final String message;
 
   const Failure(this.message);
+
 }
+
+class Cancelled<T> extends Result<T>{}
