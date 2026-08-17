@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
-import 'package:pet_care/features/authentication/data%20/user_data.dart';
+import 'package:pet_care/features/authentication/data/user_data.dart';
 
 class AuthNotifier extends AsyncNotifier<UserResponse?> {
 
