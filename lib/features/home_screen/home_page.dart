@@ -1,10 +1,12 @@
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/widgets/height_widget.dart';
+import 'package:pet_care/features/home_screen/widgets/pofile_header_card.dart';
+import 'package:pet_care/features/home_screen/widgets/premium_promo_card.dart';
+import 'package:pet_care/features/home_screen/widgets/setting_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,28 +14,22 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: const Text('Pet Care') ,
-    ),
-    body: 
-      Center(
-        child: Column(
-          
-          crossAxisAlignment: CrossAxisAlignment.center ,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children :[ 
-            SizedBox(height: 20),
-            Text('Hello',style: AppStyle.title),
-           SizedBox(height: 20),
-            Text('pety pety ',style: AppStyle.subtitle),
-        
-          
-          ]
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: const [
+              ProfileHeaderCard(),
+              HeightSpace(height: 38),
+              PremiumPromoCard(),
+              HeightSpace(height: 36),
+              SettingsSections(),
+            ],
+          ),
         ),
       ),
     );
-  
-    
-    
   }
 }

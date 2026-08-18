@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppColors {
-
-
   static const background = Color(0xFFF8FAF8);
   static const surface = Colors.white;
 
@@ -11,9 +9,19 @@ abstract final class AppColors {
 
   static const error = Color(0xFFD32F2F);
 
-  static const primary = Color(0xFF4ECDC4);
-  static const text = Color(0xFF1A1D20);
-  static const secondaryText = Color(0xFF6C727F);
+  static const primary = Color(0xFF2DD4BF);
+  static const text = Color(0xFF0F172A);
+  static const secondaryText = Color(0xFF94A3B8);
   static const border = Color(0xFFE5E7EB);
   static const icon = Color(0xFF9CA3AF);
+  // Individual Gradient Stop Colors
+  static const Color tealDark = Color(0xFF0F766E);
+  static const Color tealLight = Color(0xFF2DD4BF);
+
+  // Ready-to-use Linear Gradient
+  static const LinearGradient premiumCardGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [tealDark, tealLight],
+  );
 }
