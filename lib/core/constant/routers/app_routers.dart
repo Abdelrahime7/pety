@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:pet_care/features/home_screen/home_page.dart';
+import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 
 
  final String home ='/home';
@@ -8,6 +8,6 @@ import 'package:pet_care/features/home_screen/home_page.dart';
 final appRouter = GoRouter(
   initialLocation: home,
   routes: [
-   GoRoute(path:home ,builder: (context, state) =>  const HomePage())
+   GoRoute(path:home ,builder: (context, state) =>  const LoginScreen())
   ],
 );
