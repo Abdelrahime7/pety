@@ -21,7 +21,7 @@ void main()async {
   await setupNotifications();
   runApp(
     ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(393, 852),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
