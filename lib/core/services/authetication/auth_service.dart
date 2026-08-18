@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
-import 'package:pet_care/infrastructure/firebase/auth/%20%20irebase_auth_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_mapper.dart';
 
 
