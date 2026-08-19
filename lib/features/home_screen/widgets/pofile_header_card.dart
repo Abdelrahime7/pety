@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/widgets/widhT_widget.dart';
+
+import 'package:pet_care/core/constant/widgets/widht_widget.dart';
 
 class ProfileHeaderCard extends StatelessWidget {
   const ProfileHeaderCard({super.key});

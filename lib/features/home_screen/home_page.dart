@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/features/home_screen/widgets/pofile_header_card.dart';
 import 'package:pet_care/features/home_screen/widgets/premium_promo_card.dart';
