@@ -9,10 +9,11 @@ import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_mapper.dart';
 
 
+
 class AuthenticationService {
   final  FirebaseAuthDataSource _dataSource ;
 
-  AuthenticationService({required FirebaseAuthDataSource dataSource}) : _dataSource = dataSource;
+  AuthenticationService( {required FirebaseAuthDataSource dataSource}) : _dataSource = dataSource;
 
 
 
@@ -91,19 +92,19 @@ Future<Result<UserResponse>> loginWithGoogle() async {
       email: firebaseUser.email!,
     ));
   } on GoogleSignInException catch (e) {
-    if (e.code == GoogleSignInExceptionCode.canceled) {
-      return Cancelled();
-    }
+ 
 
-    return Failure('Google sign-in failed');
-  } on FirebaseAuthException catch (e) {
-    return Failure(
-      mapFirebaseExceptionToFailure(e).message,
-    );
+  if (e.code == GoogleSignInExceptionCode.canceled) {
+    return Cancelled();
+  }
+
+  return Failure('Google sign-in failed');
+
+  } catch (e) {
+   
+    return Failure('Google sign-in failed: $e');
   }
 }
-
-
 
 
 }
