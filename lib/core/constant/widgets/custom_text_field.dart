@@ -1,10 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
-
 
 class CustomeTextField extends StatelessWidget {
   final String? hintText;
@@ -45,14 +42,14 @@ class CustomeTextField extends StatelessWidget {
         cursorColor: AppColors.primary,
         autofocus: false,
 
-        style: AppStyle.reguler14,
+        style: AppStyle.regular14,
 
         decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFFF7F8F9),
 
           hintText: hintText ?? '',
-          hintStyle: AppStyle.reguler14,
+          hintStyle: AppStyle.regular14,
 
           prefixIcon: prefixIcon,
 
@@ -83,10 +80,7 @@ class CustomeTextField extends StatelessWidget {
             maxHeight: 48.h,
           ),
 
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 0,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
 
           border: _inputBorder(),
           enabledBorder: _inputBorder(),
@@ -102,30 +96,21 @@ class CustomeTextField extends StatelessWidget {
   OutlineInputBorder _inputBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: AppColors.border,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: AppColors.border, width: 1.w),
     );
   }
 
   OutlineInputBorder _focusedBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: AppColors.primary,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: AppColors.primary, width: 1.w),
     );
   }
 
   OutlineInputBorder _errorBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: Colors.red,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: Colors.red, width: 1.w),
     );
   }
 }

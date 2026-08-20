@@ -11,25 +11,23 @@ class ActionButton extends StatelessWidget {
   const ActionButton({
     super.key,
     required this.label,
-    required this.onPressed, this.icon,
+    required this.onPressed,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-  return ElevatedButton(
-    onPressed: onPressed,
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.r),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 12,
+      child: Text(
+        label,
+        style: AppStyle.titleWhite.copyWith(fontWeight: FontWeight.w500),
       ),
-    ),
-    child: Text(label,
-    style: AppStyle.whiteSemibold14 ,),
-  );
-}
+    );
+  }
 }
