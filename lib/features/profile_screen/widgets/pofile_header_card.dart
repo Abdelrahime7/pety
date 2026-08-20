@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-
-import 'package:pet_care/core/constant/widgets/widht_widget.dart';
-
+import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/widgets/widhT_widget.dart';
 class ProfileHeaderCard extends StatelessWidget {
   const ProfileHeaderCard({super.key});
 
@@ -71,27 +70,18 @@ class ProfileHeaderCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   'Sarah Jenkins',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.3,
-                  ),
+                  style: AppStyle.headerName,
                 ),
                 const SizedBox(height: 2),
-                const Text(
+                Text(
                   'sarah.j@example.com',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: AppStyle.regular13,
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -103,24 +93,16 @@ class ProfileHeaderCard extends StatelessWidget {
                     color: const Color(0xFFF1F4F8),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star_rounded,
                         color: Color(0xFFF5B731),
                         size: 14,
                       ),
-                      SizedBox(width: 4),
-                      Text(
-                        'FREE PLAN',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF5B6B82),
-                          letterSpacing: 0.4,
-                        ),
-                      ),
+                      const SizedBox(width: 4),
+                      Text('FREE PLAN', style: AppStyle.planBadge),
                     ],
                   ),
                 ),

@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:pet_care/core/constant/theme/app_theme.dart';
 import 'package:pet_care/infrastructure/firebase/cloud_messaging/message_notification.dart';
 import 'infrastructure/firebase/configue/firebase_options.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
 
 
@@ -28,6 +28,7 @@ void main()async {
   );
 
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupNotifications();
   runApp(
     ScreenUtilInit(
@@ -43,8 +44,8 @@ void main()async {
             theme: AppTheme.light,
           ),
         );
+        return MaterialApp.router(title: 'PetCare+', routerConfig: appRouter);
       },
-      
     ),
   );
 }

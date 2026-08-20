@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class SettingsSections extends StatefulWidget {
   const SettingsSections({super.key});
@@ -71,15 +72,7 @@ class _SettingsSectionsState extends State<SettingsSections> {
 
   // Section Header Label
   Widget _buildSectionHeader(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 13,
-        fontWeight: FontWeight.w700,
-        color: AppColors.secondaryText,
-        letterSpacing: 1.1,
-      ),
-    );
+    return Text(title, style: AppStyle.sectionHeader);
   }
 
   // White Rounded Card Container
@@ -116,16 +109,7 @@ class _SettingsSectionsState extends State<SettingsSections> {
           children: [
             _buildIconContainer(icon),
             const SizedBox(width: 14),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.text,
-                ),
-              ),
-            ),
+            Expanded(child: Text(title, style: AppStyle.tileTitle)),
             const Icon(
               Icons.chevron_right,
               size: 20,
@@ -150,16 +134,7 @@ class _SettingsSectionsState extends State<SettingsSections> {
         children: [
           _buildIconContainer(icon),
           const SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: AppColors.text,
-              ),
-            ),
-          ),
+          Expanded(child: Text(title, style: AppStyle.tileTitle)),
           CupertinoSwitch(
             value: value,
             activeTrackColor: AppColors.primary,

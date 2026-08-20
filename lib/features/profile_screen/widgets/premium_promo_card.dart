@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class PremiumPromoCard extends StatelessWidget {
   const PremiumPromoCard({super.key});
@@ -37,15 +38,7 @@ class PremiumPromoCard extends StatelessWidget {
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: const Text(
-                  'PETCARE+ PREMIUM',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.1,
-                  ),
-                ),
+                child: Text('PETCARE+ PREMIUM', style: AppStyle.badgeCapsule),
               ),
               Image.asset(
                 'assets/icons/premium.png',
@@ -58,26 +51,13 @@ class PremiumPromoCard extends StatelessWidget {
           const SizedBox(height: 20.0),
 
           // Main Headline
-          const Text(
-            'Get Unlimited Care',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -0.5,
-            ),
-          ),
+          Text('Get Unlimited Care', style: AppStyle.titleWhite),
           const SizedBox(height: 10.0),
 
           // Subtitle / Description
           Text(
             'Unlock multi-pet support, cloud backup,\nand health export features.',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.85),
-              fontSize: 14.0,
-              height: 1.4,
-              fontWeight: FontWeight.w400,
-            ),
+            style: AppStyle.promoSubtitle,
           ),
           const SizedBox(height: 24.0),
 
@@ -94,13 +74,9 @@ class PremiumPromoCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'Upgrade Now — \$4.99/mo',
-                style: TextStyle(
-                  color: AppColors.tealDark,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: AppStyle.buttonText,
               ),
             ),
           ),
