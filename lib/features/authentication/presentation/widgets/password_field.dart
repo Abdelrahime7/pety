@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
+import 'package:pet_care/features/authentication/presentation/validators/password_validator.dart';
 
 Widget buildPasswordField(TextEditingController passwordController,
  void Function() onSuffixIconPressed,bool obscurePassword )
@@ -34,9 +35,8 @@ Widget buildPasswordField(TextEditingController passwordController,
 
         SizedBox(height: 6.h),//
 
-        SizedBox(
-          height: 48.h,
-       child: CustomeTextField(
+     
+        CustomeTextField(
   controller: passwordController,
   isPassword: obscurePassword,
   hintText: '••••••••••••',
@@ -53,9 +53,10 @@ Widget buildPasswordField(TextEditingController passwordController,
     color: AppColors.secondaryText,
   ),
   onSuffixIconPressed: onSuffixIconPressed ,
+  validator: validatePassword,
   
 ),
-          ),
+        
       ]
       
         );

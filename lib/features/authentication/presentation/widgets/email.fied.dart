@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
+import 'package:pet_care/features/authentication/presentation/validators/email_validator.dart';
 
 Widget buildEmailField(TextEditingController emailControler) {
     return Column(
@@ -17,9 +18,7 @@ Widget buildEmailField(TextEditingController emailControler) {
 
         SizedBox(height: 6.h),
 
-        SizedBox(
-          height: 48.h,
-          child: CustomeTextField(
+           CustomeTextField(
             controller: emailControler,
             keyboardType: TextInputType.emailAddress,
             
@@ -29,9 +28,10 @@ Widget buildEmailField(TextEditingController emailControler) {
                 size: 18.sp,
                 color: AppColors.icon,
               ),
+              validator: validateEmail,
           
             ),
-          ),
+        
       ]
     );
       

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/widgets/height_widget.dart';
+import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/form.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/header.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/register_footer.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/seperator.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/social.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
+ ConsumerState<LoginScreen> createState() => _LoginScreenState();}
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -31,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -44,29 +47,38 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 buildHeader(),
 
-                SizedBox(height: 12.h),
+                HeightSpace(height: 12.h),
 
-                buildForm(_emailController,_passwordController,obscurePassword,
+                LoginForm( emailController:_emailController,
+                     passwordController: _passwordController,
+                     obscurePassword:  obscurePassword,
+                     onIconPressed: 
                 () {
                   setState(() {
                     obscurePassword = !obscurePassword;
                   });
-                }
+                }                
                 ),
-
-                SizedBox(height: 12.h),
+            
+                HeightSpace(height: 12.h),
 
                 buildSeparator(),
 
-                SizedBox(height: 12.h),
+                HeightSpace(height: 12.h),
 
-                buildSocialButtons(),
+                buildSocialButtons(
+                  onGooglePressed: () {
+    ref.read(authProvider.notifier).loginWithGoogle();
+  },
+  
 
-                SizedBox(height: 24.h),
+                ),
+
+                HeightSpace(height: 24.h),
 
                 buildRegisterFooter(),
 
-                SizedBox(height: 8.h),
+                HeightSpace(height: 8.h),
 
             //    _buildHomeIndicator(),
               ],
@@ -76,9 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   
+  } 
+
+
   }
- 
- 
+  
+
  
 
 
@@ -93,4 +108,3 @@ class _LoginScreenState extends State<LoginScreen> {
 
   
  
-}
