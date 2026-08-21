@@ -7,8 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:pet_care/infrastructure/firebase/cloud_messaging/message_notification.dart';
 import 'infrastructure/firebase/configue/firebase_options.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
 
 
@@ -43,7 +41,7 @@ void main()async {
             routerConfig: appRouter,
             theme: AppTheme.light,
           ),
-        );
+        )
         return MaterialApp.router(title: 'PetCare+', routerConfig: appRouter);
       },
     ),

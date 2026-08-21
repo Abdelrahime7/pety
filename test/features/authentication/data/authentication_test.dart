@@ -2,7 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
 
