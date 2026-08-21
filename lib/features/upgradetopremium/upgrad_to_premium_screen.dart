@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
-import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
 
 import 'package:pet_care/features/upgradetopremium/widgets/feature_item.dart';
