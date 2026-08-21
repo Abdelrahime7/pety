@@ -58,31 +58,4 @@ Widget buildPasswordField(
  void _handleForgotPassword() {
     // Navigate to forgot password.
   }
-      SizedBox(
-        height: 48.h,
-        child: CustomeTextField(
-          controller: passwordController,
-          isPassword: obscurePassword,
-          hintText: '••••••••••••',
-          prefixIcon: Icon(
-            Icons.lock_outline,
-            size: 18.sp,
-            color: AppColors.icon,
-          ),
-          suffixIcon: Icon(
-            obscurePassword
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
-            size: 18.sp,
-            color: AppColors.secondaryText,
-          ),
-          onSuffixIconPressed: onSuffixIconPressed,
-        ),
-      ),
-    ],
-  );
-}
-
-void _handleForgotPassword() {
-  // Navigate to forgot password.
-}
+      
