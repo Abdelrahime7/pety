@@ -1,10 +1,9 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
-
 import 'package:pet_care/features/authentication/data/user_data.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 
@@ -19,7 +18,6 @@ void main() {
   late MockFirebaseAuthDataSource dataSource;
   late AuthenticationService service;
 
-  
   setUpAll(() {
     registerFallbackValue((
       email: 'test@gmail.com',
@@ -27,14 +25,13 @@ void main() {
     ));
   });
 
+  setUp(() {
+    dataSource = MockFirebaseAuthDataSource();
 
-setUp(() {
-  dataSource = MockFirebaseAuthDataSource();
-
-  service = AuthenticationService(
-    dataSource: dataSource,
-  );
-});
+    service = AuthenticationService(
+      dataSource: dataSource,
+    );
+  });
 
   group('login', () {
     test('returns Success when login succeeds', () async {
@@ -62,30 +59,32 @@ setUp(() {
       expect(success.data.email, 'test@gmail.com');
     });
 
-    test('returns Failure when Firebase throws FirebaseAuthException',
-        () async {
-      when(
-        () => dataSource.login(any()),
-      ).thenThrow(
-        FirebaseAuthException(
-          code: 'wrong-password',
-        ),
-      );
+    test(
+      'returns Failure when Firebase throws FirebaseAuthException',
+      () async {
+        when(
+          () => dataSource.login(any()),
+        ).thenThrow(
+          FirebaseAuthException(
+            code: 'wrong-password',
+          ),
+        );
 
-      final result = await service.login((
-        email: 'test@gmail.com',
-        password: 'wrong-password',
-      ));
+        final result = await service.login((
+          email: 'test@gmail.com',
+          password: 'wrong-password',
+        ));
 
-      expect(result, isA<Failure<UserResponse>>());
+        expect(result, isA<Failure<UserResponse>>());
 
-      final failure = result as Failure<UserResponse>;
+        final failure = result as Failure<UserResponse>;
 
-      expect(
-        failure.message,
-        'Invalid email or password.',
-      );
-    });
+        expect(
+          failure.message,
+          'Invalid email or password.',
+        );
+      },
+    );
 
     test('passes email and password to datasource', () async {
       final credential = MockUserCredential();
