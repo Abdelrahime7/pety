@@ -16,11 +16,11 @@ Widget buildPasswordField(
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Password', style: AppStyle.subtitle),
+          Text('Password', style: AppStyle.tileTitle),
 
           GestureDetector(
             onTap: _handleForgotPassword,
-            child: Text('Forgot?', style: AppStyle.title),
+            child: Text('Forgot?', style: AppStyle.buttonText),
           ),
         ],
       ),

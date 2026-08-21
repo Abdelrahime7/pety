@@ -9,7 +9,7 @@ Widget buildEmailField(TextEditingController emailControler) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text('Email Address', style: AppStyle.subtitle),
+      Text('Email Address', style: AppStyle.tileTitle),
 
       SizedBox(height: 6.h),
 

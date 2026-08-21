@@ -12,7 +12,7 @@ Widget buildRegisterFooter() {
 
       GestureDetector(
         onTap: () {},
-        child: Text('Sign Up', style: AppStyle.regular14),
+        child: Text('Sign Up', style: AppStyle.buttonText),
       ),
     ],
   );

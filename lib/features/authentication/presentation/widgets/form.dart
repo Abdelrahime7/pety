@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
-import 'package:pet_care/core/constant/widgets/elevated_button.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
+import 'package:pet_care/core/constant/widgets/primary_button.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
 import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/email.fied.dart';
@@ -50,9 +50,9 @@ class LoginForm extends ConsumerWidget {
       
             SizedBox(
               width: double.infinity,
-              height: 48.h,
-              child: ActionButton(
-                label: authState.isLoading ? 'Loading...' : 'Sign In',
+              height: 49.5.h,
+              child: AppPrimaryButton(
+                text: authState.isLoading ? 'Loading...' : 'Sign In',
                 onPressed:
                  authState.isLoading
                    

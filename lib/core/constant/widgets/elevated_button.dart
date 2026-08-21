@@ -26,7 +26,8 @@ class ActionButton extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: AppStyle.titleWhite.copyWith(fontWeight: FontWeight.w500),
+        style: AppStyle.badgeCapsule.copyWith(fontWeight: FontWeight.w500,
+          fontSize: 14),
       ),
     );
   }

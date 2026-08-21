@@ -22,7 +22,7 @@ Widget buildHeader() {
 
         SizedBox(height: 4.h),
 
-        Text('Caring for your best friends', style: AppStyle.subtitle),
+        Text('Caring for your best friends', style: AppStyle.regular14),
       ],
     ),
   );

@@ -66,9 +66,9 @@ abstract class AppStyle {
   );
 
   static TextStyle buttonText = GoogleFonts.poppins(
-    fontSize: 15,
-    fontWeight: FontWeight.w700,
-    color: AppColors.tealDark,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.primary,
   );
 
   static TextStyle promoSubtitle = GoogleFonts.poppins(

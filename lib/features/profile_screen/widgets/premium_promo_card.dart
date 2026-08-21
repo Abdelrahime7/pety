@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/widgets/outlined_button.dart';
 
 class PremiumPromoCard extends StatelessWidget {
   const PremiumPromoCard({super.key});
@@ -65,19 +67,14 @@ class PremiumPromoCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 52.0,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: Text(
-                'Upgrade Now — \$4.99/mo',
-                style: AppStyle.buttonText,
-              ),
+            child: PrimaryOutlinedButton(
+              text: 'Upgrade Now — \$4.99/mo',
+              color:AppColors.background,
+              radius: 20.0,
+              onPressed: () {
+                 appRouter.go(upgradeToPremium);
+            
+              }            
             ),
           ),
         ],
