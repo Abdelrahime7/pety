@@ -33,6 +33,7 @@ Future<Result<UserResponse>> login(UserRequest request) async {
       return result;
 
       case Cancelled():
+      
       return result;
       
   }
@@ -82,22 +83,24 @@ Future<Result<UserResponse>> loginWithGoogle() async {
 
   final result = await _service.loginWithGoogle();
 
+  
   switch (result) {
-    case Success(:final data):
-      state = AsyncData(data);
-      return result;
+  case Success(:final data):
 
-    case Failure(:final message):
-      state = AsyncError(
-        message,
-        StackTrace.current,
-      );
-      return result;
+    state = AsyncData(data);
+    return result;
 
-    case Cancelled():
-      state = const AsyncData(null);
-      return result;
-  }
+  case Failure(:final message):
+
+    state = AsyncError(
+      message,
+      StackTrace.current,
+    );
+    return result;
+
+  case Cancelled():
+    return result;
+}
 }
 
 

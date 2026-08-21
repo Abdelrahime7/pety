@@ -4,11 +4,12 @@ import 'package:pet_care/features/authentication/data/user_data.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _auth;
-    final GoogleSignIn _googleSignIn;
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
 
-  FirebaseAuthDataSource(this._auth, {required GoogleSignIn googleSignIn}) : _googleSignIn = googleSignIn;
+  FirebaseAuthDataSource(this._auth) ;
 
+  // ignore: pty_constructor_bodies
   Future<UserCredential> register(
     UserRequest request
   ) {

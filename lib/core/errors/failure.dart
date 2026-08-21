@@ -5,6 +5,29 @@
   const ErrorFailure(this.message);
 }
 
+
+
+class TooManyRequestsFailure extends ErrorFailure {
+  const TooManyRequestsFailure()
+      : super('Too many attempts. Please try again later');
+}
+
+class InvalidEmailFailure extends ErrorFailure {
+  const InvalidEmailFailure()
+      : super('The email address is invalid');
+}
+
+class UserDisabledFailure extends ErrorFailure {
+  const UserDisabledFailure()
+      : super('This account has been disabled');
+}
+
+ class RequireLoginAgain extends ErrorFailure
+ {
+  const RequireLoginAgain():super('Please log in again to continue');
+ }
+
+
 class NetworkFailure extends ErrorFailure {
   const NetworkFailure()
       : super('Please check your internet connection.');
@@ -23,7 +46,7 @@ class ServerFailure extends ErrorFailure {
 
 class UserNotFoundFailure extends ErrorFailure {
   const UserNotFoundFailure()
-      : super('User Not Found.');
+      : super('No account found with this email');
 }
 class InvalidCredentialsFailure extends ErrorFailure {
   const InvalidCredentialsFailure()
@@ -32,7 +55,7 @@ class InvalidCredentialsFailure extends ErrorFailure {
 
 class EmailAlreadyInUseFailure extends ErrorFailure {
   const EmailAlreadyInUseFailure()
-      : super('This email is already in use.');
+      : super('An account already exists with this email');
 }
 
 class WeakPasswordFailure extends ErrorFailure {
@@ -45,3 +68,4 @@ class UnknownAuthFailure extends ErrorFailure {
   const UnknownAuthFailure()
       : super('An unexpected authentication error occurred.');
 }
+

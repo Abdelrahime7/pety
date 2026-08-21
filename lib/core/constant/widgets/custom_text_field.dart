@@ -31,10 +31,8 @@ class CustomeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width ?? double.infinity,
-      height: height ?? 48.h,
-      child: TextFormField(
+    return 
+       TextFormField(
         controller: controller,
         keyboardType: keyboardType,
         validator: validator,
@@ -44,6 +42,50 @@ class CustomeTextField extends StatelessWidget {
 
         style: AppStyle.regular14,
 
+        decoration:  InputDecoration(
+  filled: true,
+  fillColor: const Color(0xFFF7F8F9),
+
+  hintText: hintText ?? '',
+  hintStyle: AppStyle.reguler14,
+
+  prefixIcon: prefixIcon,
+  suffixIcon: suffixIcon != null
+      ? IconButton(
+          onPressed: onSuffixIconPressed,
+          icon: suffixIcon!,
+        )
+      : null,
+
+  contentPadding: EdgeInsets.symmetric(
+    horizontal: 16.w,
+  ),
+
+  prefixIconConstraints: BoxConstraints(
+    minWidth: 48.w,
+    maxWidth: 48.w,
+    minHeight: 48.h,
+    maxHeight: 48.h,
+  ),
+
+  suffixIconConstraints: BoxConstraints(
+    minWidth: 48.w,
+    maxWidth: 48.w,
+    minHeight: 48.h,
+    maxHeight: 48.h,
+  ),
+
+  border: _inputBorder(),
+  enabledBorder: _inputBorder(),
+  focusedBorder: _focusedBorder(),
+  errorBorder: _errorBorder(),
+  focusedErrorBorder: _errorBorder(),
+
+  // Important
+  errorStyle: AppStyle.reguler12.copyWith(
+    height: 1.2,
+  ),
+),
         decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFFF7F8F9),
@@ -91,6 +133,7 @@ class CustomeTextField extends StatelessWidget {
         ),
       ),
     );
+    
   }
 
   OutlineInputBorder _inputBorder() {

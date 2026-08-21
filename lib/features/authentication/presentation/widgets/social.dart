@@ -4,7 +4,10 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 
-Widget buildSocialButtons() {
+Widget buildSocialButtons(
+  {required VoidCallback onGooglePressed,
+  }
+)  {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Row(
@@ -13,7 +16,7 @@ Widget buildSocialButtons() {
             child: _socialButton(
               icon: Icons.g_mobiledata,
               label: 'Google',
-              onPressed: (){}
+              onPressed: onGooglePressed
             ),
           ),
 
