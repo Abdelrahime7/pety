@@ -32,20 +32,5 @@ Widget buildEmailField(TextEditingController emailControler) {
       
   
   }
-      SizedBox(
-        height: 48.h,
-        child: CustomeTextField(
-          controller: emailControler,
-          keyboardType: TextInputType.emailAddress,
-
-          hintText: 'jessica.thorne@email.com',
-          prefixIcon: Icon(
-            Icons.mail_outline,
-            size: 18.sp,
-            color: AppColors.icon,
-          ),
-        ),
-      ),
-    ],
-  );
-}
+      
+  

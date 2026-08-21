@@ -47,7 +47,7 @@ class CustomeTextField extends StatelessWidget {
   fillColor: const Color(0xFFF7F8F9),
 
   hintText: hintText ?? '',
-  hintStyle: AppStyle.reguler14,
+  hintStyle: AppStyle.regular14,
 
   prefixIcon: prefixIcon,
   suffixIcon: suffixIcon != null
@@ -82,57 +82,13 @@ class CustomeTextField extends StatelessWidget {
   focusedErrorBorder: _errorBorder(),
 
   // Important
-  errorStyle: AppStyle.reguler12.copyWith(
+  errorStyle: AppStyle.regular12.copyWith(
     height: 1.2,
   ),
 ),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: const Color(0xFFF7F8F9),
-
-          hintText: hintText ?? '',
-          hintStyle: AppStyle.regular14,
-
-          prefixIcon: prefixIcon,
-
-          suffixIcon: suffixIcon != null
-              ? IconButton(
-                  onPressed: onSuffixIconPressed,
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(
-                    minWidth: 48.w,
-                    minHeight: 48.h,
-                    maxWidth: 48.w,
-                    maxHeight: 48.h,
-                  ),
-                  icon: suffixIcon!,
-                )
-              : null,
-
-          prefixIconConstraints: BoxConstraints(
-            minWidth: 48.w,
-            minHeight: 48.h,
-            maxHeight: 48.h,
-          ),
-
-          suffixIconConstraints: BoxConstraints(
-            minWidth: 48.w,
-            minHeight: 48.h,
-            maxWidth: 48.w,
-            maxHeight: 48.h,
-          ),
-
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 0),
-
-          border: _inputBorder(),
-          enabledBorder: _inputBorder(),
-          focusedBorder: _focusedBorder(),
-
-          errorBorder: _errorBorder(),
-          focusedErrorBorder: _errorBorder(),
-        ),
-      ),
-    );
+     
+      );
+  
     
   }
 

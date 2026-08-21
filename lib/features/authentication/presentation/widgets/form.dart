@@ -74,6 +74,7 @@ class LoginForm extends ConsumerWidget {
                       
               ),
             ),
+            
           ],
         ),
       ),
@@ -105,7 +106,7 @@ class LoginForm extends ConsumerWidget {
     }
 
     if (next.hasValue && next.value != null) {
-    appRouter.go(home);
+    appRouter.go(profile);
     }
   },
 );
