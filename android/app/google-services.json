@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "721972208500-jqj1t33ponlujpspjpf9usirlpg9ko8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pet_care",
+            "certificate_hash": "7978b3b8a8db71d424ef093859532a19a499bd9f"
+          }
+        },
+        {
           "client_id": "721972208500-qgkmhmklka2k2ul6rdg38i8ru4cuqpit.apps.googleusercontent.com",
           "client_type": 3
         }
