@@ -1,7 +1,7 @@
  
 
  import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_care/features/pets/riverpod/pet_state.dart';
+import 'package:pet_care/features/pets/presentation/riverpod/pet_state.dart';
 
 class PetNotifier extends Notifier<PetState> {
   @override
