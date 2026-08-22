@@ -62,7 +62,7 @@ class CustomeTextField extends StatelessWidget {
             ? IconButton(onPressed: onSuffixIconPressed, icon: suffixIcon!)
             : null,
 
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
+        contentPadding: EdgeInsets.symmetric(horizontal: 6.w,vertical:16.h),
 
         prefixIconConstraints: BoxConstraints(
           minWidth: 48.w,
