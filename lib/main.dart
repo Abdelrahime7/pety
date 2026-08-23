@@ -11,9 +11,8 @@ import 'infrastructure/firebase/configue/firebase_options.dart';
 
 
 
-void main()async {
-
-   
+void main()
+async {
    WidgetsFlutterBinding.ensureInitialized();
 
  await Firebase.initializeApp(
@@ -26,7 +25,6 @@ void main()async {
         '721972208500-qgkmhmklka2k2ul6rdg38i8ru4cuqpit.apps.googleusercontent.com',
   );
 
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupNotifications();
   runApp(
@@ -38,7 +36,7 @@ void main()async {
         return ProviderScope(
           child: MaterialApp.router(
           
-            title: 'PetPaw+',
+            title: 'PetCare',
             routerConfig: appRouter,
             theme: AppTheme.light,
   

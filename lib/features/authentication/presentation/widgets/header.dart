@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/features/authentication/presentation/widgets/app_logo.dart';
 
 Widget buildHeader() {
   return Padding(
@@ -10,15 +11,15 @@ Widget buildHeader() {
         SizedBox(
           width: 160.w,
           height: 130.h,
-          child: Image.asset(
-            'assets/images/MascotIllustration.png',
-            fit: BoxFit.contain,
-          ),
+          child:AppLogo(
+          size: 64.w,     // Sets exact square dimensions
+          iconSize: 32.w, // Proportional icon size
+        ),
         ),
 
-        SizedBox(height: 12.h),
+       SizedBox(height: 8.h),
 
-        Text('PetyPaw+', style: AppStyle.title),
+        Text('PetCare', style: AppStyle.title),
 
         SizedBox(height: 4.h),
 

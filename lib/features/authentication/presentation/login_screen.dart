@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
+import 'package:pet_care/features/authentication/presentation/widgets/auth_toggle_tab.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/form.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/header.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/register_footer.dart';
@@ -14,20 +15,25 @@ class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
- ConsumerState<LoginScreen> createState() => _LoginScreenState();}
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
-  bool obscurePassword = true;
-
-  
+  bool _isLogin = true;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -40,71 +46,79 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding: EdgeInsets.only(
-              bottom: 16.h,
-            ),
+            padding: EdgeInsets.only(bottom: 16.h),
             child: Column(
               children: [
                 buildHeader(),
 
-                HeightSpace(height: 12.h),
+                HeightSpace(height: 16.h),
 
-                LoginForm( emailController:_emailController,
-                     passwordController: _passwordController,
-                     obscurePassword:  obscurePassword,
-                     onIconPressed: 
-                () {
-                  setState(() {
-                    obscurePassword = !obscurePassword;
-                  });
-                }                
+                // 1. Toggle Tab (Login / Register)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: buildAuthToggleTab(
+                    isLogin: _isLogin,
+                    onToggle: (val) {
+                      setState(() {
+                        _isLogin = val;
+                      });
+                    },
+                  ),
                 ),
-            
-                HeightSpace(height: 12.h),
+
+                HeightSpace(height: 16.h),
+
+                // 2. DRY AuthForm
+                AuthForm(
+                  isLogin: _isLogin,
+                  emailController: _emailController,
+ passwordController: _passwordController,
+                  nameController: _nameController,
+                  confirmPasswordController: _confirmPasswordController,
+                  obscurePassword: _obscurePassword,
+                  obscureConfirmPassword: _obscureConfirmPassword,
+                  onIconPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                  onConfirmIconPressed: () {
+                    setState(() {
+                      _obscureConfirmPassword = !_obscureConfirmPassword;
+                    });
+                  },
+                ),
+
+                HeightSpace(height: 16.h),
 
                 buildSeparator(),
 
-                HeightSpace(height: 12.h),
+                HeightSpace(height: 16.h),
 
                 buildSocialButtons(
                   onGooglePressed: () {
-    ref.read(authProvider.notifier).loginWithGoogle();
-  },
-  
-
+                    ref.read(authProvider.notifier).loginWithGoogle();
+                  },
                 ),
 
                 HeightSpace(height: 24.h),
 
-                buildRegisterFooter(),
+                // 3. Footer toggles tab mode when tapped
+                buildRegisterFooter(
+                  isLogin: _isLogin,
+                  onTap: () {
+                    setState(() {
+                      _isLogin = !_isLogin;
+                    });
+                  },
+                ),
 
                 HeightSpace(height: 8.h),
-
-            //    _buildHomeIndicator(),
               ],
             ),
           ),
         ),
       ),
     );
-  
-  } 
-
-
   }
-  
-
- 
-
-
-
-
-
- 
-
-  
-
-  
-
-  
- 
+}

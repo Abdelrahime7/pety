@@ -123,3 +123,5 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+firebase.exe
+analyze_output.txt
