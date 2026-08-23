@@ -1,6 +1,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pet_care/core/errors/failure.dart';
+import 'package:pet_care/core/errors/authfailure.dart';
+import 'package:pet_care/core/errors/common_faillure.dart';
 
 ErrorFailure mapFirebaseExceptionToFailure(FirebaseAuthException e) {
   switch (e.code) {
@@ -10,8 +11,7 @@ ErrorFailure mapFirebaseExceptionToFailure(FirebaseAuthException e) {
     case 'user-not-found':
       return const UserNotFoundFailure();
 
-      case "No account found with this email":
-       return const UserNotFoundFailure();
+      
 
     case 'wrong-password':
       return const InvalidCredentialsFailure();
