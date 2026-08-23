@@ -145,11 +145,14 @@ class _AuthFormState extends ConsumerState<AuthForm> {
       notifier.login((
         email: widget.emailController.text.trim(),
         password: widget.passwordController.text.trim(),
+        name: null
       ));
     } else {
       notifier.register((
         email: widget.emailController.text.trim(),
         password: widget.passwordController.text.trim(),
+                name: null
+
       ));
     }
   }
