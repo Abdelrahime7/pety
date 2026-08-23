@@ -65,6 +65,7 @@ class LoginForm extends ConsumerWidget {
                             .login((
                               email: emailController.text,
                               password: passwordController.text,
+                              name: null
                             ));
                          
                           
