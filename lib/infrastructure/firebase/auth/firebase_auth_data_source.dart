@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
@@ -16,12 +17,16 @@ class FirebaseAuthDataSource {
     UserRequest request
   )async {
     
+    debugPrint("Ireach here wow ");
      final credential = await  _auth.createUserWithEmailAndPassword(
       email: request.email,
       password: request.password,
     );
   
+      debugPrint("Ireach here  rooooo ");
+
      await _userdataSource .createUser(
+      
       uid: credential.user!.uid,
       email: credential.user!.email!,
       name: request.name!

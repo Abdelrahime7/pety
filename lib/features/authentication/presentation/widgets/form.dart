@@ -151,7 +151,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
       notifier.register((
         email: widget.emailController.text.trim(),
         password: widget.passwordController.text.trim(),
-                name: null
+          name: widget.nameController!.text.trim(),
 
       ));
     }
@@ -164,9 +164,37 @@ class _AuthFormState extends ConsumerState<AuthForm> {
         if (next.isLoading) return;
 
         if (next.hasError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(next.error.toString())),
-          );
+         ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Row(
+      children: [
+        const Icon(
+          Icons.info_outline_rounded,
+          color: Colors.white,
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+           next.error.toString(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    ),
+    behavior: SnackBarBehavior.floating,
+    margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+    padding: const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 14,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(14),
+    ),
+    duration: const Duration(seconds: 3),
+  ),
+);
           return;
         }
 
@@ -189,3 +217,4 @@ class _AuthFormState extends ConsumerState<AuthForm> {
     );
   }
 }
+

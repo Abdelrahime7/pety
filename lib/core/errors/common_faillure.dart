@@ -26,5 +26,5 @@ class ServerFailure extends ErrorFailure {
 
 class UnknownFailure extends ErrorFailure {
   const UnknownFailure()
-      : super('Something went wrong.');
+      : super('Somthing went wrong');
 }
