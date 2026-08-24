@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
-
+import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
+import 'package:pet_care/core/services/pet_service.dart';
 
 final userFirestoreDataSourcePrvider = Provider<UserFirestoreDataSource>(
 (ref){
@@ -21,8 +22,22 @@ return FirebaseAuthDataSource ( FirebaseAuth.instance,
 
 final authenticationServiceProvider =
     Provider<AuthenticationService>((ref) {
-  return AuthenticationService(dataSource:ref.read(firbasedatasourceProvider)
-  );
+  return AuthenticationService(dataSource:ref.read(firbasedatasourceProvider));
+}); 
 
-});
+// ---------------- PETS DI ---------------- //
 
+final petFirestoreDataSourceProvider = Provider<PetFirestoreDataSource>(
+  (ref) {
+    return PetFirestoreDataSource(FirebaseFirestore.instance);
+  },
+);
+
+final petServiceProvider = Provider<PetService>(
+  (ref) {
+    return PetService(
+      // We pass the data source into the service exactly as your friend did for Auth/User
+      dataSource: ref.read(petFirestoreDataSourceProvider),
+    );
+  },
+);
