@@ -13,10 +13,13 @@ class PetFirestoreDataSource {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getPets() async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getPets(String ownerId) async {
     try {
-      final snapshot = await _firestore.collection('pets').get();
-      return snapshot.docs.map((doc) => doc.data()).toList();
+      final snapshot = await _firestore
+          .collection('pets')
+          .where('ownerId', isEqualTo: ownerId)
+          .get();
+      return snapshot.docs;
     } catch (e) {
       throw Exception("Failed to fetch pets: $e");
     }

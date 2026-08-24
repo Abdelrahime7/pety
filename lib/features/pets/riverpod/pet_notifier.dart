@@ -4,33 +4,51 @@ import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 
-class PetNotifier extends AsyncNotifier<List<Map<String, dynamic>>> {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pet_care/features/pets/domain/entity/pet.dart';
+
+class PetNotifier extends AsyncNotifier<List<Pet>> {
   
   late final PetService _service;
+  String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
 
   @override
-  FutureOr<List<Map<String, dynamic>>> build() async {
-    // Inject the service
+  FutureOr<List<Pet>> build() async {
     _service = ref.read(petServiceProvider);
     
-    // Automatically fetch pets on load
-    final result = await _service.getPets();
+    if (_ownerId == null) return [];
+    
+    final result = await _service.getPets(_ownerId!);
     if (result is Success) {
       return (result as Success).data;
     }
     return [];
   }
 
-  Future<Result<void>> addPet(Map<String, dynamic> petData) async {
-    state = const AsyncLoading(); // Sets UI to loading automatically
+  Future<Result<void>> addPet(Pet pet) async {
+    state = const AsyncLoading(); 
 
-    final result = await _service.addPet(petData);
+    // Safety check - make sure we assign the current logged in user
+    final petWithOwner = Pet(
+      id: pet.id,
+      ownerId: _ownerId ?? '',
+      name: pet.name,
+      species: pet.species,
+      breed: pet.breed,
+      gender: pet.gender,
+      birthDate: pet.birthDate,
+      weight: pet.weight,
+      medicalNotes: pet.medicalNotes,
+    );
+
+    final result = await _service.addPet(petWithOwner);
 
     switch (result) {
       case Success():
-        // Refresh the list after adding
-        final updatedPets = await _service.getPets();
-        state = updatedPets is Success ? AsyncData((updatedPets as Success).data) : const AsyncData([]);
+        if (_ownerId != null) {
+          final updatedPets = await _service.getPets(_ownerId!);
+          state = updatedPets is Success ? AsyncData((updatedPets as Success).data) : const AsyncData([]);
+        }
         return result;
 
       case Failure(:final message):
@@ -42,3 +60,4 @@ class PetNotifier extends AsyncNotifier<List<Map<String, dynamic>>> {
     }
   }
 }
+
