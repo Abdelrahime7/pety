@@ -14,6 +14,9 @@ class CustomeTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
   final VoidCallback? onSuffixIconPressed;
+  final int? maxLines;
+  final bool readOnly;
+  final void Function()? onTap;
 
   const CustomeTextField({
     super.key,
@@ -27,6 +30,9 @@ class CustomeTextField extends StatelessWidget {
     this.keyboardType,
     this.prefixIcon,
     this.onSuffixIconPressed,
+    this.maxLines = 1,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -39,6 +45,9 @@ class CustomeTextField extends StatelessWidget {
         obscureText: isPassword,
         cursorColor: AppColors.primary,
         autofocus: false,
+        maxLines: maxLines,
+        readOnly: readOnly,
+        onTap: onTap,
 
         style: AppStyle.regular14,
 

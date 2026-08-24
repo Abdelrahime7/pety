@@ -22,6 +22,7 @@ void main() {
     registerFallbackValue((
       email: 'test@gmail.com',
       password: '12345678',
+      name: null,
     ));
   });
 

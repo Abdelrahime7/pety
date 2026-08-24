@@ -46,7 +46,7 @@ void main() {
 
     test('maps user-not-found', () {
       final exception = FirebaseAuthException(
-        code: 'No account found with this email',
+        code: 'user-not-found',
       );
 
       final result = mapFirebaseExceptionToFailure(exception);
@@ -63,7 +63,7 @@ void main() {
 
       expect(
         result.message,
-        'Too many attempts. Please try again later',
+        'Too many attempts. Please try again later.',
       );
     });
 

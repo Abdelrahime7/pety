@@ -72,7 +72,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 AuthForm(
                   isLogin: _isLogin,
                   emailController: _emailController,
- passwordController: _passwordController,
+                  passwordController: _passwordController,
                   nameController: _nameController,
                   confirmPasswordController: _confirmPasswordController,
                   obscurePassword: _obscurePassword,
