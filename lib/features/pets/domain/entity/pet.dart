@@ -10,6 +10,7 @@ class Pet {
   final DateTime birthDate;
   final double weight;
   final String medicalNotes;
+  final String photoUrl;
 
   const Pet({
     required this.id,
@@ -21,6 +22,7 @@ class Pet {
     required this.birthDate,
     required this.weight,
     required this.medicalNotes,
+    this.photoUrl = '',
   });
 
   // Factory constructor to easily map from Firestore Document
@@ -36,6 +38,7 @@ class Pet {
       birthDate: (data['birthDate'] as Timestamp).toDate(),
       weight: (data['weight'] as num?)?.toDouble() ?? 0.0,
       medicalNotes: data['medicalNotes'] as String? ?? '',
+      photoUrl: data['photoUrl'] as String? ?? '',
     );
   }
 
@@ -50,6 +53,7 @@ class Pet {
       'birthDate': Timestamp.fromDate(birthDate),
       'weight': weight,
       'medicalNotes': medicalNotes,
+      'photoUrl': photoUrl,
     };
   }
 }

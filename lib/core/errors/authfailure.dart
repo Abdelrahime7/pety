@@ -6,7 +6,7 @@ class InvalidEmailFailure extends ErrorFailure {
 }
 
 class UserNotFoundFailure extends ErrorFailure {
-  const UserNotFoundFailure(): super ('user not found');
+  const UserNotFoundFailure(): super ('No account found with this email');
 }
 
 class UserDisabledFailure extends ErrorFailure {

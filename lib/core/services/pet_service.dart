@@ -11,7 +11,7 @@ class PetService {
 
   Future<Result<void>> addPet(Pet pet) async {
     try {
-      await dataSource.addPet(pet.toMap());
+      await dataSource.addPet(pet);
       return const Success(null);
     } on FirebaseException catch (e) {
       return Failure(mapFirestoreExceptionToFailure(e).message);

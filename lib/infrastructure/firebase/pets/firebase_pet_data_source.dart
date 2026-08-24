@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class PetFirestoreDataSource {
   final FirebaseFirestore _firestore;
 
   PetFirestoreDataSource(this._firestore);
 
-  Future<void> addPet(Map<String, dynamic> petData) async {
+  Future<void> addPet(Pet pet) async {
     try {
-      await _firestore.collection('pets').add(petData);
+      await _firestore.collection('pets').add(pet.toMap());
     } catch (e) {
       throw Exception("Failed to add pet: $e");
     }
