@@ -49,6 +49,8 @@ void main() {
       final result = await service.login((
         email: 'test@gmail.com',
         password: '12345678',
+                 name: null
+
       ));
 
       expect(result, isA<Success<UserResponse>>());
@@ -73,6 +75,8 @@ void main() {
         final result = await service.login((
           email: 'test@gmail.com',
           password: 'wrong-password',
+                   name: null
+
         ));
 
         expect(result, isA<Failure<UserResponse>>());
@@ -101,6 +105,7 @@ void main() {
       final request = (
         email: 'test@gmail.com',
         password: '12345678',
+         name: null
       );
 
       await service.login(request);
