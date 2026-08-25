@@ -17,7 +17,7 @@ final appRouter = GoRouter(
     GoRoute(path: login, builder: (context, state) => const LoginScreen()),
     GoRoute(path:profile,builder: (context, state)=> const ProfilePage()),
     GoRoute(path:upgradeToPremium,builder: (context, state)=> const UpgradeToPremiumScreen()),
-    GoRoute(path:petList,builder: (context,state)=>const PetsListScreen()),
+    GoRoute(path:petList,builder: (context,state)=> PetsListScreen()),
     GoRoute(path:addNewPet,builder: (context, state)=> const AddPetScreen()),
 
 

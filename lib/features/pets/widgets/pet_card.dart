@@ -24,7 +24,9 @@ class PetCard extends StatelessWidget {
     }
     if (years > 0) return '$years years';
     if (months > 0) return '$months months';
-    return 'Puppy/Kitten';
+    
+     return 'Less than a month';
+    
   }
 
   @override
@@ -37,7 +39,7 @@ class PetCard extends StatelessWidget {
     
     // Color coding gender playfully
     final tagBgColor = isMale ? const Color(0xFFF0FDFA) : const Color(0xFFFFF1F2);
-    final tagTextColor = isMale ? const Color(0xFF0F766E) : const Color(0xFFF43F5E);
+    final tagTextColor = isMale ? const Color(0xFF0F766E) : const Color.fromARGB(255, 187, 122, 149);
     
     final inkMuted = const Color(0xFF64748B);
     final inkSoft = const Color(0xFF94A3B8);
