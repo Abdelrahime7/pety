@@ -1,6 +1,5 @@
 
 import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
@@ -103,6 +102,28 @@ Future<Result<UserResponse>> loginWithGoogle() async {
 }
 }
 
+Future<Result<String>> resetPassword(String email) async {
+  state = const AsyncLoading();
+
+  final result = await _service.resetPassword(email);
+
+  switch (result) {
+    case Success():
+      state = const AsyncData(null);
+      return result;
+
+    case Failure(:final message):
+      state = AsyncError(
+        message,
+        StackTrace.current,
+      );
+      return result;
+
+    case Cancelled():
+      state = const AsyncData(null);
+      return result;
+  }
+}
 
 
 
