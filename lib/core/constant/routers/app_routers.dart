@@ -12,7 +12,7 @@ final String petList = '/pet-list';
 final String addNewPet = '/add-new-pet';  //
 
 final appRouter = GoRouter(
-  initialLocation: petList,
+  initialLocation: login,
   routes: [
     GoRoute(path: login, builder: (context, state) => const LoginScreen()),
     GoRoute(path:profile,builder: (context, state)=> const ProfilePage()),
