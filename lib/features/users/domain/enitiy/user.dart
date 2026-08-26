@@ -1,4 +1,4 @@
-import 'package:pet_care/features/authentication/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 
 class User {
   final String userId;

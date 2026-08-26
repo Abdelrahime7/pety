@@ -14,7 +14,7 @@ class FirebaseAuthDataSource {
 
   // ignore: pty_constructor_bodies
   Future<UserCredential> register (
-    UserRequest request
+    AutUserRequest request
   )async {
     
     debugPrint("Ireach here wow ");
@@ -38,7 +38,7 @@ class FirebaseAuthDataSource {
   
 
   Future<UserCredential> login(
-    UserRequest request
+    AutUserRequest request
   ) {
     return _auth.signInWithEmailAndPassword(
       email:request.email,

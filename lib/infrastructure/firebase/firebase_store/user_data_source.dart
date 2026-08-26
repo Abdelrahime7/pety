@@ -1,4 +1,5 @@
   import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pet_care/features/users/data/user_data.dart';
 
 class UserFirestoreDataSource {
   final FirebaseFirestore _firestore;
@@ -46,16 +47,13 @@ class UserFirestoreDataSource {
     return _firestore.collection('users').doc(uid).get();
   }
 
-  Future<void> updateUser({
-    required String uid,
-    required String name,
-    required String email,
-    required String subscriptionTier,
-  }) async {
-    await _firestore.collection('users').doc(uid).set({
-      'name': name,
-      'email': email,
-      'subscriptionTier': subscriptionTier,
+  Future<void> updateUser(
+    UserRequest request
+  ) async {
+    await _firestore.collection('users').doc(request.uid).set({
+      'name': request.name,
+      'email': request.email,
+      'subscriptionTier':request. subscriptionTier,
     });
   }
 
@@ -73,7 +71,7 @@ class UserFirestoreDataSource {
   }
 
   // CHECK EXISTENCE
-  Future<bool> userExists(String uid) async {
+  Future<bool> isUserExists(String uid) async {
     final doc = await _firestore
         .collection('users')
         .doc(uid)

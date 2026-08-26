@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/features/authentication/domain/entity/user.dart';
-import 'package:pet_care/features/authentication/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/data/user_data.dart';
+import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/domain/enitiy/user.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/firestore_mapprt.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
 
@@ -12,7 +13,7 @@ class UserService {
   UserService(this._dataSource);
 
   // CREATE
-  Future<Result<void>> createUser({
+  Future<Result> createUser({
     required String uid,
     required String email,
      String ?name,
@@ -22,13 +23,13 @@ class UserService {
   }) async {
     try {
       
-      await _dataSource.createUser(
+       await _dataSource.createUser(
         uid: uid,
         email: email,
         name: name,
       );
 
-      return const Success(null);
+      return const Success(User);
     } on FirebaseException catch (e) {
       return Failure(
         mapFirestoreExceptionToFailure(e).message
@@ -41,7 +42,7 @@ class UserService {
   }
 
   // CREATE IF NOT EXISTS
-  Future<Result<void>> createUserIfNotExists({
+  Future<Result> createUserIfNotExists({
     required String uid,
     required String email,
     required String name,
@@ -103,18 +104,12 @@ class UserService {
   }
 
   // UPDATE
-  Future<Result<void>> updateUser({
-    required String uid,
-    required String name,
-    required String email,
-    required String subscriptionTier,
-  }) async {
+  Future<Result> updateUser(
+   UserRequest request
+  ) async {
     try {
       await _dataSource.updateUser(
-        uid: uid,
-        name: name,
-        email: email,
-        subscriptionTier: subscriptionTier,
+       request
       );
 
       return const Success(null);
@@ -130,7 +125,7 @@ class UserService {
   }
 
   // PATCH
-  Future<Result<void>> patchUser(
+  Future<Result> patchUser(
     String uid,
     Map<String, dynamic> data,
   ) async {
@@ -153,7 +148,7 @@ class UserService {
   }
 
   // DELETE
-  Future<Result<void>> deleteUser(String uid) async {
+  Future<Result> deleteUser(String uid) async {
     try {
       await _dataSource.deleteUser(uid);
 
@@ -170,9 +165,9 @@ class UserService {
   }
 
   // EXISTS
-  Future<Result<bool>> userExists(String uid) async {
+  Future<Result<bool>> isUserExists(String uid) async {
     try {
-      final exists = await _dataSource.userExists(uid);
+      final exists = await _dataSource.isUserExists(uid);
 
       return Success(exists);
     } on FirebaseException catch (e) {
