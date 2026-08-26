@@ -6,6 +6,8 @@ import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/validators/password_validator.dart';
 
 Widget buildPasswordField(
+  BuildContext context,
+  void Function () ? resetPassword, 
   TextEditingController passwordController,
   void Function() onSuffixIconPressed,
   bool obscurePassword, {
@@ -48,22 +50,20 @@ Widget buildPasswordField(
         Align(
           alignment: Alignment.centerRight,
           child: GestureDetector(
-            onTap: _handleForgotPassword,
+            onTap:resetPassword,
+
+
             child: Text(
               'Forgot Password?',
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF2DD4BF),
+              style: AppStyle.buttonText.copyWith(
+              fontSize: 13.sp
               ),
+                
+              
             ),
           ),
         ),
       ],
     ],
   );
-}
-
-void _handleForgotPassword() {
-  // Navigate to forgot password screen
 }

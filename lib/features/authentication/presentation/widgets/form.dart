@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/routers/app_routers.dart';
+import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
-import 'package:pet_care/features/authentication/data/user_data.dart';
+import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
 import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
 import 'package:pet_care/features/authentication/presentation/validators/password_validator.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/email.fied.dart';
@@ -44,10 +43,11 @@ class AuthForm extends ConsumerStatefulWidget {
 class _AuthFormState extends ConsumerState<AuthForm> {
   final _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    _listenToAuthState(ref, context);
+    listenToAuthState(ref, context);
 
     return Form(
       key: _formKey,
@@ -58,7 +58,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
           children: [
             // 1. FULL NAME (Register only)
             if (!widget.isLogin && widget.nameController != null) ...[
-              _buildFieldLabel('FULL NAME'),
+              buildFieldLabel('FULL NAME'),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.nameController!,
@@ -80,7 +80,8 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             HeightSpace(height: 14.h),
 
             // 3. PASSWORD (Both)
-            buildPasswordField(
+            buildPasswordField( context,
+             resetPassword,
               widget.passwordController,
               widget.onIconPressed,
               widget.obscurePassword,
@@ -90,7 +91,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             // 4. CONFIRM PASSWORD (Register only)
             if (!widget.isLogin && widget.confirmPasswordController != null) ...[
               HeightSpace(height: 14.h),
-              _buildFieldLabel('CONFIRM PASSWORD'),
+              buildFieldLabel('CONFIRM PASSWORD'),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.confirmPasswordController!,
@@ -137,7 +138,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
     );
   }
 
-  void _submit() {
+void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
     final notifier = ref.read(authProvider.notifier);
@@ -149,7 +150,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
       ));
     } else {
       notifier.register((
-        email: widget.emailController.text.trim(),
+        email:widget.emailController.text.trim(),
         password: widget.passwordController.text.trim(),
           name: widget.nameController!.text.trim(),
 
@@ -157,64 +158,24 @@ class _AuthFormState extends ConsumerState<AuthForm> {
     }
   }
 
-  void _listenToAuthState(WidgetRef ref, BuildContext context) {
-    ref.listen<AsyncValue<UserResponse?>>(
-      authProvider,
-      (previous, next) {
-        if (next.isLoading) return;
+Future<void>  resetPassword()async{
+   
+    final email = widget.emailController.text.trim();
 
-        if (next.hasError) {
-         ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
-    content: Row(
-      children: [
-        const Icon(
-          Icons.info_outline_rounded,
-          color: Colors.white,
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-           next.error.toString(),
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ],
-    ),
-    behavior: SnackBarBehavior.floating,
-    margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-    padding: const EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 14,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(14),
-    ),
-    duration: const Duration(seconds: 3),
-  ),
-);
-          return;
-        }
+    final result = await ref
+        .read(authProvider.notifier)
+        .resetPassword(email);
 
-        if (next.hasValue && next.value != null) {
-          appRouter.go(profile);
-        }
-      },
-    );
+    switch (result) {
+      case Success(:final data):
+        showSuccessNotification(context,data);
+
+      case Failure(:final message):
+        showSuccessNotification(context,message);
+
+      case Cancelled():
+        break;
+    }
   }
 
-  Widget _buildFieldLabel(String text) {
-    return Text(
-      text,
-      style: AppStyle.tileTitle.copyWith(
-        fontSize: 11.sp,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0.8,
-        color: const Color(0xFF8A94A6),
-      ),
-    );
-  }
 }
-

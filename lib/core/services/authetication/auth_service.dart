@@ -2,6 +2,7 @@
 // ignore: non_constant_identifier_names
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
@@ -15,6 +16,39 @@ class AuthenticationService {
 
   AuthenticationService( {required FirebaseAuthDataSource dataSource}) : _dataSource = dataSource;
 
+
+
+Future<Result<String>> resetPassword(String email) async {
+
+   if (email.trim().isEmpty) {
+    return const Failure(
+      'Please enter your email address.',
+    );
+  }
+  try {
+    await _dataSource.sendPasswordResetEmail(
+      email: email,
+    );
+    return const Success(
+  'We’ve sent a password reset link to your email. Please check your inbox.',
+);
+
+  }
+  
+   on FirebaseAuthException catch (e) {
+          debugPrint(e.message);
+
+    return Failure(
+      mapFirebaseExceptionToFailure(e).message,
+    );
+  }
+   
+   catch (_) {
+    return const Failure(
+      'Something went wrong.',
+    );
+  }
+}
 
 
 

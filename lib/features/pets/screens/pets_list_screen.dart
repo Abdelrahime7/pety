@@ -4,14 +4,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/pet_card.dart';
-import 'package:pet_care/features/pets/screens/add_pet_screen.dart'; // Ensure correct path
+import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 
-class PetsListScreen extends ConsumerWidget {
+class PetsListScreen extends ConsumerStatefulWidget {
   const PetsListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PetsListScreen> createState() => _PetsListScreenState();
+}
+
+class _PetsListScreenState extends ConsumerState<PetsListScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     final petState = ref.watch(petProvider);
+
+    final pets = petState.value ?? [];
+
+    final filteredPets = pets.where((pet) {
+      final query = _searchController.text.trim().toLowerCase();
+      if (query.isEmpty) return true;
+      return pet.name.toLowerCase().startsWith(query);
+    }).toList();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -94,6 +109,8 @@ class PetsListScreen extends ConsumerWidget {
                   border: Border.all(color: AppColors.border.withOpacity(0.6)),
                 ),
                 child: TextField(
+                  controller: _searchController,
+                  onChanged: (_) => setState(() {}), // 🔥 THIS MAKES SEARCH WORK
                   decoration: InputDecoration(
                     hintText: 'Search by name or breed...',
                     hintStyle: TextStyle(
@@ -101,11 +118,8 @@ class PetsListScreen extends ConsumerWidget {
                       fontSize: 14.sp,
                     ),
                     prefixIcon: const Icon(Icons.search, color: AppColors.icon),
-
-                    // Makes the inside rounded
                     filled: true,
                     fillColor: Colors.white,
-
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide.none,
@@ -118,7 +132,6 @@ class PetsListScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide.none,
                     ),
-
                     contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                   ),
                 ),
@@ -140,13 +153,11 @@ class PetsListScreen extends ConsumerWidget {
                     }
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: pets.length,
+                      itemCount: filteredPets.length,
                       itemBuilder: (context, index) {
                         return PetCard(
-                          pet: pets[index],
-                          onTap: () {
-                            // Can navigate to pet details here later
-                          },
+                          pet: filteredPets[index],
+                          onTap: () {},
                         );
                       },
                     );
