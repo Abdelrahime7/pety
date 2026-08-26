@@ -18,9 +18,9 @@ final appRouter = GoRouter(
   routes: [
 
     /// Screens WITHOUT bottom nav
-    GoRoute(path: login, builder: (_, __) => const LoginScreen()),
-    GoRoute(path: addNewPet, builder: (_, __) => const AddPetScreen()),
-    GoRoute(path: upgradeToPremium, builder: (_, __) => const UpgradeToPremiumScreen()),
+    GoRoute(path: login, builder: (_, _) => const LoginScreen()),
+    GoRoute(path: addNewPet, builder: (_, _) => const AddPetScreen()),
+    GoRoute(path: upgradeToPremium, builder: (_, _) => const UpgradeToPremiumScreen()),
 
     /// Screens WITH bottom nav
     ShellRoute(
@@ -30,18 +30,18 @@ final appRouter = GoRouter(
       routes: [
         GoRoute(
           path: '/home', 
-          builder: (_, __) => const Scaffold(body: Center(child: Text("Home coming soon..."))),
+          builder: (_, _) => const Scaffold(body: Center(child: Text("Home coming soon..."))),
         ),
-        GoRoute(path: petList, builder: (_, __) => PetsListScreen()),
+        GoRoute(path: petList, builder: (_, _) => PetsListScreen()),
         GoRoute(
           path: '/health', 
-          builder: (_, __) => const Scaffold(body: Center(child: Text("Health coming soon..."))),
+          builder: (_, _) => const Scaffold(body: Center(child: Text("Health coming soon..."))),
         ),
         GoRoute(
           path: '/calendar', 
-          builder: (_, __) => const Scaffold(body: Center(child: Text("Calendar coming soon..."))),
+          builder: (_, _) => const Scaffold(body: Center(child: Text("Calendar coming soon..."))),
         ),
-        GoRoute(path: profile, builder: (_, __) => const ProfilePage()),
+        GoRoute(path: profile, builder: (_, _) => const ProfilePage()),
       ],
     ),
   ],

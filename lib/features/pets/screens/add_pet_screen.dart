@@ -336,7 +336,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
 
   Widget _buildSpeciesDropdown() {
     return DropdownButtonFormField<String>(
-      value: _selectedSpecies,
+      initialValue: _selectedSpecies,
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF9FAFB),

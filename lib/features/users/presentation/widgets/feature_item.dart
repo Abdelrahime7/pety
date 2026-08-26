@@ -7,7 +7,7 @@ class FeatureItem extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const FeatureItem({
+  const FeatureItem({super.key, 
     required this.title,
     required this.subtitle,
   });
