@@ -1,25 +1,48 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/features/pets/screens/pets_list_screen.dart';
 import 'package:pet_care/features/profile_screen/profile_page.dart';
 import 'package:pet_care/features/upgradetopremium/upgrad_to_premium_screen.dart';
+import 'package:pet_care/core/layout/main_layout.dart';
 
 final String profile = '/profile';
 final String login = '/login';
 final String upgradeToPremium = '/upgrade-to-premium';
 final String petList = '/pet-list';
-final String addNewPet = '/add-new-pet';  //
+final String addNewPet = '/add-new-pet';
 
 final appRouter = GoRouter(
   initialLocation: login,
   routes: [
-    GoRoute(path: login, builder: (context, state) => const LoginScreen()),
-    GoRoute(path:profile,builder: (context, state)=> const ProfilePage()),
-    GoRoute(path:upgradeToPremium,builder: (context, state)=> const UpgradeToPremiumScreen()),
-    GoRoute(path:petList,builder: (context,state)=>const PetsListScreen()),
-    GoRoute(path:addNewPet,builder: (context, state)=> const AddPetScreen()),
 
+    /// Screens WITHOUT bottom nav
+    GoRoute(path: login, builder: (_, __) => const LoginScreen()),
+    GoRoute(path: addNewPet, builder: (_, __) => const AddPetScreen()),
+    GoRoute(path: upgradeToPremium, builder: (_, __) => const UpgradeToPremiumScreen()),
 
-    ],
+    /// Screens WITH bottom nav
+    ShellRoute(
+      builder: (context, state, child) {
+        return MainLayout(child: child);
+      },
+      routes: [
+        GoRoute(
+          path: '/home', 
+          builder: (_, __) => const Scaffold(body: Center(child: Text("Home coming soon..."))),
+        ),
+        GoRoute(path: petList, builder: (_, __) => PetsListScreen()),
+        GoRoute(
+          path: '/health', 
+          builder: (_, __) => const Scaffold(body: Center(child: Text("Health coming soon..."))),
+        ),
+        GoRoute(
+          path: '/calendar', 
+          builder: (_, __) => const Scaffold(body: Center(child: Text("Calendar coming soon..."))),
+        ),
+        GoRoute(path: profile, builder: (_, __) => const ProfilePage()),
+      ],
+    ),
+  ],
 );
