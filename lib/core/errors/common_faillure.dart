@@ -1,4 +1,5 @@
- class ErrorFailure {
+  
+  class ErrorFailure {
   final String message;
 
   const ErrorFailure(this.message);

@@ -5,6 +5,8 @@ import 'package:pet_care/core/errors/common_faillure.dart';
 
 ErrorFailure mapFirebaseExceptionToFailure(FirebaseAuthException e) {
   switch (e.code) {
+
+    
     case 'invalid-credential':
      return InvalidCredentialsFailure();
 
