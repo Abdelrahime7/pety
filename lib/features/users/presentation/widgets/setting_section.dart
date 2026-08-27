@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 
@@ -27,7 +29,10 @@ class _SettingsSectionsState extends State<SettingsSections> {
             _buildNavigationTile(
               icon: Icons.person,
               title: 'Personal Information',
-              onTap: () {},
+              onTap: () {
+                // Navigate to the Personal Information screen
+                context.push(profileInfo);
+              },
             ),
             _buildDivider(),
             _buildNavigationTile(
