@@ -4,10 +4,9 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -17,6 +16,8 @@ import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class PetNotifier extends AsyncNotifier<List<Pet>> {
   late final PetService _service;
+  late final ImageService _imageService;
+
   String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
 
   @override
@@ -40,29 +41,21 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
   }
 
   //  Upload image to Cloudinary securely via REST
-  Future<String?> _uploadPetImage(File? image, String petId) async {
-    if (image == null) return null;
-    
-    const cloudName = "pxux7q6d";
-    const uploadPreset = "PetCare";
+  Future<Result<String>> _uploadPetImage(File? image, String petId) async {      
 
-    final url = Uri.parse("https://api.cloudinary.com/v1_1/$cloudName/image/upload");
-    final request = http.MultipartRequest('POST', url)
-      ..fields['upload_preset'] = uploadPreset
-      ..fields['folder'] = "pets" 
-      ..fields['public_id'] = petId
-      ..files.add(await http.MultipartFile.fromPath('file', image.path));
-
-    final response = await request.send();
-
-    if (response.statusCode == 200) {
-      final responseData = await response.stream.bytesToString();
-      final data = json.decode(responseData);
-      return data['secure_url']; // This is your Cloudinary Image URL!
-    } else {
-      throw Exception("Cloudinary upload failed! Status code: ${response.statusCode}");
-    }
+  if (image == null) {
+    return Failure("image is null");
   }
+
+  return _imageService.uploadImage(
+    image: image,
+    folder: 'users',
+    publicId: petId,
+  );
+}
+
+
+  
 
   // addPet with image upload
   Future<Result<void>> addPet(Pet pet, {File? image}) async {
@@ -86,7 +79,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
         birthDate: pet.birthDate,
         weight: pet.weight,
         medicalNotes: pet.medicalNotes,
-        photoUrl: photoUrl ?? "",
+        photoUrl: photoUrl.toString(),
       );
 
       // 4 Save to Firestore
