@@ -14,7 +14,7 @@ final String petList = '/pet-list';
 final String addNewPet = '/add-new-pet';
 
 final appRouter = GoRouter(
-  initialLocation: petList,
+  initialLocation:login ,
   routes: [
 
     /// Screens WITHOUT bottom nav
