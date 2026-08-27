@@ -2,21 +2,40 @@
 
 import 'dart:async';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
+import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
 import 'package:pet_care/features/users/domain/enitiy/user.dart';
 
 class UserNotifier extends AsyncNotifier<User> {
 late final UserService _userService;
+late final ImageService _imageService;
    
   @override
   FutureOr<User> build() {
-    // TODO: implement build
+    return 
     throw UnimplementedError();
   }
+
+  Future<Result<String>> uploadImage(
+  File? image,
+  String userId,
+) async {
+  if (image == null) {
+    return Failure("image is null");
+  }
+
+  return _imageService.uploadImage(
+    image: image,
+    folder: 'users',
+    publicId: userId,
+  );
+}
+
 
   Future<Result<void>> createUser(String uid, String email) async{
      state = const AsyncLoading();
