@@ -51,11 +51,6 @@ final petServiceProvider = Provider<PetService>(
   },
 );
 
-final userServiceProvider = Provider<UserService>((ref) {
-return UserService( 
-   ref.read(userFirestoreDataSourcePrvider));  
-},
-);
 
 //  cloudinary and dio 
 final cloudinaryServiceProvider = Provider<CloudinaryService>((ref) { 
