@@ -17,7 +17,7 @@ FutureOr<UserResponse?>  build() {
   
 }
 
-Future<Result<UserResponse>> login(UserRequest request) async {
+Future<Result<UserResponse>> login(AutUserRequest request) async {
   state = const AsyncLoading();
 
   final result = await _service.login(request);
@@ -57,7 +57,7 @@ Future <Result> logout()async
 }
 
 }
-Future<Result<UserResponse>> register(UserRequest request) async {
+Future<Result<UserResponse>> register(AutUserRequest request) async {
   state = const AsyncLoading();
 
   final result = await _service.register(request);

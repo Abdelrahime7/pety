@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/features/pets/screens/pets_list_screen.dart';
-import 'package:pet_care/features/profile/profile_page.dart';
-import 'package:pet_care/features/profile/profile_info_screen.dart';
-import 'package:pet_care/features/upgradetopremium/upgrad_to_premium_screen.dart';
 import 'package:pet_care/core/layout/main_layout.dart';
+import 'package:pet_care/features/users/presentation/personal_information.dart';
+import 'package:pet_care/features/users/presentation/profile_screen.dart';
+import 'package:pet_care/features/users/presentation/upgrad_to_premium_screen.dart';
 
 final String profile = '/profile';
 final String login = '/login';
@@ -16,7 +16,7 @@ final String addNewPet = '/add-new-pet';
 final String profileInfo = '/profile-info';
 
 final appRouter = GoRouter(
-  initialLocation: login,
+  initialLocation:login ,
   routes: [
 
     /// Screens WITHOUT bottom nav
@@ -33,18 +33,18 @@ final appRouter = GoRouter(
       routes: [
         GoRoute(
           path: '/home', 
-          builder: (_, __) => const Scaffold(body: Center(child: Text("Home coming soon..."))),
+          builder: (_, _) => const Scaffold(body: Center(child: Text("Home coming soon..."))),
         ),
-        GoRoute(path: petList, builder: (_, __) => PetsListScreen()),
+        GoRoute(path: petList, builder: (_, _) => PetsListScreen()),
         GoRoute(
           path: '/health', 
-          builder: (_, __) => const Scaffold(body: Center(child: Text("Health coming soon..."))),
+          builder: (_, _) => const Scaffold(body: Center(child: Text("Health coming soon..."))),
         ),
         GoRoute(
           path: '/calendar', 
-          builder: (_, __) => const Scaffold(body: Center(child: Text("Calendar coming soon..."))),
+          builder: (_, _) => const Scaffold(body: Center(child: Text("Calendar coming soon..."))),
         ),
-        GoRoute(path: profile, builder: (_, __) => const ProfilePage()),
+        GoRoute(path: profile, builder: (_, _) => const ProfilePage()),
       ],
     ),
   ],

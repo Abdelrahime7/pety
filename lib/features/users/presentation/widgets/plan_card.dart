@@ -11,7 +11,7 @@ class PlanCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const PlanCard({
+  const PlanCard({super.key, 
     required this.title,
     required this.subtitle,
     required this.price,

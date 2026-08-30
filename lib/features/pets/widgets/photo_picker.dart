@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PetPhotoPicker extends StatelessWidget {
+class PhotoPicker extends StatelessWidget {
   final Function(File)? onImageSelected;
   final File? imageFile;
 
-   PetPhotoPicker({
+   PhotoPicker({
     super.key,
     this.onImageSelected,
     this.imageFile,

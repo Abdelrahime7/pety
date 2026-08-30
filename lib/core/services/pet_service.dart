@@ -26,6 +26,7 @@ class PetService {
     try {
       final docs = await dataSource.getPets(ownerId);
       final pets = docs.map((doc) => Pet.fromFirestore(doc)).toList();
+      
       return Success(pets);
     } on FirebaseException catch (e) {
       return Failure(mapFirestoreExceptionToFailure(e).message);

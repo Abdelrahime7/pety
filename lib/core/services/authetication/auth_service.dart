@@ -58,7 +58,7 @@ Future<Result<String>> resetPassword(String email) async {
     return _dataSource.getCurrentUser();
   }
 
- Future<Result<UserResponse>> login(UserRequest request) async {
+ Future<Result<UserResponse>> login(AutUserRequest request) async {
   try {
     final credential = await _dataSource.login(request);
 
@@ -92,7 +92,7 @@ Future<Result<String>> resetPassword(String email) async {
 
 
 
-Future<Result<UserResponse>> register(UserRequest request) async {
+Future<Result<UserResponse>> register(AutUserRequest request) async {
   try {
     final credential = await _dataSource.register(request);
 

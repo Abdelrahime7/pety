@@ -4,8 +4,9 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/services/users_service.dart';
-import 'package:pet_care/features/authentication/domain/entity/user.dart';
-import 'package:pet_care/features/authentication/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/data/user_data.dart';
+import 'package:pet_care/features/users/domain/enitiy/user.dart';
+import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
 
 class MockUserFirestoreDataSource extends Mock
@@ -24,6 +25,14 @@ void main() {
     service = UserService(dataSource);
   });
 
+UserRequest request = (
+  uid: 'uid123',
+  name: 'New Name',
+  email: 'new@email.com',
+  password: '123456',
+  photoUrl: 'photo.jpg',
+  subscriptionTier: SubscriptionTier.premium,
+);
   group('createUser', () {
     const uid = 'uid123';
     const email = 'test@email.com';
@@ -415,36 +424,26 @@ void main() {
     });
   });
   group('updateUser', () {
-    const uid = 'uid123';
-    const name = 'New Name';
-    const email = 'new@email.com';
-    const subscriptionTier = 'premium';
+   
+   
+   
 
     test('returns Success when update succeeds', () async {
       when(
         () => dataSource.updateUser(
-          uid: uid,
-          name: name,
-          email: email,
-          subscriptionTier: subscriptionTier,
+         request
         ),
       ).thenAnswer((_) async {});
 
       final result = await service.updateUser(
-        uid: uid,
-        name: name,
-        email: email,
-        subscriptionTier: subscriptionTier,
+        request
       );
 
       expect(result, isA<Success<void>>());
 
       verify(
         () => dataSource.updateUser(
-          uid: uid,
-          name: name,
-          email: email,
-          subscriptionTier: subscriptionTier,
+         request
         ),
       ).called(1);
     });
@@ -452,10 +451,7 @@ void main() {
     test('returns Failure when permission is denied', () async {
       when(
         () => dataSource.updateUser(
-          uid: uid,
-          name: name,
-          email: email,
-          subscriptionTier: subscriptionTier,
+         request
         ),
       ).thenThrow(
         FirebaseException(
@@ -465,10 +461,7 @@ void main() {
       );
 
       final result = await service.updateUser(
-        uid: uid,
-        name: name,
-        email: email,
-        subscriptionTier: subscriptionTier,
+       request
       );
 
       expect(result, isA<Failure<void>>());
@@ -484,18 +477,12 @@ void main() {
     test('returns UnknownFailure for unexpected exception', () async {
       when(
         () => dataSource.updateUser(
-          uid: uid,
-          name: name,
-          email: email,
-          subscriptionTier: subscriptionTier,
+          request
         ),
       ).thenThrow(Exception('unexpected'));
 
       final result = await service.updateUser(
-        uid: uid,
-        name: name,
-        email: email,
-        subscriptionTier: subscriptionTier,
+      request
       );
 
       expect(result, isA<Failure<void>>());
@@ -640,10 +627,10 @@ void main() {
 
     test('returns Success(true) when user exists', () async {
       when(
-        () => dataSource.userExists(uid),
+        () => dataSource.isUserExists(uid),
       ).thenAnswer((_) async => true);
 
-      final result = await service.userExists(uid);
+      final result = await service.isUserExists(uid);
 
       expect(result, isA<Success<bool>>());
 
@@ -654,10 +641,10 @@ void main() {
 
     test('returns Success(false) when user does not exist', () async {
       when(
-        () => dataSource.userExists(uid),
+        () => dataSource.isUserExists(uid),
       ).thenAnswer((_) async => false);
 
-      final result = await service.userExists(uid);
+      final result = await service.isUserExists(uid);
 
       expect(result, isA<Success<bool>>());
 
@@ -668,7 +655,7 @@ void main() {
 
     test('returns Failure when permission is denied', () async {
       when(
-        () => dataSource.userExists(uid),
+        () => dataSource.isUserExists(uid),
       ).thenThrow(
         FirebaseException(
           plugin: 'cloud_firestore',
@@ -676,7 +663,7 @@ void main() {
         ),
       );
 
-      final result = await service.userExists(uid);
+      final result = await service.isUserExists(uid);
 
       expect(result, isA<Failure<bool>>());
 
@@ -690,10 +677,10 @@ void main() {
 
     test('returns UnknownFailure for unexpected exception', () async {
       when(
-        () => dataSource.userExists(uid),
+        () => dataSource.isUserExists(uid),
       ).thenThrow(Exception('unexpected'));
 
-      final result = await service.userExists(uid);
+      final result = await service.isUserExists(uid);
 
       expect(result, isA<Failure<bool>>());
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/features/authentication/domain/entity/user.dart';
-import 'package:pet_care/features/authentication/domain/enums/subscriptionTier.dart';
+
+import 'package:pet_care/features/users/domain/enitiy/user.dart';
+import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 
 class AccountDetailsGroup extends StatelessWidget {
   final User? user;

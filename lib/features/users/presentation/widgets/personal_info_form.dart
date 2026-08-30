@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/features/authentication/domain/entity/user.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/features/users/domain/enitiy/user.dart';
 
 class PersonalInfoForm extends StatefulWidget {
   final TextEditingController nameController;

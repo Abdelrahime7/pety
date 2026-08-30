@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
-import 'package:pet_care/features/profile/widgets/pofile_header_card.dart';
-import 'package:pet_care/features/profile/widgets/premium_promo_card.dart';
-import 'package:pet_care/features/profile/widgets/setting_section.dart';
+import 'package:pet_care/features/users/presentation/widgets/pofile_header_card.dart';
+import 'package:pet_care/features/users/presentation/widgets/premium_promo_card.dart';
+import 'package:pet_care/features/users/presentation/widgets/setting_section.dart';
+
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
@@ -16,7 +18,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: const [
+            children:  [
               ProfileHeaderCard(),
               HeightSpace(height: 38),
               PremiumPromoCard(),

@@ -1,7 +1,7 @@
 
 
 
-typedef UserRequest = ({
+typedef AutUserRequest = ({
   String email,
   String password,
   String ?name

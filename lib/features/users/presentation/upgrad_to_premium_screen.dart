@@ -4,8 +4,8 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
 
-import 'package:pet_care/features/upgradetopremium/widgets/feature_item.dart';
-import 'package:pet_care/features/upgradetopremium/widgets/plan_card.dart';
+import 'package:pet_care/features/users/presentation/widgets/feature_item.dart';
+import 'package:pet_care/features/users/presentation/widgets/plan_card.dart';
 
 enum SubscriptionPlan { annual, monthly }
 
