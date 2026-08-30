@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
-import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 import 'package:pet_care/features/users/domain/enitiy/user.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/firestore_mapprt.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
@@ -66,42 +65,31 @@ class UserService {
     }
   }
 
-  // GET
-  Future<Result<User>> getUser(String uid) async {
-    try {
-      final doc = await _dataSource.getUser(uid);
+Future<Result<User>> getUser(String uid) async {
+  try {
+    final doc = await _dataSource.getUser(uid);
 
-      if (!doc.exists || doc.data() == null) {
-        return const Failure(
-          "somthing went wrong"
-        );
-      }
-
-      final data = doc.data()!;
-
-      final user = User(
-        userId: doc.id,
-        email: data['email'] as String,
-        name: data['name'] as String,
-        photoUrl: data['photoUrl'] as String?,
-        subscriptionTier: SubscriptionTier.values.firstWhere(
-          (tier) => tier.name == data['subscriptionTier'],
-          orElse: () => SubscriptionTier.normal,
-        ),
-        createdAt: (data['createdAt'] as Timestamp).toDate(),
-      );
-
-      return Success(user);
-    } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
-    } catch (_) {
-      return const Failure(
-        "somthing went wrong"
-      );
+    if (!doc.exists || doc.data() == null) {
+      return const Failure('User not found');
     }
+
+    final user = User.fromMap(
+      doc.id,
+      doc.data()!,
+    );
+
+    return Success(user);
+  } on FirebaseException catch (e) {
+    return Failure(
+      mapFirestoreExceptionToFailure(e).message,
+    );
+  } catch (e) {
+
+    return Failure(e.toString());
   }
+}
+  // GET
+ 
 
   // UPDATE
   Future<Result> updateUser(
@@ -125,7 +113,7 @@ class UserService {
   }
 
   // PATCH
-  Future<Result> patchUser(
+  Future<Result<void>> patchUser(
     String uid,
     Map<String, dynamic> data,
   ) async {
