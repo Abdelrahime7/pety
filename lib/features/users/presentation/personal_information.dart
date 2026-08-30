@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_back_button.dart';
 import 'package:pet_care/core/constant/widgets/app_save_button.dart';
-import 'package:pet_care/features/users/presentation/riverpod/profile_provider.dart';
+import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
+import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
+import 'package:pet_care/features/users/data/user_data.dart';
+import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart';
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
 import 'package:pet_care/features/users/presentation/widgets/account_details_group.dart';
 import 'package:pet_care/features/users/presentation/widgets/personal_info_form.dart';
@@ -21,6 +28,7 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
   late TextEditingController _nameController;
   bool _isSaving = false;
   bool _isInit = false;
+  File ?imageFile;
 
   @override
   void initState() {
@@ -34,41 +42,61 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
     super.dispose();
   }
 
-  void _handleSave() async {
-    setState(() => _isSaving = true);
+  Future<void> _handleSave(UserRequest request) async {
+      debugPrint("WWWWWWWWWWWWWW ARE HER : ${request.photoUrl}");
 
-    // Simulate save duration
-    await Future.delayed(const Duration(milliseconds: 1200));
+  setState(() => _isSaving = true);
+  final data = toPatchMap (request);
+  try {
 
+    final result = await ref
+        .read(userProvider.notifier)
+        .patchUser(request.uid!,data);
+
+    switch (result) {
+      case Success<void>():
+        if (mounted) {
+          savedNotifications(
+            'Profile updated successfully',
+            context,
+          );
+        }
+
+      case Failure<void>(:final message):
+        if (mounted) {
+          savedNotifications(
+            message,
+            context,
+          );
+        }
+
+      case Cancelled<void>():
+        if (mounted) {
+          savedNotifications(
+            'Profile update cancelled',
+            context,
+          );
+        }
+    }
+  } catch (e) {
+
+   debugPrint('Exception: $e');
     if (mounted) {
-      setState(() => _isSaving = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          backgroundColor: const Color(0xFF0F172A),
-          content: Row(
-            children: const [
-              Icon(Icons.check_circle, color: AppColors.primary),
-              SizedBox(width: 8),
-              Text(
-                'Changes saved successfully',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
+      savedNotifications(
+        'Something went wrong',
+        context,
       );
     }
+  } finally {
+    if (mounted) {
+      setState(() => _isSaving = false);
+    }
   }
-
+}
   @override
   Widget build(BuildContext context) {
+   final currentUser =  ref.watch(userProvider);
+
     const Color surface = Color(0xFFF8FAFC);
     const Color ink = Color(0xFF0F172A);
 
@@ -90,16 +118,59 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [AppSaveButton(onPressed: _handleSave, isLoading: _isSaving)],
+        actions: [
+          AppSaveButton(
+    onPressed: () async {
+      final user = currentUser.value;
+
+      if (user == null) return;
+
+      String? photoUrl;
+
+      // 1. Upload selected image if there is one
+      if (imageFile != null) {
+        final imageResult = await ref
+            .read(userProvider.notifier)
+            .uploadImage(
+              imageFile!,
+              user.userId,
+            );
+
+        if (imageResult is Success<String>) {
+          photoUrl = imageResult.data;
+
+        } else {
+          return;
+        }
+      }
+
+      // 2. Create request
+      final UserRequest request = (
+        uid: user.userId,
+        email: null,
+        password: null,
+        name: _nameController.text.trim(),
+        photoUrl: photoUrl,
+        subscriptionTier: null,
+      );
+
+      // 3. Save everything
+      await _handleSave(request);
+    },
+    isLoading: _isSaving,
+  ),
+],
+        
+         
       ),
-      body: ref
-          .watch(currentUserProvider)
+
+      body: currentUser
           .when(
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (e, st) =>
                 const Center(child: Text('Error loading profile')),
             data: (domainUser) {
-              if (!_isInit && domainUser != null) {
+              if (!_isInit) {
                 _nameController.text = domainUser.name;
                 _isInit = true;
               }
@@ -116,11 +187,32 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
                         // Profile Photo Component
 
                         ProfilePictureWidget(
+                          imageFile: imageFile,
+                        
                           size: 112,
-                          imageUrl: domainUser?.photoUrl,
-                          onEdit: () {
-                            // Handle changing robust photo
-                          },
+                          imageUrl: domainUser.photoUrl,
+                          onEdit:() async { 
+                            final picker = ImagePicker();
+ 
+                             final pickedFile = await picker.pickImage(
+                             source: ImageSource.gallery,
+                                imageQuality: 80,
+                             );
+
+                             if (pickedFile == null) {
+                                  return;
+                                  }
+
+                            setState(() {
+                                imageFile = File(pickedFile.path);
+                            });
+                              
+                        
+                        //    ref.read(userProvider.notifier).changeProfilePicture(image);
+                        
+                          }
+                            
+                          
                         ),
                         const SizedBox(height: 16),
                         const Text(
@@ -146,8 +238,21 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
 
                         // Security Action
                         SecurityActionCard(
-                          onTap: () {
-                            // Handle password change action
+                          onTap: () async {
+                             final result = await ref
+                                  .read(authProvider.notifier)
+                                  .resetPassword(currentUser.value!.email);
+
+                             switch (result) {
+                                case Success(:final data):
+                                   showSuccessNotification(context,data);
+
+                                case Failure(:final message):
+                                   showSuccessNotification(context,message);
+
+                               case Cancelled():
+                                  break;
+                             }
                           },
                         ),
                         const SizedBox(height: 32),
@@ -178,3 +283,33 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
     );
   }
 }
+ 
+
+ void savedNotifications(String text,context)
+ {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: const Color(0xFF0F172A),
+          content: Row(
+            children:  [
+              Icon(Icons.check_circle, color: AppColors.primary),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+ } 

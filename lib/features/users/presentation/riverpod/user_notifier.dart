@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
+import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
@@ -16,10 +17,30 @@ late final UserService _userService;
 late final ImageService _imageService;
    
   @override
-  FutureOr<User> build() {
-    return 
-    throw UnimplementedError();
+Future<User> build() async {
+  _userService = ref.read(userServiceProvider);
+  _imageService = ref.read(imageServiceProvider);
+
+  final authUser =
+      ref.read(authenticationServiceProvider).getCurrentUser();
+
+  if (authUser == null) {
+    throw Exception('User not authenticated');
   }
+
+  final result = await _userService.getUser(authUser.uid);
+
+  switch (result) {
+    case Success(:final data):
+      return data;
+
+    case Failure(:final message):
+      throw Exception(message);
+
+    case Cancelled():
+      throw Exception('Get user cancelled');
+  }
+}
 
   Future<Result<String>> uploadImage(
   File? image,
@@ -126,26 +147,75 @@ late final ImageService _imageService;
   }
 
   // PATCH
-  Future<Result<void>> patchUser(String uid,
-    Map<String, dynamic> data,) async
-  {
-  
+ Future<Result<void>> patchUser(
+  String uid,
+  Map<String, dynamic> data,
+) async {
   state = const AsyncLoading();
 
-    final result =  await _userService.patchUser(uid,data);
+  try {
+    final result = await _userService
+        .patchUser(uid, data)
+        .timeout(
+          const Duration(seconds: 10),
+        );
+
     switch (result) {
-    case Success(:final data):
-      state = AsyncData(data);
-      return result;
+      case Success():
+        final updatedUser = await _userService
+            .getUser(uid)
+            .timeout(
+              const Duration(seconds: 1),
+            );
 
-    case Failure(:final message):
-      state = AsyncError(message, StackTrace.current);
-      return result;
+        switch (updatedUser) {
+          case Success(:final data):
+            state = AsyncData(data);
 
-    case Cancelled():
-      return result;
+          case Failure(:final message):
+            state = AsyncError(
+              message,
+              StackTrace.current,
+            );
+
+          case Cancelled():
+            state = AsyncError(
+              'Get user cancelled',
+              StackTrace.current,
+            );
+        }
+
+        return result;
+
+      case Failure(:final message):
+        state = AsyncError(
+          message,
+          StackTrace.current,
+        );
+        return result;
+
+      case Cancelled():
+        state = AsyncError(
+          'Patch user cancelled',
+          StackTrace.current,
+        );
+        return result;
     }
+  } on TimeoutException {
+    state = AsyncError(
+      'Request timed out. Please check your internet connection.',
+      StackTrace.current,
+    );
+
+    return const Failure(
+      'Request timed out. Please check your internet connection.',
+    );
+  } catch (e, stackTrace) {
+    state = AsyncError(e, stackTrace);
+
+    return Failure(e.toString());
   }
+}
    
 
   
@@ -190,7 +260,53 @@ late final ImageService _imageService;
   }
 
   // FIRESTORE EXCEPTION MAPPER
+   
+Future<void> changeProfilePicture(File image) async {
+  
+
+  final currentUser = state.value;
+
+  if (currentUser == null) {
+    return;
+  }
+
+  final uniquePublicId =
+      '${currentUser.userId}_${DateTime.now().millisecondsSinceEpoch}';
+
+
+  // 1. Upload to Cloudinary
+  final imageResult = await uploadImage(
+    image,
+    uniquePublicId,
+  );
+
+  if (imageResult is! Success<String>) {
+    return;
+  }
+
+  final cloudinaryUrl = imageResult.data;
+
+
+  // 2. Patch Firestore
+  final request = (
+    uid: currentUser.userId,
+    email: null,
+    password: null,
+    name: null,
+    photoUrl: cloudinaryUrl,
+    subscriptionTier: null,
+  );
+
+  final data = toPatchMap(request);
+
+
+    await patchUser(
+    currentUser.userId,
+    data,
+  );
+
  
+}
 
 
 } 
