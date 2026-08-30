@@ -23,6 +23,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
   @override
   FutureOr<List<Pet>> build() async {
     _service = ref.read(petServiceProvider);
+    _imageService = ref.read(imageServiceProvider);
 
     if (_ownerId == null) return [];
 
@@ -49,7 +50,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
 
   return _imageService.uploadImage(
     image: image,
-    folder: 'users',
+    folder: 'pets',
     publicId: petId,
   );
 }
@@ -58,53 +59,72 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
   
 
   // addPet with image upload
-  Future<Result<void>> addPet(Pet pet, {File? image}) async {
-    state = const AsyncLoading();
+ // addPet with optional image upload
+Future<Result<void>> addPet(Pet pet, {File? image}) async {
+  state = const AsyncLoading();
 
-    try {
-      // 1️ Generate ID before upload
-      final petId = DateTime.now().millisecondsSinceEpoch.toString();
+  try {
+    // 1. Generate ID before upload
+    final petId = DateTime.now().millisecondsSinceEpoch.toString();
 
-      // 2️ Upload image
-      final photoUrl = await _uploadPetImage(image, petId);
+    // 2. Upload image only if provided
+    String photoUrl = '';
 
-      // 3️ Build final Pet object
-      final petWithOwner = Pet(
-        id: petId,
-        ownerId: _ownerId ?? '',
-        name: pet.name,
-        species: pet.species,
-        breed: pet.breed,
-        gender: pet.gender,
-        birthDate: pet.birthDate,
-        weight: pet.weight,
-        medicalNotes: pet.medicalNotes,
-        photoUrl: photoUrl.toString(),
-      );
+    if (image != null) {
+      final imageResult = await _uploadPetImage(image, petId);
 
-      // 4 Save to Firestore
-      final result = await _service.addPet(petWithOwner);
-
-      // 5️ Update state
-      if (result is Success) {
-        if (_ownerId != null) {
-          final updatedPets = await _service.getPets(_ownerId!);
-          state = updatedPets is Success
-              ? AsyncData((updatedPets as Success).data)
-              : const AsyncData([]);
-        }
-        return result;
+      if (imageResult is Success<String>) {
+        photoUrl = imageResult.data;
       }
+    }
 
-      if (result is Failure) {
-        state = AsyncError(result.message, StackTrace.current);
-        return result;
+    // 3. Build final Pet object
+    final petWithOwner = Pet(
+      id: petId,
+      ownerId: _ownerId ?? '',
+      name: pet.name,
+      species: pet.species,
+      breed: pet.breed,
+      gender: pet.gender,
+      birthDate: pet.birthDate,
+      weight: pet.weight,
+      medicalNotes: pet.medicalNotes,
+      photoUrl: photoUrl,
+    );
+
+    // 4. Save to Firestore
+    final result = await _service.addPet(petWithOwner);
+
+    // 5. Update state
+    if (result is Success) {
+      if (_ownerId != null) {
+        final updatedPets = await _service.getPets(_ownerId!);
+
+        state = updatedPets is Success
+            ? AsyncData((updatedPets as Success).data)
+            : const AsyncData([]);
       }
 
       return result;
-    } catch (e) {
-      state = AsyncError(e.toString(), StackTrace.current);
-      return Failure(e.toString());
     }
+
+    if (result is Failure) {
+      state = AsyncError(
+        result.message,
+        StackTrace.current,
+      );
+
+      return result;
+    }
+
+    return result;
+  } catch (e) {
+    state = AsyncError(
+      e.toString(),
+      StackTrace.current,
+    );
+
+    return Failure(e.toString());
   }
+}
 }

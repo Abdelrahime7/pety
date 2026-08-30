@@ -134,7 +134,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: PetPhotoPicker(
+                      child: PhotoPicker(
                         imageFile: _selectedImage,
                         onImageSelected: (file) {
                           setState(() {
