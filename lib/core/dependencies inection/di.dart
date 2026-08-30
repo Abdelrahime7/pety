@@ -8,7 +8,6 @@ import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
-import 'package:pet_care/core/services/users_service.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/infrastructure/networks/dio/dio_provider.dart';
 
@@ -61,7 +60,7 @@ final cloudinaryServiceProvider = Provider<CloudinaryService>((ref) {
 
 // image service
 
-final imageServicePpvider = Provider<ImageService>((ref)
+final imageServiceProvider = Provider<ImageService>((ref)
 {
   return ImageService (
     ref.read(cloudinaryServiceProvider)

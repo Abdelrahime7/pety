@@ -26,7 +26,8 @@ Future<Result<String>> uploadImage({
     return Success(secureUrl);
   } on DioException catch (e) {
     return Failure(
-      mapDioExceptionToFailure(e).toString()
+      mapDioExceptionToFailure(e).message
+
     );
   } catch (e) {
     return Failure(
