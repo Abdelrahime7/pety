@@ -1,21 +1,31 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/widht_widget.dart';
-import 'package:pet_care/features/users/presentation/riverpod/profile_provider.dart';
+import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart';
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
 import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 
-class ProfileHeaderCard extends ConsumerWidget {
-  const ProfileHeaderCard({super.key});
 
+
+// ignore: must_be_immutable
+class ProfileHeaderCard extends ConsumerWidget {
+  ProfileHeaderCard({super.key});
+ 
+ File ? _selectedImage ;
+ 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch for the fully hydrated domain User from the database
-    final domainUserAsync = ref.watch(currentUserProvider);
+    final user = ref.watch(userProvider);
 
-    return domainUserAsync.when(
+
+
+   
+    return user.when(
       loading: () => Container(
         height: 100,
         alignment: Alignment.center,
@@ -23,11 +33,12 @@ class ProfileHeaderCard extends ConsumerWidget {
       ),
       error: (e, st) => const Text('Error loading profile'),
       data: (domainUser) {
-        final displayName = domainUser?.name;
-        final email = domainUser?.email;
-        final photoUrl = domainUser?.photoUrl;
         
-        final isPremium = domainUser?.subscriptionTier == SubscriptionTier.premium;
+        final displayName = domainUser.name;
+        final email = domainUser.email;
+        final photoUrl = domainUser.photoUrl;
+        
+        final isPremium = domainUser.subscriptionTier == SubscriptionTier.premium;
 
         return Container(
           padding: const EdgeInsets.all(16.0),
@@ -47,10 +58,25 @@ class ProfileHeaderCard extends ConsumerWidget {
             children: [
               ProfilePictureWidget(
                 imageUrl: photoUrl,
+                 imageFile:_selectedImage,
                 size: 72,
-                onEdit: () {
-                   // TODO: Upload new profile pic logic 
-                },
+                onEdit: () async {
+                  final picker = ImagePicker();
+ 
+                             final pickedFile = await picker.pickImage(
+                             source: ImageSource.gallery,
+                                imageQuality: 80,
+                             );
+
+                             if (pickedFile == null) {
+                                  return;
+                                  }
+
+                               final image = File(pickedFile.path);
+                          
+
+                ref.read(userProvider.notifier).changeProfilePicture(image);
+                }
               ),
               const WidhtSpace(width: 14),
 
@@ -61,14 +87,14 @@ class ProfileHeaderCard extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      (displayName != null && displayName.isNotEmpty) ? displayName : 'Pet Care Member',
+                      (displayName.isNotEmpty) ? displayName : 'Pet Care Member',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppStyle.headerName,
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      (email != null && email.isNotEmpty) ? email : 'Anonymous User',
+                      (email.isNotEmpty) ? email : 'Anonymous User',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppStyle.regular13,
@@ -126,4 +152,6 @@ class ProfileHeaderCard extends ConsumerWidget {
       },
     );
   }
+
+ 
 }
