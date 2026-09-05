@@ -124,16 +124,18 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
       final user = currentUser.value;
 
       if (user == null) return;
-
+      
       String? photoUrl;
 
       // 1. Upload selected image if there is one
       if (imageFile != null) {
+        final uniquePublicId =
+      '${user.userId}_${DateTime.now().millisecondsSinceEpoch}';
         final imageResult = await ref
             .read(userProvider.notifier)
             .uploadImage(
               imageFile!,
-              user.userId,
+              uniquePublicId
             );
 
         if (imageResult is Success<String>) {
@@ -208,7 +210,7 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
                             });
                               
                         
-                        //    ref.read(userProvider.notifier).changeProfilePicture(image);
+                        //   ref.read(userProvider.notifier).changeProfilePicture(image);
                         
                           }
                             
