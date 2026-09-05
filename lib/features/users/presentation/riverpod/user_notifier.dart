@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
@@ -146,43 +147,31 @@ Future<User> build() async {
   }
   }
 
-  // PATCH
  Future<Result<void>> patchUser(
   String uid,
   Map<String, dynamic> data,
 ) async {
-  state = const AsyncLoading();
-
   try {
     final result = await _userService
         .patchUser(uid, data)
-        .timeout(
-          const Duration(seconds: 10),
-        );
+        .timeout(const Duration(seconds: 10));
 
     switch (result) {
       case Success():
         final updatedUser = await _userService
             .getUser(uid)
-            .timeout(
-              const Duration(seconds: 1),
-            );
+            .timeout(const Duration(seconds: 5));
 
         switch (updatedUser) {
           case Success(:final data):
             state = AsyncData(data);
 
           case Failure(:final message):
-            state = AsyncError(
-              message,
-              StackTrace.current,
-            );
+            // PATCH succeeded, so don't destroy the existing user state.
+            debugPrint('Failed to refresh user: $message');
 
           case Cancelled():
-            state = AsyncError(
-              'Get user cancelled',
-              StackTrace.current,
-            );
+            debugPrint('User refresh cancelled');
         }
 
         return result;
@@ -212,11 +201,9 @@ Future<User> build() async {
     );
   } catch (e, stackTrace) {
     state = AsyncError(e, stackTrace);
-
     return Failure(e.toString());
   }
 }
-   
 
   
 
