@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/core/constant/result/result.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_back_button.dart';
 import 'package:pet_care/core/constant/widgets/app_save_button.dart';
@@ -12,6 +13,7 @@ import 'package:pet_care/features/authentication/presentation/helpers/helpers.da
 import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
 import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart';
+import 'package:pet_care/features/users/presentation/widgets/logout_card.dart';
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
 import 'package:pet_care/features/users/presentation/widgets/account_details_group.dart';
 import 'package:pet_care/features/users/presentation/widgets/personal_info_form.dart';
@@ -257,6 +259,20 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
                              }
                           },
                         ),
+                        const SizedBox(height: 16),
+                      LogoutActionCard(
+                        onTap: () async {
+                  final result =
+                           await ref.read(authProvider.notifier).logout();
+
+                          if (result is Success<void>) {
+                           if (context.mounted) {
+                               appRouter.go('/login');
+                               }
+                                }
+                            },
+                      
+                      ),
                         const SizedBox(height: 32),
                       ],
                     ),
