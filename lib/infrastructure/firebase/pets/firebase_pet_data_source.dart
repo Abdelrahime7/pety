@@ -7,22 +7,46 @@ class PetFirestoreDataSource {
   PetFirestoreDataSource(this._firestore);
 
   Future<void> addPet(Pet pet) async {
-    try {
-      await _firestore.collection('pets').add(pet.toMap());
-    } catch (e) {
-      throw Exception("Failed to add pet: $e");
-    }
+    await _firestore
+        .collection('pets')
+        .doc(pet.id)
+        .set(pet.toMap());
   }
 
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getPets(String ownerId) async {
-    try {
-      final snapshot = await _firestore
-          .collection('pets')
-          .where('ownerId', isEqualTo: ownerId)
-          .get();
-      return snapshot.docs;
-    } catch (e) {
-      throw Exception("Failed to fetch pets: $e");
-    }
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getPets(
+    String ownerId,
+  ) async {
+    final snapshot = await _firestore
+        .collection('pets')
+        .where('ownerId', isEqualTo: ownerId)
+        .get();
+
+    return snapshot.docs;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getPet(
+    String petId,
+  ) async {
+    return await _firestore
+        .collection('pets')
+        .doc(petId)
+        .get();
+  }
+
+  Future<void> updatePet(
+    String petId,
+    Map<String, dynamic> data,
+  ) async {
+    await _firestore
+        .collection('pets')
+        .doc(petId)
+        .update(data);
+  }
+
+  Future<void> deletePet(String petId) async {
+    await _firestore
+        .collection('pets')
+        .doc(petId)
+        .delete();
   }
 }
