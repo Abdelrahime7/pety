@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/pet_card.dart';
@@ -155,9 +156,13 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                       physics: const BouncingScrollPhysics(),
                       itemCount: filteredPets.length,
                       itemBuilder: (context, index) {
+                          final pet = filteredPets[index];
+
                         return PetCard(
-                          pet: filteredPets[index],
-                          onTap: () {},
+                          pet: pet,
+                          onTap: () {
+                            appRouter.push(petDetails,extra: pet);
+                          },
                         );
                       },
                     );

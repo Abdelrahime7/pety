@@ -168,10 +168,10 @@ Future<void>  resetPassword()async{
 
     switch (result) {
       case Success(:final data):
-        showSuccessNotification(context,data);
+        showNotification(context,data);
 
       case Failure(:final message):
-        showSuccessNotification(context,message);
+        showNotification(context,message,success: false);
 
       case Cancelled():
         break;
