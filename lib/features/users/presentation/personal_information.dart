@@ -45,7 +45,6 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
   }
 
   Future<void> _handleSave(UserRequest request) async {
-      debugPrint("WWWWWWWWWWWWWW ARE HER : ${request.photoUrl}");
 
   setState(() => _isSaving = true);
   final data = toPatchMap (request);
@@ -58,35 +57,37 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
     switch (result) {
       case Success<void>():
         if (mounted) {
-          savedNotifications(
-            'Profile updated successfully',
+          showNotification(
             context,
+            'Profile updated successfully',
+          
           );
         }
 
       case Failure<void>(:final message):
         if (mounted) {
-          savedNotifications(
-            message,
+          showNotification(
             context,
+            message,
+           success: false
           );
         }
 
       case Cancelled<void>():
         if (mounted) {
-          savedNotifications(
-            'Profile update cancelled',
+          showNotification(
             context,
+            'Profile update cancelled',
           );
         }
     }
   } catch (e) {
 
-   debugPrint('Exception: $e');
     if (mounted) {
-      savedNotifications(
-        'Something went wrong',
+      showNotification(
         context,
+        'Something went wrong',
+        
       );
     }
   } finally {
@@ -249,10 +250,10 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
 
                              switch (result) {
                                 case Success(:final data):
-                                   showSuccessNotification(context,data);
+                                   showNotification(context,data);
 
                                 case Failure(:final message):
-                                   showSuccessNotification(context,message);
+                                   showNotification(context,message,success: false);
 
                                case Cancelled():
                                   break;
@@ -302,32 +303,3 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
   }
 }
  
-
- void savedNotifications(String text,context)
- {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          backgroundColor: const Color(0xFF0F172A),
-          content: Row(
-            children:  [
-              Icon(Icons.check_circle, color: AppColors.primary),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-
- } 
