@@ -17,6 +17,8 @@ class CustomeTextField extends StatelessWidget {
   final int? maxLines;
   final bool readOnly;
   final void Function()? onTap;
+  final String ?suffixText;
+  final String ? label ;
 
   const CustomeTextField({
     super.key,
@@ -32,71 +34,90 @@ class CustomeTextField extends StatelessWidget {
     this.onSuffixIconPressed,
     this.maxLines = 1,
     this.readOnly = false,
-    this.onTap,
+    this.onTap, this.suffixText, this.label,
   });
 
   @override
   Widget build(BuildContext context) {
     return 
-       TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        validator: validator,
-        obscureText: isPassword,
-        cursorColor: AppColors.primary,
-        autofocus: false,
-        maxLines: maxLines,
-        readOnly: readOnly,
-        onTap: onTap,
-
-        style: AppStyle.regular14,
-
-        decoration:  InputDecoration(
-  filled: true,
-  fillColor: const Color(0xFFF7F8F9),
-
-  hintText: hintText ?? '',
-  hintStyle: AppStyle.regular14,
-
-  prefixIcon: prefixIcon,
-  suffixIcon: suffixIcon != null
-      ? IconButton(
-          onPressed: onSuffixIconPressed,
-          icon: suffixIcon!,
-        )
-      : null,
-
-  contentPadding: EdgeInsets.symmetric(
-    horizontal: 16.w,
-  ),
-
-  prefixIconConstraints: BoxConstraints(
-    minWidth: 48.w,
-    maxWidth: 48.w,
-    minHeight: 48.h,
-    maxHeight: 48.h,
-  ),
-
-  suffixIconConstraints: BoxConstraints(
-    minWidth: 48.w,
-    maxWidth: 48.w,
-    minHeight: 48.h,
-    maxHeight: 48.h,
-  ),
-
-  border: _inputBorder(),
-  enabledBorder: _inputBorder(),
-  focusedBorder: _focusedBorder(),
-  errorBorder: _errorBorder(),
-  focusedErrorBorder: _errorBorder(),
-
-  // Important
-  errorStyle: AppStyle.regular12.copyWith(
-    height: 1.2,
-  ),
-),
-     
-      );
+       Column(
+         children: [
+         
+          Text(
+          label?? "",
+          style: AppStyle.regular13.copyWith(
+            color: AppColors.text,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+         const SizedBox(height: 7,),
+           TextFormField(
+            
+            controller: controller,
+            keyboardType: keyboardType,
+            validator: validator,
+            obscureText: isPassword,
+            cursorColor: AppColors.primary,
+            autofocus: false,
+            maxLines: maxLines,
+            readOnly: readOnly,
+            onTap: onTap,
+           
+            style: AppStyle.regular14,
+           
+            decoration:  InputDecoration(
+               suffixText: suffixText,
+                suffixStyle: AppStyle.regular13.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w600,
+                ),
+             filled: true,
+             fillColor: const Color(0xFFF7F8F9),
+           
+             hintText: hintText ?? '',
+             hintStyle: AppStyle.regular14,
+           
+             prefixIcon: prefixIcon,
+             suffixIcon: suffixIcon != null
+                 ? IconButton(
+              onPressed: onSuffixIconPressed,
+              icon: suffixIcon!,
+            )
+                 : null,
+           
+             contentPadding: EdgeInsets.symmetric(
+               horizontal: 16.w,
+             ),
+           
+             prefixIconConstraints: BoxConstraints(
+               minWidth: 48.w,
+               maxWidth: 48.w,
+               minHeight: 48.h,
+               maxHeight: 48.h,
+             ),
+           
+             suffixIconConstraints: BoxConstraints(
+               minWidth: 48.w,
+               maxWidth: 48.w,
+               minHeight: 48.h,
+               maxHeight: 48.h,
+             ),
+           
+             border: _inputBorder(),
+             enabledBorder: _inputBorder(),
+             focusedBorder: _focusedBorder(),
+             errorBorder: _errorBorder(),
+             focusedErrorBorder: _errorBorder(),
+           
+             // Important
+             errorStyle: AppStyle.regular12.copyWith(
+               height: 1.2,
+             ),
+           ),
+                
+                 ),
+         ],
+       );
   
     
   }
