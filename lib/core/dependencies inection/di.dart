@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
+import 'package:pet_care/core/services/vaccination_service.dart';
 import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/infrastructure/networks/dio/dio_provider.dart';
@@ -68,3 +70,14 @@ final imageServiceProvider = Provider<ImageService>((ref)
 }
 ); 
 
+
+ final vaccinationDataSourceProvider=Provider<VaccinationDataSource>((ref)=>
+ VaccinationDataSource(firestore: FirebaseFirestore.instance)
+ );
+  
+ 
+final vaccinationServiceProvider = Provider <VaccinationService>((
+  ref){
+    return VaccinationService(dataSource: ref.read(vaccinationDataSourceProvider));
+  }
+  );
