@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
+import 'package:pet_care/features/health/vaccination/presentation/screens/add_vaccination.dart';
+import 'package:pet_care/features/health/vaccination/presentation/screens/vaccinations_list.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/features/pets/screens/pet_details_screen.dart';
@@ -19,6 +21,8 @@ final String addNewPet = '/add-new-pet';
 final String profileInfo = '/profile-info';
 final String petDetails ='/pet-details';
 final String petEdit = '/Pet-Edit';
+final String addVaccination = '/Add-Vaccination';
+final String vaccinationList= '/Vaccination-List';
 
 final appRouter = GoRouter(
   initialLocation:login ,
@@ -59,9 +63,18 @@ final appRouter = GoRouter(
           GoRoute(path: petEdit,builder:(context ,state) {
            final pet = state.extra as Pet ;
            return  PetEditScreen(pet:pet);
-          })
-
-
+          }),
+          GoRoute(path: addVaccination ,builder: (context,state ){
+             final petId = state.extra as String ;
+            return AddVaccinationScreen(petId: petId);
+           }       
+          ),
+          GoRoute(path: vaccinationList , builder: ( context, state)
+          {
+            final petId = state.extra as String ;
+            return VaccinationListScreen(petId:petId) ;
+          }
+          )       
       
       ],
     ),
