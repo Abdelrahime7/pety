@@ -6,6 +6,8 @@ import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
+import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
+import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_providers.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/Iinfo_card.dart';
 import 'package:pet_care/features/pets/widgets/healt_card.dart';
@@ -23,10 +25,24 @@ const PetDetailsScreen ({super.key, required this.petId});
  
 class _PetDetailsScreen extends   ConsumerState<PetDetailsScreen> {
 
+Future<VaccItemInfo?> info() async {
+  final result = await ref
+      .read(vaccinationProvider(widget.petId).notifier)
+      .getVaccinationInfo();
+
+  if (result is Success<VaccItemInfo>) {
+    return result.data;
+  }
+
+  return null;
+}
 
   @override
   Widget build(BuildContext context) {
-  
+     final infoAsync = ref.watch(
+  vaccinationInfoProvider(widget.petId),
+);
+
    final petsState = ref.watch(petProvider);
 
     return petsState.when(
@@ -117,8 +133,27 @@ final pet = matchingPets.first;
             ),
 
             const SizedBox(height: 16),
+       
+        
+infoAsync.when(
+  loading: () => const CircularProgressIndicator(),
 
-            const HealthCard(),
+  error: (error, stack) {
+   
+
+    return Text(
+      'Failed to load cards',
+    );
+  },
+
+  data: (info) => HealthCard(
+    petId: pet.id,
+    info: info,
+  ),
+),
+
+
+
 
             const SizedBox(height: 28),
 

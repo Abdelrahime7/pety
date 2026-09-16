@@ -7,9 +7,8 @@ class FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
+    return 
+       Text(
         label,
         style: const TextStyle(
           fontSize: 12,
@@ -17,7 +16,7 @@ class FieldLabel extends StatelessWidget {
           color: Color(0xFF7A869A),
           letterSpacing: 0.5,
         ),
-      ),
-    );
+      );
+  
   }
 }

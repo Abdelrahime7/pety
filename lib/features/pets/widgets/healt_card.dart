@@ -1,12 +1,16 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
 import 'package:pet_care/features/pets/widgets/health_item.dart';
 
 class HealthCard extends StatelessWidget {
-  const HealthCard();
+  final  String petId;
+  final VaccItemInfo info;
+    const HealthCard({super.key, required this.petId, required this.info});
 
   @override
   Widget build(BuildContext context) {
@@ -51,21 +55,23 @@ class HealthCard extends StatelessWidget {
 
           Row(
             children: [
-              const Expanded(
-                child: HealthItem(
+               Expanded(
+                child: VaccinationItem(
+              
                   icon: Icons.vaccines_outlined,
-                  title: 'Vaccinations',
-                  value: 'Up to date',
+                  vaccinationsNum: info.vaccinationsCount,
+                  nextVaccineName:  info.nextVaccineName,
+                  onTap:()=> appRouter.push(vaccinationList,extra: petId) ,
                 ),
               ),
 
               const SizedBox(width: 12),
 
-              const Expanded(
-                child: HealthItem(
+               Expanded(
+                child: AppointmentItem(
                   icon: Icons.calendar_month_outlined,
                   title: 'Appointment',
-                  value: 'Not scheduled',
+                  nextDueDate: 'Not scheduled',
                 ),
               ),
             ],
