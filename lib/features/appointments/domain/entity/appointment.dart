@@ -46,7 +46,7 @@ class Appointment {
             : DateTime.now();
 
     return Appointment(
-      appointmentId: map['appointmentId'] as String? ?? doc.id,
+      appointmentId: doc.id,
       petId: map['petId'] as String? ?? '',
       date: parsedDate,
       veterinarian: map['veterinarian'] as String? ?? '',
