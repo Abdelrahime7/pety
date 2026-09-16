@@ -94,7 +94,7 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
 
     if (!mounted) return;
     if (result is Success<void>) {
-      context.pop(true);
+      context.pop(updated);
     } else if (result is Failure<void>) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result.message)));
     }

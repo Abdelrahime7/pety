@@ -39,7 +39,10 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
       final petsResult = await _petService.getPets(_ownerId!);
 
       if (petsResult is Failure<List<Pet>>) {
-        state = state.copyWith(isLoading: false, error: () => petsResult.message);
+        state = state.copyWith(
+          isLoading: false,
+          error: () => petsResult.message,
+        );
         return;
       }
 
@@ -109,18 +112,24 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
   Future<Result<void>> updateAppointment(Appointment appointment) async {
     state = state.copyWith(isLoading: true, error: () => null);
 
-    final result = await _service.updateAppointment(
-      appointment.appointmentId,
-      appointment.toMap(),
-    );
+    try {
+      final result = await _service.updateAppointment(
+        appointment.appointmentId,
+        appointment.toMap(),
+      );
 
-    if (result is Success<void>) {
-      await fetchAppointments();
-    } else if (result is Failure<void>) {
-      state = state.copyWith(isLoading: false, error: () => result.message);
+      if (result is Success<void>) {
+        await fetchAppointments();
+      } else if (result is Failure<void>) {
+        state = state.copyWith(isLoading: false, error: () => result.message);
+      }
+
+      return result;
+    } catch (error) {
+      final failure = Failure<void>(error.toString());
+      state = state.copyWith(isLoading: false, error: () => failure.message);
+      return failure;
     }
-
-    return result;
   }
 
   // DELETE

@@ -10,15 +10,39 @@ import 'package:pet_care/features/appointments/presentation/appointments_screen/
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
-class AppointmentDetailsScreen extends ConsumerWidget {
+class AppointmentDetailsScreen extends ConsumerStatefulWidget {
   final Appointment appointment;
 
   const AppointmentDetailsScreen({super.key, required this.appointment});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final pet = ref.watch(petByIdProvider(appointment.petId));
-    final isPast = appointment.status == AppointmentStatus.past;
+  ConsumerState<AppointmentDetailsScreen> createState() => _AppointmentDetailsScreenState();
+}
+
+class _AppointmentDetailsScreenState extends ConsumerState<AppointmentDetailsScreen> {
+  late Appointment _appointment;
+
+  @override
+  void initState() {
+    super.initState();
+    _appointment = widget.appointment;
+  }
+
+  Future<void> _openEdit() async {
+    final updated = await context.push<Appointment>(
+      appointmentEdit,
+      extra: _appointment,
+    );
+
+    if (updated != null && mounted) {
+      setState(() => _appointment = updated);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pet = ref.watch(petByIdProvider(_appointment.petId));
+    final isPast = _appointment.status == AppointmentStatus.past;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -28,18 +52,18 @@ class AppointmentDetailsScreen extends ConsumerWidget {
           child: Column(
             children: [
               AppointmentDetailsTopBar(
-                onEdit: () => context.push(appointmentEdit, extra: appointment),
+                onEdit: _openEdit,
               ),
               SizedBox(height: 18.h),
               AppointmentPetCard(pet: pet, isPast: isPast),
               SizedBox(height: 16.h),
-              AppointmentInfoCard(appointment: appointment),
+              AppointmentInfoCard(appointment: _appointment),
               const Spacer(),
               Row(
                 children: [
                   Expanded(
                     child: AppointmentActionButton(
-                      onTap: () => context.push(appointmentEdit, extra: appointment),
+                      onTap: _openEdit,
                       icon: Icons.edit_outlined,
                       iconColor: AppColors.primary,
                       textColor: AppColors.textPrimary,
@@ -52,7 +76,7 @@ class AppointmentDetailsScreen extends ConsumerWidget {
                   SizedBox(width: 14.w),
                   Expanded(
                     child: AppointmentActionButton(
-                      onTap: () => _delete(context, ref),
+                      onTap: () => _delete(context),
                       icon: Icons.delete_outline_rounded,
                       iconColor: const Color(0xFFEF4444),
                       textColor: const Color(0xFFEF4444),
@@ -70,7 +94,7 @@ class AppointmentDetailsScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _delete(BuildContext context, WidgetRef ref) async {
+  Future<void> _delete(BuildContext context) async {
     final shouldDelete = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -90,7 +114,7 @@ class AppointmentDetailsScreen extends ConsumerWidget {
 
     if (shouldDelete != true || !context.mounted) return;
 
-    final result = await ref.read(appointmentProvider.notifier).deleteAppointment(appointment.appointmentId);
+    final result = await ref.read(appointmentProvider.notifier).deleteAppointment(_appointment.appointmentId);
     if (!context.mounted) return;
 
     if (result is Success<void>) {
