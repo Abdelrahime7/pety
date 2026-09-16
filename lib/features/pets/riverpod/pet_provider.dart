@@ -6,12 +6,12 @@ final petProvider = AsyncNotifierProvider<PetNotifier, List<Pet>>(
   PetNotifier.new,
 );
 
-final petNotifierProvider =
-    AsyncNotifierProvider<PetNotifier, List<Pet>>(PetNotifier.new);
+// Keep one shared notifier instance for every pet screen.
+final petNotifierProvider = petProvider;
 
 /// Dynamically retrieves a pet by its ID from the cached pet list.
 final petByIdProvider = Provider.family<Pet?, String>((ref, petId) {
-  final pets = ref.watch(petNotifierProvider).valueOrNull ?? [];
+  final pets = ref.watch(petProvider).valueOrNull ?? [];
   try {
     return pets.firstWhere((p) => p.id == petId);
   } catch (_) {
