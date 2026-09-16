@@ -1,5 +1,8 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_care/core/constant/result/result.dart';
+import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
 import 'package:pet_care/features/health/vaccination/domain/entity/vaccination1.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/firestore_mapprt.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
@@ -7,17 +10,29 @@ import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data
 class VaccinationService {
   final VaccinationDataSource dataSource;
 
-  VaccinationService({required this.dataSource});
+  VaccinationService({
+    required this.dataSource,
+  });
 
+  // ---------------------------------------------------------------------------
   // CREATE
+  // ---------------------------------------------------------------------------
+
   Future<Result<void>> addVaccination(
     Vaccination vaccination,
   ) async {
     try {
+      final vaccinationId = vaccination.id;
+
+      if (vaccinationId == null || vaccinationId.isEmpty) {
+        return const Failure(
+          'Vaccination ID is required.',
+        );
+      }
+
       await dataSource.createVaccination(
-        vaccination.petId,
-        vaccination.id!,
-        vaccination.toFirestore(),
+        vaccinationId,
+        vaccination.toMap(),
       );
 
       return const Success(null);
@@ -25,20 +40,35 @@ class VaccinationService {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
       );
-    } catch (_) {
-      return const Failure('Something went wrong');
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
     }
   }
 
-  // READ ALL
+  // ---------------------------------------------------------------------------
+  // READ ALL FOR PET
+  // ---------------------------------------------------------------------------
+
   Future<Result<List<Vaccination>>> getVaccinations(
     String petId,
   ) async {
     try {
-      final docs = await dataSource.getVaccinations(petId);
+      if (petId.isEmpty) {
+        return const Failure(
+          'Pet ID is required.',
+        );
+      }
 
-      final vaccinations = docs
-          .map((doc) => Vaccination.fromFirestore(doc))
+      final data = await dataSource.getVaccinations(
+        petId,
+      );
+
+      final vaccinations = data
+          .map(
+            (map) => Vaccination.fromMap(map),
+          )
           .toList();
 
       return Success(vaccinations);
@@ -46,47 +76,69 @@ class VaccinationService {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
       );
-    } catch (_) {
-      return const Failure('Something went wrong');
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
     }
   }
 
+  // ---------------------------------------------------------------------------
   // READ ONE
+  // ---------------------------------------------------------------------------
+
   Future<Result<Vaccination>> getVaccination(
-    String petId,
     String vaccinationId,
   ) async {
     try {
-      final doc = await dataSource.getVaccination(
-        petId,
+      if (vaccinationId.isEmpty) {
+        return const Failure(
+          'Vaccination ID is required.',
+        );
+      }
+
+      final data = await dataSource.getVaccination(
         vaccinationId,
       );
 
-      if (!doc.exists) {
-        return const Failure('Vaccination not found');
+      if (data == null) {
+        return const Failure(
+          'Vaccination not found.',
+        );
       }
 
-      return Success(
-        Vaccination.fromFirestore(doc),
+      final vaccination = Vaccination.fromMap(
+        data,
       );
+
+      return Success(vaccination);
     } on FirebaseException catch (e) {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
       );
-    } catch (_) {
-      return const Failure('Something went wrong');
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
     }
   }
 
+  // ---------------------------------------------------------------------------
   // UPDATE
+  // ---------------------------------------------------------------------------
+
   Future<Result<void>> updateVaccination(
-    String petId,
     String vaccinationId,
     Map<String, dynamic> data,
   ) async {
     try {
+      if (vaccinationId.isEmpty) {
+        return const Failure(
+          'Vaccination ID is required.',
+        );
+      }
+
       await dataSource.updateVaccination(
-        petId,
         vaccinationId,
         data,
       );
@@ -96,19 +148,28 @@ class VaccinationService {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
       );
-    } catch (_) {
-      return const Failure('Something went wrong');
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
     }
   }
 
+  // ---------------------------------------------------------------------------
   // DELETE
+  // ---------------------------------------------------------------------------
+
   Future<Result<void>> deleteVaccination(
-    String petId,
     String vaccinationId,
   ) async {
     try {
+      if (vaccinationId.isEmpty) {
+        return const Failure(
+          'Vaccination ID is required.',
+        );
+      }
+
       await dataSource.deleteVaccination(
-        petId,
         vaccinationId,
       );
 
@@ -117,8 +178,69 @@ class VaccinationService {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
       );
-    } catch (_) {
-      return const Failure('Something went wrong');
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // VACCINATION SUMMARY
+  // ---------------------------------------------------------------------------
+
+  Future<Result<VaccItemInfo>> getVaccinationInfo(
+    String petId,
+  ) async {
+    try {
+      if (petId.isEmpty) {
+        return const Failure(
+          'Pet ID is required.',
+        );
+      }
+
+      final count = await dataSource.getVaccinationCount(
+        petId,
+      );
+
+      final nextVaccination =
+          await dataSource.getNextVaccination(
+        petId,
+      );
+
+      if (nextVaccination == null) {
+        return Success(
+          (
+            vaccinationsCount: count.toString(),
+            nextVaccineName: 'None',
+            nextDueDate: null,
+          ),
+        );
+      }
+
+      final vaccination = Vaccination.fromMap(
+        nextVaccination,
+      );
+
+      return Success(
+        (
+          vaccinationsCount: count.toString(),
+          nextVaccineName:
+              vaccination.nextVaccineName ??
+              vaccination.vaccineName,
+          nextDueDate:
+              vaccination.nextDueDate?.toString(),
+        ),
+      );
+    } on FirebaseException catch (e) {
+      return Failure(
+        mapFirestoreExceptionToFailure(e).message,
+      );
+    } catch (e) {
+
+      return Failure(
+        e.toString(),
+      );
     }
   }
 }
