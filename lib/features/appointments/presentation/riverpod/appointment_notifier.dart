@@ -106,6 +106,23 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
     }
   }
 
+  Future<Result<void>> updateAppointment(Appointment appointment) async {
+    state = state.copyWith(isLoading: true, error: () => null);
+
+    final result = await _service.updateAppointment(
+      appointment.appointmentId,
+      appointment.toMap(),
+    );
+
+    if (result is Success<void>) {
+      await fetchAppointments();
+    } else if (result is Failure<void>) {
+      state = state.copyWith(isLoading: false, error: () => result.message);
+    }
+
+    return result;
+  }
+
   // DELETE
   Future<Result<void>> deleteAppointment(String appointmentId) async {
     state = state.copyWith(isLoading: true, error: () => null);
