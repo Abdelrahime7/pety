@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
@@ -35,7 +37,7 @@ class AppointmentCard extends ConsumerWidget {
       : '$doctor — $petName';
 
     return InkWell(
-      onTap: onTap,
+      onTap: onTap ?? () => context.push(appointmentDetails, extra: appointment),
       borderRadius: BorderRadius.circular(14),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

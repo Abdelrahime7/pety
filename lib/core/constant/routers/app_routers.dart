@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/layout/main_layout.dart';
-import 'package:pet_care/features/appointments/presentation/appointments_screen/add_appointment_screen.dart';
-import 'package:pet_care/features/appointments/presentation/appointments_screen/appointments_screen.dart';
+import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/appointments_screen.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/add_appointment_screen.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/appointment_details.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/edit_appointment_screen.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
@@ -23,6 +26,8 @@ const String petDetails = '/pet-details';
 const String petEdit = '/Pet-Edit';
 const String calendar = '/calendar';
 const String addNewAppointment = '/add-new-appointment';
+const String appointmentDetails = '/appointment-details';
+const String appointmentEdit = '/appointment-edit';
 
 final appRouter = GoRouter(
   initialLocation: calendar,
@@ -31,6 +36,18 @@ final appRouter = GoRouter(
     GoRoute(path: login, builder: (_, __) => const LoginScreen()),
     GoRoute(path: addNewPet, builder: (_, __) => const AddPetScreen()),
     GoRoute(path: addNewAppointment, builder: (_, __) => const AddAppointmentScreen()),
+    GoRoute(
+      path: appointmentDetails,
+      builder: (_, state) => AppointmentDetailsScreen(
+        appointment: state.extra! as Appointment,
+      ),
+    ),
+    GoRoute(
+      path: appointmentEdit,
+      builder: (_, state) => EditAppointmentScreen(
+        appointment: state.extra! as Appointment,
+      ),
+    ),
     GoRoute(
       path: upgradeToPremium,
       builder: (_, __) => const UpgradeToPremiumScreen(),
