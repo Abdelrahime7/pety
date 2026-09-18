@@ -1,0 +1,3 @@
+class HealthState {
+  const HealthState();
+}

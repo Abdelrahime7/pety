@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
-import 'package:pet_care/features/users/domain/enitiy/user.dart';
+import 'package:pet_care/features/users/domain/entity/user.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/firestore_mapprt.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
 

@@ -10,7 +10,6 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
-import 'package:pet_care/features/pets/data/pet_data.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/domain/enums/speciesOptions.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
@@ -19,10 +18,7 @@ import 'package:pet_care/features/pets/widgets/edit_drop_down.dart';
 class PetEditScreen extends ConsumerStatefulWidget {
   final Pet pet;
 
-  const PetEditScreen({
-    super.key,
-    required this.pet,
-  });
+  const PetEditScreen({super.key, required this.pet});
 
   @override
   ConsumerState<PetEditScreen> createState() => _PetEditScreenState();
@@ -40,10 +36,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
   File? _selectedImage;
   bool _isSaving = false;
 
-  final List<String> _genderOptions = [
-    'Male',
-    'Female',
-  ];
+  final List<String> _genderOptions = ['Male', 'Female'];
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -54,9 +47,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
     _weightController = TextEditingController(
       text: widget.pet.weight.toString(),
     );
-    _notesController = TextEditingController(
-      text: widget.pet.medicalNotes,
-    );
+    _notesController = TextEditingController(text: widget.pet.medicalNotes);
 
     _species = widget.pet.species;
     _gender = widget.pet.gender;
@@ -85,50 +76,39 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
       _selectedImage = File(pickedFile.path);
     });
   }
-  Future<void> _saveChanges() async {
-    
 
-     if (!_formKey.currentState!.validate()) {
-    return;
-  }
-    final weight = double.tryParse(
-  _weightController.text.trim(),
-       );
+  Future<void> _saveChanges() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    final weight = double.tryParse(_weightController.text.trim());
 
     setState(() {
       _isSaving = true;
     });
 
     try {
-      
- final PetRequest request = (
-  id:widget.pet.id,
-  name: _nameController.text.trim(),
-  species: _species,
-  breed: _breedController.text.trim(),
-  gender: _gender,
-  birthDate: null,
-  weight: weight,
-  medicalNotes: _notesController.text.trim(),
-  photoUrl: null,
-);
- 
-   final result= await ref.read(petProvider.notifier)
-   .updatePet(request,image: _selectedImage);
-     
-    
+      final updatedPet = widget.pet.copyWith(
+        name: _nameController.text.trim(),
+        species: _species,
+        breed: _breedController.text.trim(),
+        gender: _gender,
+        weight: weight,
+        medicalNotes: _notesController.text.trim(),
+      );
 
-      if (!mounted ) return;
+      final result = await ref
+          .read(petProvider.notifier)
+          .updatePet(updatedPet, image: _selectedImage);
 
- 
-     if (result is Success<void>) {
-       showNotification(context,'Pet updated successfully');
-         appRouter.pop(context);
+      if (!mounted) return;
+
+      if (result is Success<void>) {
+        showNotification(context, 'Pet updated successfully');
+        appRouter.pop(context);
       } else if (result is Failure<void>) {
-        showNotification(context,result.message);
-
+        showNotification(context, result.message);
       }
-
     } finally {
       if (mounted) {
         setState(() {
@@ -154,15 +134,10 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
             size: 20,
             color: AppColors.text,
           ),
-          onPressed: _isSaving
-              ? null
-              : () => Navigator.pop(context),
+          onPressed: _isSaving ? null : () => Navigator.pop(context),
         ),
 
-        title: Text(
-          'Edit Pet',
-          style: AppStyle.tileTitle,
-        ),
+        title: Text('Edit Pet', style: AppStyle.tileTitle),
 
         centerTitle: true,
       ),
@@ -170,93 +145,92 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
         child: Form(
-          key:_formKey,
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildPhotoSection(),
-          
+
               const SizedBox(height: 28),
-          
+
               _buildSectionTitle('Basic Information'),
-          
+
               const SizedBox(height: 12),
-          
+
               CustomeTextField(
-                 validator: (value) {
-                 if (value == null || value.trim().isEmpty) {
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Pet name is required';
-                           }
-                       return null;
-                      },
+                  }
+                  return null;
+                },
                 controller: _nameController,
                 label: 'Pet Name',
                 hintText: 'Enter pet name',
                 suffixIcon: Icon(Icons.pets_rounded),
               ),
-          
+
               const SizedBox(height: 14),
-          
+
               buildDropdown(
                 label: 'Species',
                 value: _species,
                 items: SpeciesOptions.values.map((e) => e.name).toList(),
-                
+
                 onChanged: (value) {
                   if (value == null) return;
-          
+
                   setState(() {
                     _species = value;
                   });
                 },
               ),
-          
+
               const SizedBox(height: 14),
-          
+
               CustomeTextField(
                 controller: _breedController,
-                 validator: (value){
-                  if (value ==null ||value.trim().isEmpty )
-                  {
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
                     return ' pet breed is required';
                   }
-                    return null;
-                 },
+                  return null;
+                },
                 label: 'Breed',
                 hintText: 'Enter breed',
-                suffixIcon: Icon( Icons.category_outlined),
+                suffixIcon: Icon(Icons.category_outlined),
               ),
-          
+
               const SizedBox(height: 14),
-          
+
               buildDropdown(
                 label: 'Gender',
                 value: _gender,
                 items: _genderOptions,
                 onChanged: (value) {
                   if (value == null) return;
-          
+
                   setState(() {
                     _gender = value;
                   });
                 },
               ),
-          
+
               const SizedBox(height: 14),
-          
+
               CustomeTextField(
                 controller: _weightController,
-                 validator: (value) {
-                       if (value == null || value.trim().isEmpty) {
-                                return 'Weight is required';
-                            }
-          
-                             if (double.tryParse(value.trim()) == null) {
-                               return 'Invalid weight';
-                              }
-          
-                           return null;
-                          },
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Weight is required';
+                  }
+
+                  if (double.tryParse(value.trim()) == null) {
+                    return 'Invalid weight';
+                  }
+
+                  return null;
+                },
                 label: 'Weight',
                 hintText: 'Enter weight',
                 suffixIcon: Icon(Icons.monitor_weight_outlined),
@@ -265,17 +239,17 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 ),
                 suffixText: 'kg',
               ),
-          
+
               const SizedBox(height: 28),
-          
+
               _buildSectionTitle('Notes'),
-          
+
               const SizedBox(height: 12),
-          
+
               _buildNotesField(),
-          
+
               const SizedBox(height: 32),
-          
+
               _buildSaveButton(),
             ],
           ),
@@ -296,34 +270,28 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(40),
-                  border: Border.all(
-                    color: AppColors.border,
-                  ),
+                  border: Border.all(color: AppColors.border),
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: _selectedImage != null
-                    ? Image.file(
-                        _selectedImage!,
+                    ? Image.file(_selectedImage!, fit: BoxFit.cover)
+                    : widget.pet.photoUrl.isNotEmpty
+                    ? Image.network(
+                        widget.pet.photoUrl,
                         fit: BoxFit.cover,
-                      )
-                    : 
-                            widget.pet.photoUrl.isNotEmpty
-                        ? Image.network(
-                            widget.pet.photoUrl,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) {
-                              return const Icon(
-                                Icons.pets_rounded,
-                                size: 48,
-                                color: AppColors.icon,
-                              );
-                            },
-                          )
-                        : const Icon(
+                        errorBuilder: (_, __, ___) {
+                          return const Icon(
                             Icons.pets_rounded,
                             size: 48,
                             color: AppColors.icon,
-                          ),
+                          );
+                        },
+                      )
+                    : const Icon(
+                        Icons.pets_rounded,
+                        size: 48,
+                        color: AppColors.icon,
+                      ),
               ),
 
               Positioned(
@@ -337,10 +305,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: AppColors.surface,
-                        width: 3,
-                      ),
+                      border: Border.all(color: AppColors.surface, width: 3),
                     ),
                     child: const Icon(
                       Icons.camera_alt_outlined,
@@ -355,56 +320,38 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
 
           const SizedBox(height: 12),
 
-          Text(
-            'Change photo',
-            style: AppStyle.regular13,
-          ),
+          Text('Change photo', style: AppStyle.regular13),
         ],
       ),
     );
   }
 
   Widget _buildSectionTitle(String title) {
-    return Text(
-      title.toUpperCase(),
-      style: AppStyle.sectionHeader,
-    );
+    return Text(title.toUpperCase(), style: AppStyle.sectionHeader);
   }
- 
 
   Widget _buildNotesField() {
     return TextField(
       controller: _notesController,
       maxLines: 5,
-      style: AppStyle.regular14.copyWith(
-        color: AppColors.text,
-      ),
+      style: AppStyle.regular14.copyWith(color: AppColors.text),
       decoration: InputDecoration(
         hintText: 'Add notes about your pet...',
-        hintStyle: AppStyle.regular14.copyWith(
-          color: AppColors.textMuted,
-        ),
+        hintStyle: AppStyle.regular14.copyWith(color: AppColors.textMuted),
         filled: true,
         fillColor: AppColors.surface,
         contentPadding: const EdgeInsets.all(16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(
-            color: AppColors.border,
-          ),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(
-            color: AppColors.border,
-          ),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(
-            color: AppColors.primary,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
       ),
     );
@@ -415,7 +362,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
       width: double.infinity,
       height: 54,
       child: ElevatedButton(
-        onPressed: _isSaving ? null :_saveChanges,
+        onPressed: _isSaving ? null : _saveChanges,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.surface,
