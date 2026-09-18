@@ -1,3 +1,38 @@
+import 'package:pet_care/features/health/domain/entity/health_record.dart';
+import 'package:pet_care/features/pets/domain/entity/pet.dart';
+
 class HealthState {
-  const HealthState();
+  final List<Pet> pets;
+  final Pet? selectedPet;
+  final List<HealthRecord> records;
+  final Map<String, List<HealthRecord>> recordsByPet;
+  final bool isLoading;
+  final String? error;
+
+  const HealthState({
+    this.pets = const [],
+    this.selectedPet,
+    this.records = const [],
+    this.recordsByPet = const {},
+    this.isLoading = false,
+    this.error,
+  });
+
+  HealthState copyWith({
+    List<Pet>? pets,
+    Pet? selectedPet,
+    List<HealthRecord>? records,
+    Map<String, List<HealthRecord>>? recordsByPet,
+    bool? isLoading,
+    String? error,
+  }) {
+    return HealthState(
+      pets: pets ?? this.pets,
+      selectedPet: selectedPet ?? this.selectedPet,
+      records: records ?? this.records,
+      recordsByPet: recordsByPet ?? this.recordsByPet,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
 }
