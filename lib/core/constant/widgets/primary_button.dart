@@ -10,6 +10,7 @@ class AppPrimaryButton extends StatelessWidget {
   final double? width;
   final double borderRadius;
   final Color? backgroundColor;
+  final IconData? icon;
 
   const AppPrimaryButton({
     super.key,
@@ -20,6 +21,7 @@ class AppPrimaryButton extends StatelessWidget {
     this.width = double.infinity,
     this.borderRadius = 16.0,
     this.backgroundColor,
+    this.icon,
   });
 
   @override
@@ -68,13 +70,22 @@ class AppPrimaryButton extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : Text(
-                text,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.2,
-                ),
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) ...[
+                    Icon(icon, size: 17.sp),
+                    SizedBox(width: 6.w),
+                  ],
+                  Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ],
               ),
       ),
     );

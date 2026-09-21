@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pet_care/core/services/appointment_service.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
@@ -8,6 +9,7 @@ import 'package:pet_care/core/services/vaccination_service.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
+import 'package:pet_care/infrastructure/firebase/appointment/firebase_appointment_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
@@ -94,3 +96,19 @@ final vaccinationSerieServiceProvider = Provider <VaccinationService<Vaccination
     );
   }
   );
+// ---------------- APPOINTMENTS DI ---------------- //
+
+final appointmentFirestoreDataSourceProvider =
+    Provider<AppointmentFirestoreDataSource>(
+  (ref) {
+    return AppointmentFirestoreDataSource(FirebaseFirestore.instance);
+  },
+);
+
+final appointmentServiceProvider = Provider<AppointmentService>(
+  (ref) {
+    return AppointmentService(
+      dataSource: ref.read(appointmentFirestoreDataSourceProvider),
+    );
+  },
+);

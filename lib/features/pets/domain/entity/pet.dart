@@ -56,4 +56,30 @@ class Pet {
       'photoUrl': photoUrl,
     };
   }
+
+ static Pet fromMap(Map<String, dynamic> map) {
+    DateTime parsedBirthDate;
+    final rawDate = map['birthDate'];
+
+    if (rawDate is Timestamp) {
+      parsedBirthDate = rawDate.toDate();
+    } else if (rawDate is String) {
+      parsedBirthDate = DateTime.tryParse(rawDate) ?? DateTime.now();
+    } else {
+      parsedBirthDate = DateTime.now();
+    }
+
+    return Pet(
+      id: map['id'] as String? ?? '',
+      ownerId: map['ownerId'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      species: map['species'] as String? ?? '',
+      breed: map['breed'] as String? ?? '',
+      gender: map['gender'] as String? ?? '',
+      birthDate: parsedBirthDate,
+      weight: (map['weight'] as num?)?.toDouble() ?? 0.0,
+      medicalNotes: map['medicalNotes'] as String? ?? '',
+      photoUrl: map['photoUrl'] as String? ?? '',
+    );
+  }
 }

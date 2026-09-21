@@ -11,11 +11,12 @@ final double ?fontSize;
 final double ?width;
 final double ?height;
 final double ?radius;
+final IconData? icon;
 final  void Function()  onPressed;
 
   const PrimaryOutlinedButton( {this.text, 
    this.color,  this.width,  this.height,
-    this.radius,  required this.onPressed,  this.textColor,this.fontSize, super.key}); 
+    this.radius,  required this.onPressed,  this.textColor,this.fontSize, this.icon, super.key}); 
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,16 @@ final  void Function()  onPressed;
       )
       
      ), 
-      child: Text(text ??" ",style:  TextStyle(fontSize:fontSize??12.sp,color: textColor??Colors.blue)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 16.sp, color: textColor ?? Colors.blue),
+            SizedBox(width: 6.w),
+          ],
+          Text(text ?? " ",style: TextStyle(fontSize:fontSize??12.sp,color: textColor??Colors.blue)),
+        ],
+      ),
    );
 
 

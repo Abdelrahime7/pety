@@ -20,3 +20,4 @@ class FieldLabel extends StatelessWidget {
   
   }
 }
+export 'package:pet_care/core/constant/widgets/field_label.dart';

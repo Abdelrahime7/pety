@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pet_care/core/layout/main_layout.dart';
+import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/appointments_screen.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/add_appointment_screen.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/appointment_details.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/edit_appointment_screen.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/add_vaccination.dart';
@@ -10,7 +16,6 @@ import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/features/pets/screens/pet_details_screen.dart';
 import 'package:pet_care/features/pets/screens/pet_edit_screen.dart';
 import 'package:pet_care/features/pets/screens/pets_list_screen.dart';
-import 'package:pet_care/core/layout/main_layout.dart';
 import 'package:pet_care/features/users/presentation/personal_information.dart';
 import 'package:pet_care/features/users/presentation/profile_screen.dart';
 import 'package:pet_care/features/users/presentation/upgrad_to_premium_screen.dart';
@@ -26,16 +31,43 @@ final String petEdit = '/Pet-Edit';
 final String addVaccination = '/Add-Vaccination';
 final String vaccinationList= '/Vaccination-List';
 final String vaccinationDetails='/vaccination-Details';
+const String profile = '/profile';
+const String login = '/login';
+const String upgradeToPremium = '/upgrade-to-premium';
+const String petList = '/pet-list';
+const String addNewPet = '/add-new-pet';
+const String profileInfo = '/profile-info';
+const String petDetails = '/pet-details';
+const String petEdit = '/Pet-Edit';
+const String calendar = '/calendar';
+const String addNewAppointment = '/add-new-appointment';
+const String appointmentDetails = '/appointment-details';
+const String appointmentEdit = '/appointment-edit';
 
 final appRouter = GoRouter(
-  initialLocation:login ,
+  initialLocation: calendar,
   routes: [
-
     /// Screens WITHOUT bottom nav
     GoRoute(path: login, builder: (_, __) => const LoginScreen()),
     GoRoute(path: addNewPet, builder: (_, __) => const AddPetScreen()),
-    GoRoute(path: upgradeToPremium, builder: (_, __) => const UpgradeToPremiumScreen()),
-    GoRoute(path: profileInfo, builder: (_, __) =>  ProfileInfoScreen()),
+    GoRoute(path: addNewAppointment, builder: (_, __) => const AddAppointmentScreen()),
+    GoRoute(
+      path: appointmentDetails,
+      builder: (_, state) => AppointmentDetailsScreen(
+        appointment: state.extra! as Appointment,
+      ),
+    ),
+    GoRoute(
+      path: appointmentEdit,
+      builder: (_, state) => EditAppointmentScreen(
+        appointment: state.extra! as Appointment,
+      ),
+    ),
+    GoRoute(
+      path: upgradeToPremium,
+      builder: (_, __) => const UpgradeToPremiumScreen(),
+    ),
+    GoRoute(path: profileInfo, builder: (_, __) => ProfileInfoScreen()),
 
      GoRoute(path: addVaccination ,builder: (context,state ){
              final petId = state.extra as String ;
@@ -73,23 +105,41 @@ final appRouter = GoRouter(
       },
       routes: [
         GoRoute(
-          path: '/home', 
-          builder: (_, _) => const Scaffold(body: Center(child: Text("Home coming soon..."))),
+          path: '/home',
+          builder: (_, _) => const Scaffold(
+            body: Center(child: Text("Home coming soon...")),
+          ),
         ),
         GoRoute(path: petList, builder: (_, _) => PetsListScreen()),
         GoRoute(
-          path: '/health', 
-          builder: (_, _) => const Scaffold(body: Center(child: Text("Health coming soon..."))),
+          path: '/health',
+          builder: (_, _) => const Scaffold(
+            body: Center(child: Text("Health coming soon...")),
+          ),
         ),
         GoRoute(
-          path: '/calendar', 
-          builder: (_, _) => const Scaffold(body: Center(child: Text("Calendar coming soon..."))),
+          path: calendar,
+          builder: (_, _) => const AppointmentsScreen(),
         ),
         GoRoute(path: profile, builder: (_, _) => const ProfilePage()),
 
       
          
       
+        GoRoute(
+          path: petDetails,
+          builder: (context, state) {
+            final pet = state.extra as Pet;
+            return PetDetailsScreen(petId: pet.id);
+          },
+        ),
+        GoRoute(
+          path: petEdit,
+          builder: (context, state) {
+            final pet = state.extra as Pet;
+            return PetEditScreen(pet: pet);
+          },
+        ),
       ],
     ),
   ],
