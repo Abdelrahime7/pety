@@ -4,6 +4,7 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class CustomeTextField extends StatelessWidget {
+  final bool ? enabled;
   final String? hintText;
   final Widget? suffixIcon;
   final bool isPassword;
@@ -34,7 +35,7 @@ class CustomeTextField extends StatelessWidget {
     this.onSuffixIconPressed,
     this.maxLines = 1,
     this.readOnly = false,
-    this.onTap, this.suffixText, this.label,
+    this.onTap, this.suffixText, this.label, this.enabled,
   });
 
   @override
@@ -52,7 +53,7 @@ class CustomeTextField extends StatelessWidget {
         ),
          const SizedBox(height: 7,),
            TextFormField(
-            
+            enabled: enabled,
             controller: controller,
             keyboardType: keyboardType,
             validator: validator,
