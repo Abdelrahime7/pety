@@ -31,14 +31,7 @@ final String petEdit = '/Pet-Edit';
 final String addVaccination = '/Add-Vaccination';
 final String vaccinationList= '/Vaccination-List';
 final String vaccinationDetails='/vaccination-Details';
-const String profile = '/profile';
-const String login = '/login';
-const String upgradeToPremium = '/upgrade-to-premium';
-const String petList = '/pet-list';
-const String addNewPet = '/add-new-pet';
-const String profileInfo = '/profile-info';
-const String petDetails = '/pet-details';
-const String petEdit = '/Pet-Edit';
+
 const String calendar = '/calendar';
 const String addNewAppointment = '/add-new-appointment';
 const String appointmentDetails = '/appointment-details';
