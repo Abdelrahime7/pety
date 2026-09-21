@@ -38,7 +38,7 @@ const String appointmentDetails = '/appointment-details';
 const String appointmentEdit = '/appointment-edit';
 
 final appRouter = GoRouter(
-  initialLocation: calendar,
+  initialLocation: login,
   routes: [
     /// Screens WITHOUT bottom nav
     GoRoute(path: login, builder: (_, __) => const LoginScreen()),
