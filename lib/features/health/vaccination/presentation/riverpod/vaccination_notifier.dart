@@ -4,175 +4,179 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/vaccination_service.dart';
-import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
-import 'package:pet_care/features/health/vaccination/domain/entity/vaccination1.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/add_vaccination_request.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
+import 'package:pet_care/features/health/vaccination/presentation/riverpod/health_card_privder.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_providers.dart';
+import 'package:uuid/uuid.dart';
 
 class VaccinationNotifier
-    extends FamilyAsyncNotifier<List<Vaccination>, String> {
+    extends FamilyAsyncNotifier<void, String> {
 
+  VaccinationService<VaccinationRecord> get _recordService =>
+      ref.read(vaccinationRecordServiceProvider);
 
-  VaccinationService get _service =>
-      ref.read(vaccinationServiceProvider);
-
+  VaccinationService<VaccinationSerie> get _serieService =>
+      ref.read(vaccinationSerieServiceProvider);
 
   @override
-  FutureOr<List<Vaccination>> build(String petId) async {
-   
-
-    final result = await _service.getVaccinations(petId);
-
-    if (result is Success<List<Vaccination>>) {
-      return result.data;
-    }
-
-    return [];
-  }
- 
-
- 
- 
-  // ---------------------------------------------------------------------------
-  // CREATE
-  // ---------------------------------------------------------------------------
+  FutureOr<void> build(String petId) {}
 
   Future<Result<void>> addVaccination(
-    Vaccination vaccination,
-  ) async {
-    state = const AsyncLoading();
-
-    try {
-      final result = await _service.addVaccination(vaccination);
-
-      if (result is Success<void>) {
-        final vaccinationsResult =
-            await _service.getVaccinations(vaccination.petId);
-
-        if (vaccinationsResult is Success<List<Vaccination>>) {
-          state = AsyncData(vaccinationsResult.data);
-
-
-        } else {
-          state = const AsyncData([]);
-        }
-        ref.invalidate( vaccinationInfoProvider(vaccination.petId));
-        return result;
-      }
-
-      if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
-        );
-
-        return result;
-      }
-
-      return result;
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
-
-      return Failure(e.toString());
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // READ ONE
-  // ---------------------------------------------------------------------------
-
-  Future<Result<Vaccination>> getVaccination(
-    String vaccinationId,
+    AddVaccinationRequest request,
   ) async {
     try {
-      return await _service.getVaccination(vaccinationId);
-    } catch (e) {
-      return Failure(e.toString());
-    }
-  }
+      late VaccinationSerie serie;
+      late int doseNumber;
 
-  // ---------------------------------------------------------------------------
-  // UPDATE
-  // ---------------------------------------------------------------------------
+      // ==========================================================
+      // RESOLVE SERIES
+      // ==========================================================
 
-  Future<Result<void>> updateVaccination(
-    String vaccinationId,
-    Map<String, dynamic> data,
-  ) async {
-    try {
-      final result = await _service.updateVaccination(
-        vaccinationId,
-        data,
-      );
+      if (request.isNewSeries) {
+        // -----------------------------
+        // Validate new series
+        // -----------------------------
 
-      if (result is Success<void>) {
-        final vaccinationsResult =
-            await _service.getVaccinations(arg);
-
-        if (vaccinationsResult is Success<List<Vaccination>>) {
-          state = AsyncData(vaccinationsResult.data);
-        } else if (vaccinationsResult is Failure<List<Vaccination>>) {
-          state = AsyncError(
-            vaccinationsResult.message,
-            StackTrace.current,
+        if (request.vaccineName == null ||
+            request.vaccineName!.trim().isEmpty) {
+          return const Failure(
+            'Vaccine name is required.',
           );
         }
-      }
 
-      return result;
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
-
-      return Failure(e.toString());
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // DELETE
-  // ---------------------------------------------------------------------------
-
-  Future<Result<void>> deleteVaccination(
-    String vaccinationId,
-  ) async {
-    state = const AsyncLoading();
-
-    try {
-      final result = await _service.deleteVaccination(
-        vaccinationId,
-      );
-
-      if (result is Success<void>) {
-        final vaccinationsResult =
-            await _service.getVaccinations(arg);
-
-        if (vaccinationsResult is Success<List<Vaccination>>) {
-          state = AsyncData(vaccinationsResult.data);
-        } else {
-          state = const AsyncData([]);
+        if (request.requiredDoses == null ||
+            request.requiredDoses! <= 0) {
+          return const Failure(
+            'Number of doses must be greater than 0.',
+          );
         }
 
-        return result;
-      }
+        // -----------------------------
+        // Create new series
+        // -----------------------------
 
-      if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
+        serie = VaccinationSerie(
+          id: const Uuid().v4(),
+          petId: request.petId,
+          vaccineName: request.vaccineName!.trim(),
+          requiredDoses: request.requiredDoses!,
+          completedDoses: 0,
+          isCompleted: false,
+          createdAt: DateTime.now(),
         );
 
-        return result;
+        final seriesResult = await _serieService.create(
+          serie.id!,
+          serie.toMap(),
+        );
+
+        if (seriesResult is Failure<void>) {
+          return Failure(seriesResult.message);
+        }
+
+        // New series always starts with dose 1.
+        doseNumber = 1;
       }
 
-      return result;
-    } catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
+      // ==========================================================
+      // EXISTING SERIES
+      // ==========================================================
 
-      return Failure(e.toString());
-    }
-  }
+      else {
+        final seriesResult = await _serieService.getById(
+          request.seriesId!,
+        );
 
-  Future<Result<VaccItemInfo>> getVaccinationInfo() async {
-    try {
-      return await _service.getVaccinationInfo(arg);
+        if (seriesResult is Failure<VaccinationSerie>) {
+          return Failure(seriesResult.message);
+        }
+
+        final success =
+            seriesResult as Success<VaccinationSerie>;
+
+        serie = success.data;
+
+        // -----------------------------
+        // Prevent completed series
+        // -----------------------------
+
+        if (serie.isCompleted ||
+            serie.completedDoses >= serie.requiredDoses) {
+          return const Failure(
+            'This vaccination series is already complete.',
+          );
+        }
+
+        // -----------------------------
+        // Determine next dose
+        // -----------------------------
+
+        doseNumber = serie.completedDoses + 1;
+      }
+
+      // ==========================================================
+      // CREATE VACCINATION RECORD
+      // ==========================================================
+
+      final vaccination = VaccinationRecord(
+        id: const Uuid().v4(),
+        petId: request.petId,
+        seriesId: serie.id,
+        vaccineName: serie.vaccineName,
+        doseNumber: doseNumber,
+        vaccinationDate: request.vaccinationDate,
+        notes: request.notes,
+      );
+
+      final recordResult = await _recordService.create(
+        vaccination.id!,
+        vaccination.toMap(),
+      );
+
+      if (recordResult is Failure<void>) {
+        return Failure(recordResult.message);
+      }
+
+      // ==========================================================
+      // UPDATE SERIES PROGRESS
+      // ==========================================================
+
+      final isCompleted =
+          doseNumber >= serie.requiredDoses;
+
+      final updatedSerie = serie.copyWith(
+        completedDoses: doseNumber,
+        isCompleted: isCompleted,
+      );
+
+      final updateResult = await _serieService.update(
+        updatedSerie.id!,
+        updatedSerie.toMap(),
+      );
+
+      if (updateResult is Failure<void>) {
+        return Failure(updateResult.message);
+      }
+
+      // ==========================================================
+      // REFRESH RELATED PROVIDERS
+      // ==========================================================
+
+      ref.invalidate(
+        healthCardProvider(request.petId),
+      );
+
+      ref.invalidate(
+        vaccinationRecordProvider(request.petId),
+      );
+
+      ref.invalidate(
+        vaccinationSerieProvider(request.petId),
+      );
+
+      return const Success(null);
     } catch (e) {
       return Failure(e.toString());
     }

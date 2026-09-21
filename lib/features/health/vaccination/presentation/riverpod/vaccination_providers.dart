@@ -1,22 +1,29 @@
  import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
-import 'package:pet_care/features/health/vaccination/domain/entity/vaccination1.dart';
-import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaacination_info_notifier.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_notifier.dart';
+import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_record_notifier.dart';
+import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_serie_notifier%20.dart';
 
-final vaccinationProvider = AsyncNotifierProvider.family<
-VaccinationNotifier,
-List<Vaccination>,
+final vaccinationRecordProvider = AsyncNotifierProvider.family<
+VaccinationRecordNotifier,
+List<VaccinationRecord>,
  String >(
-  VaccinationNotifier.new
+  VaccinationRecordNotifier.new
  );
   
 
-final vaccinationInfoProvider =
+
+final vaccinationSerieProvider = AsyncNotifierProvider.family<
+VaccinationSerieNotifier,
+List<VaccinationSerie>,
+ String >(
+  VaccinationSerieNotifier.new
+ );
+  
+final vaccinationNotifierProvider =
     AsyncNotifierProviderFamily<
-      VaccinationInfoNotifier,
-      VaccItemInfo,
+      VaccinationNotifier,
+      void,
       String
-    >(
-      VaccinationInfoNotifier.new,
-    );
+    >(VaccinationNotifier.new);
