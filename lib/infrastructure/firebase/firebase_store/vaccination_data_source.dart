@@ -7,49 +7,37 @@ class VaccinationDataSource {
     required FirebaseFirestore firestore,
   }) : _firestore = firestore;
 
-  /// Top-level vaccinations collection.
-  CollectionReference<Map<String, dynamic>> get _vaccinationsRef =>
-      _firestore.collection('vaccinations');
-
-  // ---------------------------------------------------------------------------
-  // CREATE
-  // ---------------------------------------------------------------------------
-
-  Future<void> createVaccination(
-    String vaccinationId,
-    Map<String, dynamic> data,
-  ) async {
-    await _vaccinationsRef
-        .doc(vaccinationId)
-        .set(data);
+  CollectionReference<Map<String, dynamic>> _collection(
+    String collectionName,
+  ) {
+    return _firestore.collection(collectionName);
   }
 
-  // ---------------------------------------------------------------------------
-  // READ ALL VACCINATIONS FOR A PET
-  // ---------------------------------------------------------------------------
+  Future<void> create(
+    String collectionName,
+    String id,
+    Map<String, dynamic> data,
+  ) async {
 
-  Future<List<Map<String, dynamic>>> getVaccinations(
+    await _collection(collectionName).doc(id).set(data);
+  }
+
+  Future<List<Map<String, dynamic>>> getAll(
+    String collectionName,
     String petId,
   ) async {
-    final snapshot = await _vaccinationsRef
+    final snapshot = await _collection(collectionName)
         .where('petId', isEqualTo: petId)
         .get();
 
-    return snapshot.docs
-        .map((doc) => doc.data())
-        .toList();
+    return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  // ---------------------------------------------------------------------------
-  // READ ONE VACCINATION
-  // ---------------------------------------------------------------------------
-
-  Future<Map<String, dynamic>?> getVaccination(
-    String vaccinationId,
+  Future<Map<String, dynamic>?> getById(
+    String collectionName,
+    String id,
   ) async {
-    final doc = await _vaccinationsRef
-        .doc(vaccinationId)
-        .get();
+    final doc = await _collection(collectionName).doc(id).get();
 
     if (!doc.exists) {
       return null;
@@ -58,39 +46,26 @@ class VaccinationDataSource {
     return doc.data();
   }
 
-  // ---------------------------------------------------------------------------
-  // UPDATE
-  // ---------------------------------------------------------------------------
-
-  Future<void> updateVaccination(
-    String vaccinationId,
+  Future<void> update(
+    String collectionName,
+    String id,
     Map<String, dynamic> data,
   ) async {
-    await _vaccinationsRef
-        .doc(vaccinationId)
-        .update(data);
+    await _collection(collectionName).doc(id).update(data);
   }
 
-  // ---------------------------------------------------------------------------
-  // DELETE
-  // ---------------------------------------------------------------------------
-
-  Future<void> deleteVaccination(
-    String vaccinationId,
+  Future<void> delete(
+    String collectionName,
+    String id,
   ) async {
-    await _vaccinationsRef
-        .doc(vaccinationId)
-        .delete();
+    await _collection(collectionName).doc(id).delete();
   }
 
-  // ---------------------------------------------------------------------------
-  // COUNT VACCINATIONS FOR A PET
-  // ---------------------------------------------------------------------------
-
-  Future<int> getVaccinationCount(
+  Future<int> getCount(
+    String collectionName,
     String petId,
   ) async {
-    final aggregateQuery = await _vaccinationsRef
+    final aggregateQuery = await _collection(collectionName)
         .where('petId', isEqualTo: petId)
         .count()
         .get();
@@ -98,28 +73,16 @@ class VaccinationDataSource {
     return aggregateQuery.count ?? 0;
   }
 
-  // ---------------------------------------------------------------------------
-  // GET NEXT VACCINATION FOR A PET
-  // ---------------------------------------------------------------------------
+ Future<int> getActiveSerieCount(
+  String collectionName,
+  String petId,
+) async {
+  final aggregateQuery = await _collection(collectionName)
+      .where('petId', isEqualTo: petId)
+      .where('isCompleted', isEqualTo: false)
+      .count()
+      .get();
 
-  Future<Map<String, dynamic>?> getNextVaccination(
-    String petId,
-  ) async {
-    final snapshot = await _vaccinationsRef
-        .where('petId', isEqualTo: petId)
-        .where(
-          'nextDueDate',
-          isGreaterThanOrEqualTo: Timestamp.now(),
-        )
-        .orderBy('nextDueDate')
-        .limit(1)
-        .get();
-
-    if (snapshot.docs.isEmpty) {
-      return null;
-    }
-
-    return snapshot.docs.first.data();
-  }
-
+  return aggregateQuery.count ?? 0;
+}
 }

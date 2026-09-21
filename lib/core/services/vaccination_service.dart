@@ -1,41 +1,110 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
-import 'package:pet_care/features/health/vaccination/domain/entity/vaccination1.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/firestore_mapprt.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
 
-class VaccinationService {
+class VaccinationService<T> {
   final VaccinationDataSource dataSource;
+
+  final String collectionName;
+
+  final T Function(Map<String, dynamic> data) fromMap;
 
   VaccinationService({
     required this.dataSource,
+    required this.collectionName,
+    required this.fromMap,
   });
+
+   // ---------------------------------------------------------------------------
+  // Count
+  // --------------------------------------------------------------------------
+
+Future<Result<int>> count(
+    String petid,
+  ) async {
+    try {
+      if (petid.isEmpty) {
+        return const Failure(
+          'ID is required.',
+        );
+      }
+      
+     final result= await dataSource.getCount(
+        collectionName,
+        petid,
+      
+      );
+    
+      return  Success(result);
+    } on FirebaseException catch (e) {
+      return Failure(
+        mapFirestoreExceptionToFailure(e).message,
+      );
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
+    }
+  }
+ 
+
+   // ---------------------------------------------------------------------------
+  // Count
+  // --------------------------------------------------------------------------
+  
+Future<Result<int>> countActivSeries(
+    String petid,
+  ) async {
+    try {
+      if (petid.isEmpty) {
+        return const Failure(
+          'ID is required.',
+        );
+      }
+      
+     final result= await dataSource.getActiveSerieCount(
+        collectionName,
+        petid,
+      
+      );
+    
+      return  Success(result);
+    } on FirebaseException catch (e) {
+      return Failure(
+        mapFirestoreExceptionToFailure(e).message,
+      );
+    } catch (e) {
+      return Failure(
+        e.toString(),
+      );
+    }
+  }
+ 
 
   // ---------------------------------------------------------------------------
   // CREATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> addVaccination(
-    Vaccination vaccination,
+  Future<Result<void>> create(
+    String id,
+    Map<String, dynamic> data,
   ) async {
     try {
-      final vaccinationId = vaccination.id;
-
-      if (vaccinationId == null || vaccinationId.isEmpty) {
+      if (id.isEmpty) {
         return const Failure(
-          'Vaccination ID is required.',
+          'ID is required.',
         );
       }
-
-      await dataSource.createVaccination(
-        vaccinationId,
-        vaccination.toMap(),
+      
+      await dataSource.create(
+        collectionName,
+        id,
+        data,
       );
-
-      return const Success(null);
+    
+      return  Success(null);
     } on FirebaseException catch (e) {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
@@ -48,10 +117,10 @@ class VaccinationService {
   }
 
   // ---------------------------------------------------------------------------
-  // READ ALL FOR PET
+  // READ ALL
   // ---------------------------------------------------------------------------
 
-  Future<Result<List<Vaccination>>> getVaccinations(
+  Future<Result<List<T>>> getAll(
     String petId,
   ) async {
     try {
@@ -61,17 +130,16 @@ class VaccinationService {
         );
       }
 
-      final data = await dataSource.getVaccinations(
+      final data = await dataSource.getAll(
+        collectionName,
         petId,
       );
 
-      final vaccinations = data
-          .map(
-            (map) => Vaccination.fromMap(map),
-          )
+      final entities = data
+          .map(fromMap)
           .toList();
 
-      return Success(vaccinations);
+      return Success(entities);
     } on FirebaseException catch (e) {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
@@ -87,31 +155,30 @@ class VaccinationService {
   // READ ONE
   // ---------------------------------------------------------------------------
 
-  Future<Result<Vaccination>> getVaccination(
-    String vaccinationId,
+  Future<Result<T>> getById(
+    String id,
   ) async {
     try {
-      if (vaccinationId.isEmpty) {
+      if (id.isEmpty) {
         return const Failure(
-          'Vaccination ID is required.',
+          'ID is required.',
         );
       }
 
-      final data = await dataSource.getVaccination(
-        vaccinationId,
+      final data = await dataSource.getById(
+        collectionName,
+        id,
       );
 
       if (data == null) {
         return const Failure(
-          'Vaccination not found.',
+          'Record not found.',
         );
       }
 
-      final vaccination = Vaccination.fromMap(
-        data,
+      return Success(
+        fromMap(data),
       );
-
-      return Success(vaccination);
     } on FirebaseException catch (e) {
       return Failure(
         mapFirestoreExceptionToFailure(e).message,
@@ -127,19 +194,20 @@ class VaccinationService {
   // UPDATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> updateVaccination(
-    String vaccinationId,
+  Future<Result<void>> update(
+    String id,
     Map<String, dynamic> data,
   ) async {
     try {
-      if (vaccinationId.isEmpty) {
+      if (id.isEmpty) {
         return const Failure(
-          'Vaccination ID is required.',
+          'ID is required.',
         );
       }
 
-      await dataSource.updateVaccination(
-        vaccinationId,
+      await dataSource.update(
+        collectionName,
+        id,
         data,
       );
 
@@ -159,18 +227,19 @@ class VaccinationService {
   // DELETE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> deleteVaccination(
-    String vaccinationId,
+  Future<Result<void>> delete(
+    String id,
   ) async {
     try {
-      if (vaccinationId.isEmpty) {
+      if (id.isEmpty) {
         return const Failure(
-          'Vaccination ID is required.',
+          'ID is required.',
         );
       }
 
-      await dataSource.deleteVaccination(
-        vaccinationId,
+      await dataSource.delete(
+        collectionName,
+        id,
       );
 
       return const Success(null);
@@ -179,65 +248,6 @@ class VaccinationService {
         mapFirestoreExceptionToFailure(e).message,
       );
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // VACCINATION SUMMARY
-  // ---------------------------------------------------------------------------
-
-  Future<Result<VaccItemInfo>> getVaccinationInfo(
-    String petId,
-  ) async {
-    try {
-      if (petId.isEmpty) {
-        return const Failure(
-          'Pet ID is required.',
-        );
-      }
-
-      final count = await dataSource.getVaccinationCount(
-        petId,
-      );
-
-      final nextVaccination =
-          await dataSource.getNextVaccination(
-        petId,
-      );
-
-      if (nextVaccination == null) {
-        return Success(
-          (
-            vaccinationsCount: count.toString(),
-            nextVaccineName: 'None',
-            nextDueDate: null,
-          ),
-        );
-      }
-
-      final vaccination = Vaccination.fromMap(
-        nextVaccination,
-      );
-
-      return Success(
-        (
-          vaccinationsCount: count.toString(),
-          nextVaccineName:
-              vaccination.nextVaccineName ??
-              vaccination.vaccineName,
-          nextDueDate:
-              vaccination.nextDueDate?.toString(),
-        ),
-      );
-    } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
-    } catch (e) {
-
       return Failure(
         e.toString(),
       );
