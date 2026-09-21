@@ -5,10 +5,14 @@ import 'package:pet_care/core/services/appointment_service.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
+import 'package:pet_care/core/services/vaccination_service.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
 import 'package:pet_care/infrastructure/firebase/appointment/firebase_appointment_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/infrastructure/networks/dio/dio_provider.dart';
@@ -70,6 +74,28 @@ final imageServiceProvider = Provider<ImageService>((ref)
 }
 ); 
 
+
+ final vaccinationDataSourceProvider=Provider<VaccinationDataSource>((ref)=>
+ VaccinationDataSource(firestore: FirebaseFirestore.instance)
+ );
+  
+ final vaccinationRecordServiceProvider =Provider<VaccinationService<VaccinationRecord>>((ref) {
+  return VaccinationService<VaccinationRecord>(
+    dataSource: ref.read(vaccinationDataSourceProvider),
+    collectionName: 'vaccinationRecords',
+    fromMap: VaccinationRecord.fromMap,
+  );
+});
+
+
+final vaccinationSerieServiceProvider = Provider <VaccinationService<VaccinationSerie>>(( ref){
+    return VaccinationService<VaccinationSerie>(
+      dataSource: ref.read(vaccinationDataSourceProvider),
+    collectionName: 'vaccinationSeries',
+    fromMap: VaccinationSerie.fromMap
+    );
+  }
+  );
 // ---------------- APPOINTMENTS DI ---------------- //
 
 final appointmentFirestoreDataSourceProvider =
