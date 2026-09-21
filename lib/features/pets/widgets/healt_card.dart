@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
-import 'package:pet_care/features/health/vaccination/data/vaccination_item_info.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/helath_card_info.dart';
 import 'package:pet_care/features/pets/widgets/health_item.dart';
 
 class HealthCard extends StatelessWidget {
-  final  String petId;
-  final VaccItemInfo info;
-    const HealthCard({super.key, required this.petId, required this.info});
+  final String petId;
+   final HealthCardInfo  cardInfo ;
+    const HealthCard({super.key, required this.cardInfo, required this.petId});
 
   @override
   Widget build(BuildContext context) {
+         
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -59,8 +60,8 @@ class HealthCard extends StatelessWidget {
                 child: VaccinationItem(
               
                   icon: Icons.vaccines_outlined,
-                  vaccinationsNum: info.vaccinationsCount,
-                  nextVaccineName:  info.nextVaccineName,
+                  vaccinationsCount:cardInfo.vaccination.doseCount,
+                  activeSeriesCount: cardInfo.vaccination.activeSeriesCount,
                   onTap:()=> appRouter.push(vaccinationList,extra: petId) ,
                 ),
               ),

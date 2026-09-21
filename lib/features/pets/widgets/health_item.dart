@@ -98,16 +98,15 @@ class AppointmentItem extends StatelessWidget {
 
 class VaccinationItem extends StatelessWidget {
   final IconData icon;
-  final String vaccinationsNum;
-  final String nextVaccineName;
+  final int vaccinationsCount;
+  final int activeSeriesCount;
   final VoidCallback? onTap;
 
   const VaccinationItem({
     super.key,
     required this.icon,
-    required this.vaccinationsNum,
-    required this.nextVaccineName,
-    this.onTap,
+    required this.vaccinationsCount,
+    this.onTap, required this.activeSeriesCount,
   });
 
   @override
@@ -169,34 +168,22 @@ class VaccinationItem extends StatelessWidget {
               const SizedBox(height: 14),
 
               Text(
-                'Vaccinations',
-                style: AppStyle.regular10,
+                '$vaccinationsCount ${vaccinationsCount <= 1 ? 'dose' : 'doses'}',
+                style: AppStyle.regular12,
               ),
 
               const SizedBox(height: 5),
 
-              Text(
-                vaccinationsNum,
-                style: AppStyle.tileTitle.copyWith(
-                  fontSize: 13,
-                ),
-              ),
-
+              
               const SizedBox(height: 8),
 
-              Text(
-                'Next Vaccine',
-                style: AppStyle.regular10,
-              ),
-
-              const SizedBox(height: 5),
+          
 
               Text(
-                nextVaccineName,
-                style: AppStyle.tileTitle.copyWith(
-                  fontSize: 13,
-                ),
-              ),
+                 "Active Series: $activeSeriesCount",
+                style: AppStyle.regular12)
+              
+              
             ],
           ),
         ),
