@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
@@ -5,22 +6,20 @@ import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class VaccinationListItem extends StatelessWidget {
   final String vaccineName;
-  final String nextDoseDate;
-  final String nextDoseStatus;
+  final int requiredDoses;
+  final int completedDoses;
   final VoidCallback? onTap;
 
   const VaccinationListItem({
     super.key,
     required this.vaccineName,
-    required this.nextDoseDate,
-    required this.nextDoseStatus,
+    required this.requiredDoses,
+    required this.completedDoses,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isUnscheduled = nextDoseStatus == 'Unscheduled';
-
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -73,19 +72,12 @@ class VaccinationListItem extends StatelessWidget {
                     const SizedBox(height: 6),
 
                     Text(
-                      'Next dose: $nextDoseDate',
-                      style: AppStyle.regular10,
-                    ),
-
-                    if (!isUnscheduled) ...[
-                      const SizedBox(height: 5),
-                      Text(
-                        nextDoseStatus,
-                        style: AppStyle.regular10.copyWith(
-                          color: AppColors.primary,
-                        ),
+                      ' $completedDoses/$requiredDoses ${completedDoses == 1 ? 'dose' : 'doses'} compelted',
+                      style: AppStyle.regular12.copyWith(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
                       ),
-                    ],
+                    ),
                   ],
                 ),
               ),
@@ -112,3 +104,5 @@ class VaccinationListItem extends StatelessWidget {
     );
   }
 }
+
+

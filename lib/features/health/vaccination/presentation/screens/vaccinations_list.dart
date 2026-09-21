@@ -3,12 +3,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
-import 'package:pet_care/features/health/vaccination/presentation/%20vaccination_status_extension.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_providers.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/vaccination_list_item.dart';
 
@@ -20,10 +18,15 @@ class VaccinationListScreen extends ConsumerWidget {
     required this.petId,
   });
 
+
+  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vaccinationsAsync = ref.watch(
-      vaccinationProvider(petId),
+                      vaccinationSerieProvider(petId),
+    
+
     );
 
     return Scaffold(
@@ -73,7 +76,7 @@ class VaccinationListScreen extends ConsumerWidget {
                 TextButton(
                   onPressed: () {
                     ref.invalidate(
-                      vaccinationProvider(petId),
+                      vaccinationSerieProvider(petId),
                     );
                   },
                   child: const Text('Try again'),
@@ -99,7 +102,8 @@ class VaccinationListScreen extends ConsumerWidget {
             onRefresh: () async {
               // ignore: unused_result
               await ref.refresh(
-                vaccinationProvider(petId).future,
+                      vaccinationSerieProvider(petId)
+                .future,
               );
             },
             child: ListView.separated(
@@ -117,17 +121,15 @@ class VaccinationListScreen extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final vaccination = vaccinations[index];
 
-                final dueDate = vaccination.nextDueDate;
 
                 return VaccinationListItem(
+                  
                   vaccineName: vaccination.vaccineName,
-                  nextDoseDate: dueDate != null
-                      ? DateFormat('dd MMM yyyy').format(dueDate)
-                      : 'Not scheduled',
-                  nextDoseStatus:  
-                  vaccination.duestatus.displayName,
+                    requiredDoses:vaccination.requiredDoses,
+                    completedDoses: vaccination.completedDoses,
+                
                   onTap: () {
-                    // Navigate to vaccination details
+                    appRouter.push(vaccinationDetails,extra: vaccination);
                   },
                 );
               },
