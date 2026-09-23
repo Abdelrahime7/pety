@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
@@ -10,7 +11,11 @@ import 'package:pet_care/core/constant/widgets/app_save_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/field_label.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
+
+import 'package:pet_care/features/appointments/domain/enums/appointment_types.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_selector.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
+
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
@@ -18,14 +23,21 @@ class AddAppointmentScreen extends ConsumerStatefulWidget {
   const AddAppointmentScreen({super.key});
 
   @override
-  ConsumerState<AddAppointmentScreen> createState() => _AddAppointmentScreenState();
+  ConsumerState<AddAppointmentScreen> createState() =>
+      _AddAppointmentScreenState();
+      
 }
 
-class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
+class _AddAppointmentScreenState
+    extends ConsumerState<AddAppointmentScreen> {
   final _formKey = GlobalKey<FormState>();
 
   String? _selectedPetId;
+
+  AppointmentType _selectedType = AppointmentType.other;
+
   DateTime? _selectedDateTime;
+
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _vetController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
@@ -40,6 +52,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
 
   Future<void> _pickDateTime() async {
     final now = DateTime.now();
+
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDateTime ?? now,
@@ -68,34 +81,46 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
 
     setState(() {
       _selectedDateTime = fullDate;
+
       _dateController.text =
-          "${fullDate.month.toString().padLeft(2, '0')} / ${fullDate.day.toString().padLeft(2, '0')} / ${fullDate.year} , ${pickedTime.format(context)}";
+          "${fullDate.month.toString().padLeft(2, '0')} / "
+          "${fullDate.day.toString().padLeft(2, '0')} / "
+          "${fullDate.year} , "
+          "${pickedTime.format(context)}";
     });
   }
 
   Future<void> _submit() async {
     if (_selectedPetId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a pet')),
+        const SnackBar(
+          content: Text('Please select a pet'),
+        ),
       );
       return;
     }
 
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (!( _formKey.currentState?.validate() ?? false)) {
+      return;
+    }
 
     if (_selectedDateTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select date and time')),
+        const SnackBar(
+          content: Text('Please select date and time'),
+        ),
       );
       return;
     }
 
-    final result = await ref.read(appointmentProvider.notifier).addAppointment(
-          petId: _selectedPetId!,
-          date: _selectedDateTime!,
-          veterinarian: _vetController.text.trim(),
-          notes: _notesController.text.trim(),
-        );
+    final result =
+        await ref.read(appointmentProvider.notifier).addAppointment(
+              petId: _selectedPetId!,
+              date: _selectedDateTime!,
+              veterinarian: _vetController.text.trim(),
+              notes: _notesController.text.trim(),
+              type: _selectedType,
+            );
 
     if (!mounted) return;
 
@@ -103,7 +128,9 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
       context.pop(true);
     } else if (result is Failure<void>) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result.message)),
+        SnackBar(
+          content: Text(result.message),
+        ),
       );
     }
   }
@@ -112,7 +139,6 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
   Widget build(BuildContext context) {
     final appointmentState = ref.watch(appointmentProvider);
     final petAsync = ref.watch(petNotifierProvider);
-
     final pets = petAsync.valueOrNull ?? [];
 
     if (_selectedPetId == null && pets.isNotEmpty) {
@@ -132,11 +158,16 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                 children: [
                   // Top Bar
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AppCloseButton(onPressed: () => context.pop()),
+                        AppCloseButton(
+                          onPressed: () => context.pop(),
+                        ),
                         Text(
                           'New Appointment',
                           style: TextStyle(
@@ -159,12 +190,36 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       children: [
                         SizedBox(height: 16.h),
+
+                        // SELECT PET
                         const FieldLabel(label: 'SELECT PET'),
                         SizedBox(height: 8.h),
-                        _buildPetSelector(pets, petAsync.isLoading),
+
+                        _buildPetSelector(
+                          pets,
+                          petAsync.isLoading,
+                        ),
 
                         SizedBox(height: 20.h),
+
+                        // APPOINTMENT TYPE
+                        const FieldLabel(label: 'TYPE'),
+                        SizedBox(height: 8.h),
+
+                        buildAppointmentTypeSelector(
+                          selectedType: _selectedType,
+                     onChanged: (value) {
+                       setState(() {
+                           _selectedType = value!;
+                                });
+                           },                        
+                         ),
+            
+                        SizedBox(height: 20.h),
+
+                        // DATE
                         const FieldLabel(label: 'DATE'),
+
                         CustomeTextField(
                           controller: _dateController,
                           hintText: 'mm / dd / yyyy , --:-- --',
@@ -176,11 +231,16 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                             color: AppColors.icon,
                           ),
                           validator: (value) =>
-                              value == null || value.isEmpty ? 'Date is required' : null,
+                              value == null || value.isEmpty
+                                  ? 'Date is required'
+                                  : null,
                         ),
 
                         SizedBox(height: 16.h),
+
+                        // VETERINARIAN
                         const FieldLabel(label: 'VETERINARIAN'),
+
                         CustomeTextField(
                           controller: _vetController,
                           hintText: 'e.g. Dr. Sarah Mitchell',
@@ -196,7 +256,10 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                         ),
 
                         SizedBox(height: 16.h),
+
+                        // NOTES
                         const FieldLabel(label: 'NOTES'),
+
                         CustomeTextField(
                           controller: _notesController,
                           hintText: 'Anything the vet should know...',
@@ -204,11 +267,13 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                         ),
 
                         SizedBox(height: 28.h),
+
                         AppPrimaryButton(
                           text: 'Schedule Appointment',
                           isLoading: isSubmitting,
                           onPressed: isSubmitting ? null : _submit,
                         ),
+
                         SizedBox(height: 24.h),
                       ],
                     ),
@@ -221,7 +286,9 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
           // Loading overlay
           if (isSubmitting) ...[
             Positioned.fill(
-              child: Container(color: Colors.black.withOpacity(0.2)),
+              child: Container(
+                color: Colors.black.withOpacity(0.2),
+              ),
             ),
             Center(
               child: Container(
@@ -239,10 +306,12 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                 child: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(color: AppColors.primary),
+                    CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
                     SizedBox(height: 16),
                     Text(
-                      "Scheduling appointment…",
+                      'Scheduling appointment…',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -259,12 +328,22 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
     );
   }
 
-  Widget _buildPetSelector(List<Pet> pets, bool isLoading) {
+
+
+
+
+  Widget _buildPetSelector(
+    List<Pet> pets,
+    bool isLoading,
+  ) {
     if (isLoading && pets.isEmpty) {
       return SizedBox(
         height: 90.h,
         child: const Center(
-          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: AppColors.primary,
+          ),
         ),
       );
     }
@@ -284,7 +363,11 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
           final isSelected = pet.id == _selectedPetId;
 
           return GestureDetector(
-            onTap: () => setState(() => _selectedPetId = pet.id),
+            onTap: () {
+              setState(() {
+                _selectedPetId = pet.id;
+              });
+            },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -296,17 +379,25 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
-                      color: isSelected ? AppColors.primary : AppColors.border,
+                      color: isSelected
+                          ? AppColors.primary
+                          : AppColors.border,
                       width: isSelected ? 2 : 1,
                     ),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: pet.photoUrl.isNotEmpty
-                        ? Image.network(pet.photoUrl, fit: BoxFit.cover)
+                        ? Image.network(
+                            pet.photoUrl,
+                            fit: BoxFit.cover,
+                          )
                         : Container(
                             color: const Color(0xFFF1F5F9),
-                            child: const Icon(Icons.pets, color: AppColors.icon),
+                            child: const Icon(
+                              Icons.pets,
+                              color: AppColors.icon,
+                            ),
                           ),
                   ),
                 ),
@@ -315,8 +406,12 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                   pet.name,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                    color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.w500,
+                    color: isSelected
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -347,7 +442,11 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                 width: 1.2,
               ),
             ),
-            child: const Icon(Icons.add, color: AppColors.icon, size: 22),
+            child: const Icon(
+              Icons.add,
+              color: AppColors.icon,
+              size: 22,
+            ),
           ),
           SizedBox(height: 4.h),
           Text(
