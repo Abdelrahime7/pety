@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_icon.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_label.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 
@@ -140,30 +142,74 @@ class AppointmentPetCard extends StatelessWidget {
 class AppointmentInfoCard extends StatelessWidget {
   final Appointment appointment;
 
-  const AppointmentInfoCard({super.key, required this.appointment});
+  const AppointmentInfoCard({
+    super.key,
+    required this.appointment,
+  });
 
   @override
   Widget build(BuildContext context) {
     final date = DateFormat('EEEE, MMMM d, yyyy').format(appointment.date);
     final time = DateFormat('h:mm a').format(appointment.date);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22.r),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
-          AppointmentDetailRow(icon: Icons.calendar_today_outlined, label: 'DATE & TIME', value: '$date • $time'),
+          // TYPE
+          AppointmentDetailRow(
+            icon: appointmentTypeIcon(appointment.type),
+            label: 'TYPE',
+            value: appointmentTypeLabel(appointment.type),
+          ),
+
           const _DetailDivider(),
-          AppointmentDetailRow(icon: Icons.person_outline_rounded, label: 'VETERINARIAN', value: appointment.veterinarian.isNotEmpty ? appointment.veterinarian : 'Not specified'),
+
+          // DATE & TIME
+          AppointmentDetailRow(
+            icon: Icons.calendar_today_outlined,
+            label: 'DATE & TIME',
+            value: '$date • $time',
+          ),
+
           const _DetailDivider(),
-          AppointmentDetailRow(icon: Icons.sticky_note_2_outlined, label: 'NOTES', value: appointment.notes.isNotEmpty ? appointment.notes : 'No notes added.', isNotes: true),
+
+          // VETERINARIAN
+          AppointmentDetailRow(
+            icon: Icons.person_outline_rounded,
+            label: 'VETERINARIAN',
+            value: appointment.veterinarian.isNotEmpty
+                ? appointment.veterinarian
+                : 'Not specified',
+          ),
+
+          const _DetailDivider(),
+
+          // NOTES
+          AppointmentDetailRow(
+            icon: Icons.sticky_note_2_outlined,
+            label: 'NOTES',
+            value: appointment.notes.isNotEmpty
+                ? appointment.notes
+                : 'No notes added.',
+            isNotes: true,
+          ),
         ],
       ),
     );
   }
 }
+
 
 class AppointmentDetailRow extends StatelessWidget {
   final IconData icon;

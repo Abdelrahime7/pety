@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:pet_care/features/appointments/domain/enums/appointment_types.dart';
+
 enum AppointmentStatus { upcoming, past }
 
 class Appointment {
@@ -8,6 +10,7 @@ class Appointment {
   final DateTime date;
   final String veterinarian;
   final String notes;
+  final AppointmentType type;
 
   const Appointment({
     required this.appointmentId,
@@ -15,6 +18,7 @@ class Appointment {
     required this.date,
     required this.veterinarian,
     this.notes = '',
+    required this.type,
   });
 
   String get id => appointmentId;
@@ -22,7 +26,9 @@ class Appointment {
   DateTime get dateTime => date;
 
   AppointmentStatus get status =>
-      date.isBefore(DateTime.now()) ? AppointmentStatus.past : AppointmentStatus.upcoming;
+      date.isBefore(DateTime.now())
+          ? AppointmentStatus.past
+          : AppointmentStatus.upcoming;
 
   Map<String, dynamic> toMap() {
     return {
@@ -31,6 +37,7 @@ class Appointment {
       'date': Timestamp.fromDate(date),
       'veterinarian': veterinarian,
       'notes': notes,
+      'type': type.name,
     };
   }
 
@@ -38,29 +45,28 @@ class Appointment {
     DocumentSnapshot<Map<String, dynamic>> doc,
   ) {
     final map = doc.data() ?? {};
-    final rawDate = map['date'] ?? map['dateTime'];
-    final parsedDate = rawDate is Timestamp
-        ? rawDate.toDate()
-        : rawDate is String
-            ? DateTime.tryParse(rawDate) ?? DateTime.now()
-            : DateTime.now();
 
-    return Appointment(
-      appointmentId: doc.id,
-      petId: map['petId'] as String? ?? '',
-      date: parsedDate,
-      veterinarian: map['veterinarian'] as String? ?? '',
-      notes: map['notes'] as String? ?? '',
-    );
+    return Appointment.fromMap(map, doc.id);
   }
 
-  factory Appointment.fromMap(Map<String, dynamic> map, [String? id]) {
+  factory Appointment.fromMap(
+    Map<String, dynamic> map, [
+    String? id,
+  ]) {
     final rawDate = map['date'] ?? map['dateTime'];
+
     final parsedDate = rawDate is Timestamp
         ? rawDate.toDate()
         : rawDate is String
             ? DateTime.tryParse(rawDate) ?? DateTime.now()
             : DateTime.now();
+
+    final rawType = map['type'] as String?;
+
+    final type = AppointmentType.values.firstWhere(
+      (value) => value.name == rawType,
+      orElse: () => AppointmentType.other,
+    );
 
     return Appointment(
       appointmentId: map['appointmentId'] as String? ?? id ?? '',
@@ -68,6 +74,7 @@ class Appointment {
       date: parsedDate,
       veterinarian: map['veterinarian'] as String? ?? '',
       notes: map['notes'] as String? ?? '',
+      type: type,
     );
   }
 
@@ -77,6 +84,7 @@ class Appointment {
     DateTime? date,
     String? veterinarian,
     String? notes,
+    AppointmentType? type,
   }) {
     return Appointment(
       appointmentId: appointmentId ?? this.appointmentId,
@@ -84,6 +92,7 @@ class Appointment {
       date: date ?? this.date,
       veterinarian: veterinarian ?? this.veterinarian,
       notes: notes ?? this.notes,
+      type: type ?? this.type,
     );
   }
 }
