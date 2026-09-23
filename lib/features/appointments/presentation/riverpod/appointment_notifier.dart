@@ -5,6 +5,7 @@ import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/appointment_service.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
+import 'package:pet_care/features/appointments/domain/enums/appointment_types.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_state.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:uuid/uuid.dart';
@@ -73,6 +74,7 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
     required DateTime date,
     required String veterinarian,
     String notes = '',
+    required AppointmentType type
   }) async {
     state = state.copyWith(isLoading: true, error: () => null);
 
@@ -88,6 +90,7 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
         date: date,
         veterinarian: veterinarian,
         notes: notes,
+        type: type
       );
 
       final result = await _service.addAppointment(appointment);
