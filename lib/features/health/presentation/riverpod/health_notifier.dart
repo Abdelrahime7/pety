@@ -21,45 +21,67 @@ class HealthNotifier extends Notifier<HealthState> {
   }
 
   Future<void> loadPets() async {
+    state = state.copyWith(isLoading: true, error: null);
     final ownerId = FirebaseAuth.instance.currentUser?.uid;
     if (ownerId == null) {
-      state = const HealthState();
+      state = const HealthState(isLoading: false);
       return;
     }
 
     final result = await _petService.getPets(ownerId);
     if (result is Success<List<Pet>>) {
       final pets = result.data;
+      if (pets.isEmpty) {
+        state = const HealthState(isLoading: false, pets: []);
+        return;
+      }
+
       final recordsByPet = <String, List<HealthRecord>>{};
       for (final pet in pets) {
         final recordsResult = await _healthService.getRecords(pet.id);
         if (recordsResult is Success<List<HealthRecord>>) {
           recordsByPet[pet.id] = recordsResult.data;
+        } else {
+          recordsByPet[pet.id] = [];
         }
       }
+
+      final selected = state.selectedPet != null &&
+              pets.any((p) => p.id == state.selectedPet!.id)
+          ? state.selectedPet!
+          : pets.first;
+
       state = HealthState(
         pets: pets,
-        selectedPet: pets.isEmpty ? null : pets.first,
+        selectedPet: selected,
+        records: recordsByPet[selected.id] ?? [],
         recordsByPet: recordsByPet,
         isLoading: false,
       );
-      if (pets.isNotEmpty) {
-        state = state.copyWith(records: recordsByPet[pets.first.id] ?? []);
-      }
     } else if (result is Failure<List<Pet>>) {
       state = HealthState(isLoading: false, error: result.message);
     }
   }
 
   Future<void> selectPet(Pet pet) async {
-    state = state.copyWith(selectedPet: pet, isLoading: true, error: null);
+    state = state.copyWith(
+      selectedPet: pet,
+      records: state.recordsByPet[pet.id] ?? [],
+      selectedFilter: 'All',
+    );
+
     final result = await _healthService.getRecords(pet.id);
     if (result is Success<List<HealthRecord>>) {
       final recordsByPet = Map<String, List<HealthRecord>>.from(state.recordsByPet)
         ..[pet.id] = result.data;
-      state = state.copyWith(records: result.data, recordsByPet: recordsByPet, isLoading: false);
-    } else if (result is Failure<List<HealthRecord>>) {
-      state = state.copyWith(isLoading: false, error: result.message);
+      state = state.copyWith(
+        records: result.data,
+        recordsByPet: recordsByPet,
+      );
     }
+  }
+
+  void setSelectedFilter(String filter) {
+    state = state.copyWith(selectedFilter: filter);
   }
 }

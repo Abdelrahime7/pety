@@ -8,6 +8,7 @@ import 'package:pet_care/features/appointments/presentation/appointments_screen/
 import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/edit_appointment_screen.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 import 'package:pet_care/features/health/presentation/screens/health_screen.dart';
+import 'package:pet_care/features/health/presentation/screens/health_records_screen.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/add_vaccination.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccination_details.dart';
@@ -39,6 +40,7 @@ const String appointmentDetails = '/appointment-details';
 const String appointmentEdit = '/appointment-edit';
 const String home = '/home';
 const String health = '/health';
+const String healthRecords = '/health-records';
 
 final appRouter = GoRouter(
   initialLocation: login,
@@ -65,6 +67,10 @@ final appRouter = GoRouter(
       builder: (_, __) => const UpgradeToPremiumScreen(),
     ),
     GoRoute(path: profileInfo, builder: (_, __) => ProfileInfoScreen()),
+    GoRoute(
+      path: healthRecords,
+      builder: (_, state) => HealthRecordsScreen(pet: state.extra as Pet?),
+    ),
 
      GoRoute(path: addVaccination ,builder: (context,state ){
              final petId = state.extra as String ;

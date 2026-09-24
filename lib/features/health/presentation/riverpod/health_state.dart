@@ -6,6 +6,7 @@ class HealthState {
   final Pet? selectedPet;
   final List<HealthRecord> records;
   final Map<String, List<HealthRecord>> recordsByPet;
+  final String selectedFilter;
   final bool isLoading;
   final String? error;
 
@@ -14,6 +15,7 @@ class HealthState {
     this.selectedPet,
     this.records = const [],
     this.recordsByPet = const {},
+    this.selectedFilter = 'All',
     this.isLoading = false,
     this.error,
   });
@@ -23,6 +25,7 @@ class HealthState {
     Pet? selectedPet,
     List<HealthRecord>? records,
     Map<String, List<HealthRecord>>? recordsByPet,
+    String? selectedFilter,
     bool? isLoading,
     String? error,
   }) {
@@ -31,6 +34,7 @@ class HealthState {
       selectedPet: selectedPet ?? this.selectedPet,
       records: records ?? this.records,
       recordsByPet: recordsByPet ?? this.recordsByPet,
+      selectedFilter: selectedFilter ?? this.selectedFilter,
       isLoading: isLoading ?? this.isLoading,
       error: error,
     );

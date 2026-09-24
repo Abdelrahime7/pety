@@ -38,4 +38,32 @@ class HealthRecord {
       notes: data['notes'] as String? ?? '',
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'petId': petId,
+      'type': type.name,
+      'title': title,
+      'date': Timestamp.fromDate(date),
+      'notes': notes,
+    };
+  }
+
+  HealthRecord copyWith({
+    String? recordId,
+    String? petId,
+    HealthRecordType? type,
+    String? title,
+    DateTime? date,
+    String? notes,
+  }) {
+    return HealthRecord(
+      recordId: recordId ?? this.recordId,
+      petId: petId ?? this.petId,
+      type: type ?? this.type,
+      title: title ?? this.title,
+      date: date ?? this.date,
+      notes: notes ?? this.notes,
+    );
+  }
 }
