@@ -11,7 +11,9 @@ class VaccinationSerie {
 
   /// Total number of doses required to complete the series.
   final int requiredDoses;
+  /// number of doses completed
   final int completedDoses ;
+  /// 
   final bool isCompleted;
 
   /// Optional description of the vaccination series.
