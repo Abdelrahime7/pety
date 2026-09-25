@@ -69,10 +69,13 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                       color: Color(0xFFE6FFFA),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.monitor_heart_outlined,
-                      color: AppColors.primary,
-                      size: 22,
+                    child: Center(
+                      child: Image.asset(
+                        'assets/icons/health.png',
+                        width: 28.sp,
+                        height: 28.sp,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ),
                 ],
