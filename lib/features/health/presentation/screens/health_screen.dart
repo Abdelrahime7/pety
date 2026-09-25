@@ -78,18 +78,14 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                 ],
               ),
               SizedBox(height: 18.h),
+              // Search Bar
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16.r),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
+                  border: Border.all(
+                    color: AppColors.border.withValues(alpha: 0.6),
+                  ),
                 ),
                 child: TextField(
                   controller: _searchController,
@@ -97,16 +93,25 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   decoration: InputDecoration(
                     hintText: 'Search by name or breed...',
                     hintStyle: TextStyle(
-                      color: const Color(0xFF94A3B8),
+                      color: AppColors.secondaryText,
                       fontSize: 14.sp,
                     ),
-                    prefixIcon: const Icon(
-                      Icons.search_rounded,
-                      color: Color(0xFF94A3B8),
-                      size: 20,
+                    prefixIcon: const Icon(Icons.search, color: AppColors.icon),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide.none,
                     ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: 14.h),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                   ),
                 ),
               ),
