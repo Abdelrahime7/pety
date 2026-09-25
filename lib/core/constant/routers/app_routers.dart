@@ -83,7 +83,7 @@ final appRouter = GoRouter(
 
      GoRoute(path: petDetails,builder:(context ,stat) {
            final pet = stat.extra as Pet ;
-           return  PetDetailsScreen(petId:pet.id ,);
+           return  PetDetailsScreen(pet:pet);
           }),
 
       GoRoute(path: petEdit,builder:(context ,state) {
@@ -119,13 +119,7 @@ final appRouter = GoRouter(
       
          
       
-        GoRoute(
-          path: petDetails,
-          builder: (context, state) {
-            final pet = state.extra as Pet;
-            return PetDetailsScreen(petId: pet.id);
-          },
-        ),
+       
         GoRoute(
           path: petEdit,
           builder: (context, state) {
