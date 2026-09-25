@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/features/health/presentation/riverpod/health_provider.dart';
 import 'package:pet_care/features/health/presentation/widgets/health_pet_card.dart';
+import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
 class HealthScreen extends ConsumerStatefulWidget {
   const HealthScreen({super.key});
@@ -26,13 +26,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final healthState = ref.watch(healthProvider);
-    final pets = healthState.pets.where((pet) {
-      final query = _query.trim().toLowerCase();
-      return query.isEmpty ||
-          pet.name.toLowerCase().contains(query) ||
-          pet.breed.toLowerCase().contains(query);
-    }).toList();
+    final petState = ref.watch(petProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -118,48 +112,55 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
               ),
               SizedBox(height: 18.h),
               Expanded(
-                child: healthState.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.primary,
+                child: petState.when(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  error: (error, _) => Center(
+                    child: Text(
+                      'Failed to load pets.',
+                      style: TextStyle(color: AppColors.error),
+                    ),
+                  ),
+                  data: (allPets) {
+                    final pets = allPets.where((pet) {
+                      final query = _query.trim().toLowerCase();
+                      return query.isEmpty ||
+                          pet.name.toLowerCase().contains(query) ||
+                          pet.breed.toLowerCase().contains(query);
+                    }).toList();
+
+                    if (pets.isEmpty) {
+                      return Center(
+                        child: Text(
+                          allPets.isEmpty
+                              ? "You haven't added any pets yet."
+                              : 'No matching pets found.',
+                          style: TextStyle(
+                            color: AppColors.secondaryText,
+                            fontSize: 14.sp,
+                          ),
                         ),
-                      )
-                    : healthState.error != null
-                        ? Center(
-                            child: Text(
-                              healthState.error!,
-                              style: TextStyle(color: AppColors.error),
-                            ),
-                          )
-                        : pets.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'No pets found.',
-                                  style: TextStyle(
-                                    color: AppColors.secondaryText,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: pets.length,
-                                itemBuilder: (_, index) {
-                                  final pet = pets[index];
-                                  final records =
-                                      healthState.recordsByPet[pet.id] ?? const [];
-                                  return HealthPetCard(
-                                    pet: pet,
-                                    records: records,
-                                    onTap: () {
-                                      ref
-                                          .read(healthProvider.notifier)
-                                          .selectPet(pet);
-                                      context.push(healthRecords, extra: pet);
-                                    },
-                                  );
-                                },
-                              ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: pets.length,
+                      itemBuilder: (_, index) {
+                        final pet = pets[index];
+                        return HealthPetCard(
+                          pet: pet,
+                          onTap: () {
+                            context.push(healthRecords, extra: pet);
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ],
           ),

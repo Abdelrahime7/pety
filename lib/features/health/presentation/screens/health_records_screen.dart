@@ -27,14 +27,7 @@ class HealthRecordsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final healthState = ref.watch(healthProvider);
-
-    // Prefer passed pet, or selected pet, or fallback to first available pet
-    final currentPet = pet ??
-        healthState.selectedPet ??
-        (healthState.pets.isNotEmpty ? healthState.pets.first : null);
-
-    if (currentPet == null) {
+    if (pet == null) {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -63,14 +56,9 @@ class HealthRecordsScreen extends ConsumerWidget {
       );
     }
 
-    final petRecords = healthState.recordsByPet[currentPet.id] ?? const [];
-    final selectedFilter = healthState.selectedFilter;
-
-    final filteredRecords = selectedFilter == 'All'
-        ? petRecords
-        : petRecords
-            .where((r) => r.type.name.toLowerCase() == selectedFilter.toLowerCase())
-            .toList();
+    final currentPet = pet!;
+    final recordsAsync = ref.watch(healthRecordsProvider(currentPet.id));
+    final selectedFilter = ref.watch(healthFilterProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -145,20 +133,26 @@ class HealthRecordsScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE6FFFA),
-                        borderRadius: BorderRadius.circular(999.r),
-                      ),
-                      child: Text(
-                        '${petRecords.length} records',
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF0D9488),
+                    recordsAsync.maybeWhen(
+                      data: (records) => Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 4.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE6FFFA),
+                          borderRadius: BorderRadius.circular(999.r),
+                        ),
+                        child: Text(
+                          '${records.length} records',
+                          style: TextStyle(
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF0D9488),
+                          ),
                         ),
                       ),
+                      orElse: () => const SizedBox.shrink(),
                     ),
                   ],
                 ),
@@ -178,9 +172,8 @@ class HealthRecordsScreen extends ConsumerWidget {
                       padding: EdgeInsets.only(right: 8.w),
                       child: GestureDetector(
                         onTap: () {
-                          ref
-                              .read(healthProvider.notifier)
-                              .setSelectedFilter(filter);
+                          ref.read(healthFilterProvider.notifier).state =
+                              filter;
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
@@ -189,7 +182,8 @@ class HealthRecordsScreen extends ConsumerWidget {
                             vertical: 8.h,
                           ),
                           decoration: BoxDecoration(
-                            color: isSelected ? AppColors.primary : Colors.white,
+                            color:
+                                isSelected ? AppColors.primary : Colors.white,
                             borderRadius: BorderRadius.circular(999.r),
                             border: Border.all(
                               color: isSelected
@@ -221,8 +215,50 @@ class HealthRecordsScreen extends ConsumerWidget {
 
               // Records List
               Expanded(
-                child: filteredRecords.isEmpty
-                    ? Center(
+                child: recordsAsync.when(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  error: (error, _) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Unable to load health records.',
+                          style: TextStyle(
+                            color: AppColors.error,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        TextButton(
+                          onPressed: () {
+                            ref
+                                .read(
+                                  healthRecordsProvider(currentPet.id).notifier,
+                                )
+                                .refreshRecords();
+                          },
+                          child: const Text('Try Again'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  data: (records) {
+                    final filteredRecords = selectedFilter == 'All'
+                        ? records
+                        : records
+                            .where(
+                              (r) =>
+                                  r.type.name.toLowerCase() ==
+                                  selectedFilter.toLowerCase(),
+                            )
+                            .toList();
+
+                    if (filteredRecords.isEmpty) {
+                      return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -260,21 +296,25 @@ class HealthRecordsScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                      )
-                    : ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: filteredRecords.length,
-                        itemBuilder: (context, index) {
-                          final record = filteredRecords[index];
-                          return HealthRecordCard(
-                            record: record,
-                            onTap: () => _showRecordDetails(
-                              context,
-                              record,
-                            ),
-                          );
-                        },
-                      ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: filteredRecords.length,
+                      itemBuilder: (context, index) {
+                        final record = filteredRecords[index];
+                        return HealthRecordCard(
+                          record: record,
+                          onTap: () => _showRecordDetails(
+                            context,
+                            record,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ],
           ),

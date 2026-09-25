@@ -1,41 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/features/health/domain/entity/health_record.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HealthPetCard extends StatelessWidget {
   final Pet pet;
-  final List<HealthRecord> records;
   final VoidCallback onTap;
 
   const HealthPetCard({
     super.key,
     required this.pet,
-    required this.records,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final meta = '${pet.breed} • ${_age(pet.birthDate)}';
-
-    final String statusText;
-    final Color statusTextColor;
-    final Color statusBgColor;
-    final IconData statusIcon;
-
-    if (records.isEmpty) {
-      statusText = 'No records yet';
-      statusTextColor = const Color(0xFF94A3B8);
-      statusBgColor = const Color(0xFFF1F5F9);
-      statusIcon = Icons.description_outlined;
-    } else {
-      statusText = '${records.length} records';
-      statusTextColor = const Color(0xFF0D9488);
-      statusBgColor = const Color(0xFFE6FFFA);
-      statusIcon = Icons.description_outlined;
-    }
 
     return GestureDetector(
       onTap: onTap,
@@ -82,19 +62,23 @@ class HealthPetCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
                     decoration: BoxDecoration(
-                      color: statusBgColor,
+                      color: const Color(0xFFE6FFFA),
                       borderRadius: BorderRadius.circular(999.r),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(statusIcon, size: 12.sp, color: statusTextColor),
+                        Icon(
+                          Icons.monitor_heart_outlined,
+                          size: 12.sp,
+                          color: const Color(0xFF0D9488),
+                        ),
                         SizedBox(width: 4.w),
                         Text(
-                          statusText,
+                          'View records',
                           style: TextStyle(
                             fontSize: 10.sp,
-                            color: statusTextColor,
+                            color: const Color(0xFF0D9488),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -164,4 +148,3 @@ class _Image extends StatelessWidget {
     );
   }
 }
-
