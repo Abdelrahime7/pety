@@ -7,7 +7,6 @@ import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/pet_service.dart';
-import 'package:pet_care/features/pets/data/pet_data.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:uuid/uuid.dart';
 
@@ -41,7 +40,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
 
   Future<Result<String>> _uploadPetImage(
     File? image,
-    final String publicId
+    final String publicId,
   ) async {
     if (image == null) {
       return const Failure('Image is null');
@@ -58,10 +57,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
   // CREATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> addPet(
-    Pet pet, {
-    File? image,
-  }) async {
+  Future<Result<void>> addPet(Pet pet, {File? image}) async {
     state = const AsyncLoading();
 
     try {
@@ -76,12 +72,9 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
 
       // Upload image only if provided.
       if (image != null) {
-           final publicId= '${petId}_${DateTime.now().millisecondsSinceEpoch}';
+        final publicId = '${petId}_${DateTime.now().millisecondsSinceEpoch}';
 
-        final imageResult = await _uploadPetImage(
-          image,
-          publicId,
-        );
+        final imageResult = await _uploadPetImage(image, publicId);
 
         if (imageResult is Success<String>) {
           photoUrl = imageResult.data;
@@ -99,7 +92,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
         birthDate: pet.birthDate,
         weight: pet.weight,
         medicalNotes: pet.medicalNotes,
-        photoUrl: photoUrl??"",
+        photoUrl: photoUrl ?? "",
       );
 
       // Save to Firestore.
@@ -119,10 +112,7 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
       }
 
       if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
-        );
+        state = AsyncError(result.message, StackTrace.current);
 
         return result;
       }
@@ -151,55 +141,42 @@ class PetNotifier extends AsyncNotifier<List<Pet>> {
   // UPDATE
   // ---------------------------------------------------------------------------
 
-Future<Result<void>> updatePet(
-  PetRequest request, {
-  File? image,
-}) async {
-  try {
-    if (_ownerId == null) {
-      return const Failure('User is not logged in');
-    }
-
-    final data = toPatchMap(request);
-
-    if (image != null) {
-      final publicId =
-          '${request.id}_${DateTime.now().millisecondsSinceEpoch}';
-
-      final imageResult = await _uploadPetImage(
-        image,
-        publicId,
-      );
-
-      if (imageResult is Success<String>) {
-        data['photoUrl'] = imageResult.data;
+  Future<Result<void>> updatePet(Pet pet, {File? image}) async {
+    try {
+      if (_ownerId == null) {
+        return const Failure('User is not logged in');
       }
-    }
 
-    final result = await _service.updatePet(
-      request.id,
-      data,
-    );
+      final data = pet.toMap()..remove('ownerId');
 
-    if (result is Success<void>) {
-      final petsResult = await _service.getPets(_ownerId!);
+      if (image != null) {
+        final publicId = '${pet.id}_${DateTime.now().millisecondsSinceEpoch}';
 
-      if (petsResult is Success<List<Pet>>) {
-        state = AsyncData(petsResult.data);
-      } else if (petsResult is Failure<List<Pet>>) {
-        state = AsyncError(
-          petsResult.message,
-          StackTrace.current,
-        );
+        final imageResult = await _uploadPetImage(image, publicId);
+
+        if (imageResult is Success<String>) {
+          data['photoUrl'] = imageResult.data;
+        }
       }
-    }
 
-    return result;
-  } catch (e, stackTrace) {
-    state = AsyncError(e, stackTrace);
-    return Failure(e.toString());
+      final result = await _service.updatePet(pet.id, data);
+
+      if (result is Success<void>) {
+        final petsResult = await _service.getPets(_ownerId!);
+
+        if (petsResult is Success<List<Pet>>) {
+          state = AsyncData(petsResult.data);
+        } else if (petsResult is Failure<List<Pet>>) {
+          state = AsyncError(petsResult.message, StackTrace.current);
+        }
+      }
+
+      return result;
+    } catch (e, stackTrace) {
+      state = AsyncError(e, stackTrace);
+      return Failure(e.toString());
+    }
   }
-}
 
   // ---------------------------------------------------------------------------
   // DELETE
@@ -228,10 +205,7 @@ Future<Result<void>> updatePet(
       }
 
       if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
-        );
+        state = AsyncError(result.message, StackTrace.current);
 
         return result;
       }

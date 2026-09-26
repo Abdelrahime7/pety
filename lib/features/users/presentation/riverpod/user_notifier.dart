@@ -11,7 +11,7 @@ import 'package:pet_care/core/dependencies%20inection/di.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
-import 'package:pet_care/features/users/domain/enitiy/user.dart';
+import 'package:pet_care/features/users/domain/entity/user.dart';
 
 class UserNotifier extends AsyncNotifier<User> {
 late final UserService _userService;
