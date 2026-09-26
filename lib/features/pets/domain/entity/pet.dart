@@ -57,7 +57,31 @@ class Pet {
     };
   }
 
- static Pet fromMap(Map<String, dynamic> map) {
+  Pet copyWith({
+    String? name,
+    String? species,
+    String? breed,
+    String? gender,
+    DateTime? birthDate,
+    double? weight,
+    String? medicalNotes,
+    String? photoUrl,
+  }) {
+    return Pet(
+      id: id,
+      ownerId: ownerId,
+      name: name ?? this.name,
+      species: species ?? this.species,
+      breed: breed ?? this.breed,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
+      weight: weight ?? this.weight,
+      medicalNotes: medicalNotes ?? this.medicalNotes,
+      photoUrl: photoUrl ?? this.photoUrl,
+    );
+  }
+
+  static Pet fromMap(Map<String, dynamic> map) {
     DateTime parsedBirthDate;
     final rawDate = map['birthDate'];
 

@@ -7,6 +7,7 @@ import 'package:pet_care/core/constant/theme/app_style.dart';
 
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/health_card_privder.dart';
+import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/Iinfo_card.dart';
 import 'package:pet_care/features/pets/widgets/healt_card.dart';
@@ -14,11 +15,11 @@ import 'package:pet_care/features/pets/widgets/info_item.dart';
 import 'package:pet_care/features/pets/widgets/pet_header.dart';
 
 class PetDetailsScreen extends ConsumerStatefulWidget {
-  final String petId;
+  final Pet pet;
 
   const PetDetailsScreen({
     super.key,
-    required this.petId,
+    required this.pet,
   });
 
   @override
@@ -34,46 +35,10 @@ class _PetDetailsScreenState
   @override
   Widget build(BuildContext context) {
     final healthCardInfoState =
-        ref.watch(healthCardProvider(widget.petId));
+        ref.watch(healthCardProvider(widget.pet.id));
 
-    final petsState = ref.watch(petProvider);
 
-    return petsState.when(
-      loading: () => const Scaffold(
-        backgroundColor: AppColors.background,
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
 
-      error: (error, stack) => Scaffold(
-        backgroundColor: AppColors.background,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              error.toString(),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ),
-
-      data: (pets) {
-        final matchingPets = pets.where(
-          (pet) => pet.id == widget.petId,
-        );
-
-        if (matchingPets.isEmpty) {
-          return const Scaffold(
-            backgroundColor: AppColors.background,
-            body: Center(
-              child: Text('Pet not found'),
-            ),
-          );
-        }
-
-        final pet = matchingPets.first;
 
         return Scaffold(
           backgroundColor: AppColors.background,
@@ -110,7 +75,7 @@ class _PetDetailsScreenState
 
             child: Column(
               children: [
-                PetHeader(pet: pet),
+                PetHeader(pet: widget.pet),
 
                 const SizedBox(height: 28),
 
@@ -120,22 +85,22 @@ class _PetDetailsScreenState
                   children: [
                     InfoItem(
                       label: 'Species',
-                      value: pet.species,
+                      value:  widget.pet.species,
                     ),
 
                     InfoItem(
                       label: 'Gender',
-                      value: pet.gender,
+                      value:  widget.pet.gender,
                     ),
 
                     InfoItem(
                       label: 'Breed',
-                      value: pet.breed,
+                      value:  widget.pet.breed,
                     ),
 
                     InfoItem(
                       label: 'Weight',
-                      value: '${pet.weight} kg',
+                      value: '${ widget.pet.weight} kg',
                     ),
                   ],
                 ),
@@ -149,7 +114,7 @@ class _PetDetailsScreenState
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        pet.medicalNotes,
+                         widget.pet.medicalNotes,
                         style: AppStyle.regular14,
                       ),
                     ),
@@ -179,7 +144,7 @@ class _PetDetailsScreenState
                   data: (cardInfo) {
                     return HealthCard(
                       cardInfo: cardInfo,
-                      petId: pet.id,
+                      petId:  widget.pet.id,
                     );
                   },
                 ),
@@ -199,7 +164,7 @@ class _PetDetailsScreenState
 
                             final result = await ref
                                 .read(petProvider.notifier)
-                                .deletePet(pet.id);
+                                .deletePet( widget.pet.id);
 
                             if (!context.mounted) {
                               return;
@@ -260,7 +225,7 @@ class _PetDetailsScreenState
             ),
           ),
         );
-      },
-    );
   }
-}
+    
+  }
+

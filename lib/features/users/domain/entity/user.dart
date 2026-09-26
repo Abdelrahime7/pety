@@ -18,22 +18,19 @@ class User {
     required this.createdAt,
   });
 
-  factory User.fromMap(
-    String id,
-    Map<String, dynamic> map,
-  ) {
+  factory User.fromMap(String id, Map<String, dynamic> map) {
     return User(
       userId: id,
-      email:map['email'] as String? ?? '',
-      name: map['name'] as String,
+      email: map['email'] as String? ?? '',
+      name: map['name'] as String? ?? '',
       photoUrl: map['photoUrl'] as String?,
       subscriptionTier: SubscriptionTier.values.firstWhere(
         (tier) => tier.name == map['subscriptionTier'],
         orElse: () => SubscriptionTier.normal,
       ),
-       createdAt: map['createdAt'] is Timestamp
-        ? (map['createdAt'] as Timestamp).toDate()
-        : DateTime.now(),
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
     );
   }
 
