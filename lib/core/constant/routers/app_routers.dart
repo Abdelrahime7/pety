@@ -33,7 +33,6 @@ final String petEdit = '/Pet-Edit';
 final String addVaccination = '/Add-Vaccination';
 final String vaccinationList= '/Vaccination-List';
 final String vaccinationDetails='/vaccination-Details';
-
 const String calendar = '/calendar';
 const String addNewAppointment = '/add-new-appointment';
 const String appointmentDetails = '/appointment-details';
@@ -119,15 +118,7 @@ final appRouter = GoRouter(
 
       
          
-      
-       
-        GoRoute(
-          path: petEdit,
-          builder: (context, state) {
-            final pet = state.extra as Pet;
-            return PetEditScreen(pet: pet);
-          },
-        ),
+  
       ],
     ),
   ],
