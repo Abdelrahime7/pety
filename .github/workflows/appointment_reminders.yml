@@ -27,8 +27,7 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > service-account.json
-
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > service-account.json
       - name: Check appointments
         env:
           GOOGLE_APPLICATION_CREDENTIALS: service-account.json
