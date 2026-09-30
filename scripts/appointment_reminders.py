@@ -18,30 +18,43 @@ def check_appointments():
     reminder_limit = now + timedelta(hours=24)
 
     print(f"Current time: {now}")
-    print(f"Checking until: {reminder_limit}")
+    print(f"Checking appointments until: {reminder_limit}")
 
     appointments = (
         db.collection("appointments")
-        .where("reminder24hSent", "==", False)
+        .where(filter=firestore.FieldFilter(
+            field_path="reminder24hSent",
+            op_string="==",
+            value=False,
+        ))
         .stream()
     )
 
     found = False
 
     for doc in appointments:
-        found = True
-
         appointment = doc.to_dict()
+        appointment_date = appointment.get("date")
 
-        print("\nAppointment found:")
-        print(f"  ID: {doc.id}")
-        print(f"  Pet: {appointment.get('petId')}")
-        print(f"  Type: {appointment.get('type')}")
-        print(f"  Date: {appointment.get('date')}")
-        print(f"  User: {appointment.get('userId')}")
+        if not appointment_date:
+            continue
+
+        # Firestore Timestamp normally becomes a datetime object.
+        if appointment_date.tzinfo is None:
+            appointment_date = appointment_date.replace(tzinfo=timezone.utc)
+
+        if now < appointment_date <= reminder_limit:
+            found = True
+
+            print("\nAppointment due for 24h reminder:")
+            print(f"  ID: {doc.id}")
+            print(f"  Pet: {appointment.get('petId')}")
+            print(f"  Type: {appointment.get('type')}")
+            print(f"  Date: {appointment_date}")
+            print(f"  User: {appointment.get('userId')}")
 
     if not found:
-        print("No appointments found.")
+        print("No appointments due for a 24h reminder.")
 
 
 if __name__ == "__main__":
