@@ -3,18 +3,21 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet_care/core/constant/result/result.dart';
+import 'package:pet_care/core/services/notification/notification_service.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
-import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
-import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_mapper.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/auth/firebase_auth_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/auth/firebase_auth_mapper.dart';
 
 
 
 class AuthenticationService {
   final  FirebaseAuthDataSource _dataSource ;
+  final NotificationService _notificationService;
 
-  AuthenticationService( {required FirebaseAuthDataSource dataSource}) : _dataSource = dataSource;
+  AuthenticationService( {required FirebaseAuthDataSource dataSource, required NotificationService notificationService}) : _notificationService = notificationService,_dataSource = dataSource;
 
 
 
@@ -62,13 +65,23 @@ Future<Result<String>> resetPassword(String email) async {
   try {
     final credential = await _dataSource.login(request);
 
-    final firebaseUser = credential.user!;
+    
+
+        
+    
+    final firebaseUser = credential.user;
+
+if (firebaseUser == null) {
+  return const Failure('Unable to get authenticated user');
+}
+
 
     final userResponse = (
       uid: firebaseUser.uid,
       email: firebaseUser.email!,
-    );
-
+    ); 
+    _setupNotifications(userResponse.uid);
+    
     return Success(userResponse);
   } on FirebaseAuthException catch (e) {
     return Failure(
@@ -120,6 +133,8 @@ Future<Result<UserResponse>> loginWithGoogle() async {
     if (firebaseUser == null || firebaseUser.email == null) {
       return Failure('Unable to get authenticated user');
     }
+     _setupNotifications(firebaseUser.uid);
+
 
     return Success((
       uid: firebaseUser.uid,
@@ -139,6 +154,8 @@ Future<Result<UserResponse>> loginWithGoogle() async {
     return Failure('Google sign-in failed: $e');
   }
 }
-
+Future<void> _setupNotifications(String userId) async {
+  await _notificationService.setupNotifications(userId);
+}
 
 }

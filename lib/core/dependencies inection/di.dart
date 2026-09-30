@@ -5,19 +5,36 @@ import 'package:pet_care/core/services/appointment_service.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/health_service.dart';
+import 'package:pet_care/core/services/notification/notification_service.dart';
 import 'package:pet_care/core/services/users_service.dart';
 import 'package:pet_care/core/services/vaccination_service.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
-import 'package:pet_care/infrastructure/firebase/appointment/firebase_appointment_data_source.dart';
-import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/appointment/firebase_appointment_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/auth/firebase_auth_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/notification/firebase_notification_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
-import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
-import 'package:pet_care/infrastructure/firebase/health/firebase_health_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/pets/firebase_pet_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/health/firebase_health_data_source.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/infrastructure/networks/dio/dio_provider.dart';
+
+
+final notificationDataSourceProvider =
+    Provider<NotificationDataSource>((ref) {
+  return NotificationDataSource(
+    FirebaseFirestore.instance,
+  );
+});
+
+final notificationServiceProvider =
+    Provider<NotificationService>((ref) {
+  return NotificationService(
+    ref.read(notificationDataSourceProvider),
+  );
+});
 
 final userFirestoreDataSourcePrvider = Provider<UserFirestoreDataSource>(
 (ref){
@@ -38,7 +55,9 @@ return FirebaseAuthDataSource ( FirebaseAuth.instance,
 
 final authenticationServiceProvider =
     Provider<AuthenticationService>((ref) {
-  return AuthenticationService(dataSource:ref.read(firbasedatasourceProvider));
+  return AuthenticationService(dataSource:ref.read(firbasedatasourceProvider),
+  notificationService: ref.read(notificationServiceProvider)
+  );
 }); 
 
 // ---------------- PETS DI ---------------- //
