@@ -4,11 +4,16 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/services/authetication/auth_service.dart';
+import 'package:pet_care/core/services/notification/notification_service.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 
 class MockFirebaseAuthDataSource extends Mock
     implements FirebaseAuthDataSource {}
+    
+
+class MockNotificationService extends Mock
+    implements NotificationService {}
 
 class MockUserCredential extends Mock implements UserCredential {}
 
@@ -17,6 +22,7 @@ class MockUser extends Mock implements User {}
 void main() {
   late MockFirebaseAuthDataSource dataSource;
   late AuthenticationService service;
+  late MockNotificationService notificationService;
 
   setUpAll(() {
     registerFallbackValue((
@@ -28,9 +34,10 @@ void main() {
 
   setUp(() {
     dataSource = MockFirebaseAuthDataSource();
-
+    notificationService = MockNotificationService();
     service = AuthenticationService(
       dataSource: dataSource,
+      notificationService: notificationService
     );
   });
 
