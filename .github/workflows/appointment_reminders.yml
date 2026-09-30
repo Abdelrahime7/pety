@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r scripts/requirements.txt
-          
+
       - name: Validate Firebase credentials
         run: |
           python -c "import json; json.load(open('service-account.json')); print('Firebase credentials JSON is valid')"
@@ -31,7 +31,15 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "ERROR: FIREBASE_SERVICE_ACCOUNT secret is empty or unavailable"
+            exit 1
+          fi
+
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > service-account.json
+          echo "Firebase credentials file created"
+
+      
       - name: Check appointments
         env:
           GOOGLE_APPLICATION_CREDENTIALS: service-account.json
