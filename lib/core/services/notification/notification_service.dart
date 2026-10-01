@@ -9,10 +9,15 @@ import 'package:pet_care/infrastructure/firebase/data_source/notification/fireba
 
 class NotificationService {
   final NotificationDataSource _dataSource;
+
   final FlutterLocalNotificationsPlugin _localNotifications =
-    FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   NotificationService(this._dataSource);
+
+  // --------------------------------------------------
+  // Firestore notifications
+  // --------------------------------------------------
 
   Future<Result<List<Notification>>> getNotifications(
     String userId,
@@ -48,6 +53,10 @@ class NotificationService {
     }
   }
 
+  // --------------------------------------------------
+  // FCM token
+  // --------------------------------------------------
+
   Future<Result<void>> saveFcmToken(
     String userId,
     String token,
@@ -60,47 +69,61 @@ class NotificationService {
       return Failure(e.toString());
     }
   }
-Future<Result<void>> setupNotifications(String userId) async {
-  try {
-    final messaging = FirebaseMessaging.instance;
 
-    final settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+  // --------------------------------------------------
+  // Notification setup
+  // --------------------------------------------------
 
-    debugPrint(
-      'Notification permission: ${settings.authorizationStatus}',
-    );
+  Future<Result<void>> setupNotifications(String userId) async {
+    try {
+      final messaging = FirebaseMessaging.instance;
 
-    // FCM registration
-    final token = await messaging.getToken();
+      // Request notification permission
+      final settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-    debugPrint('🔥 FCM TOKEN: $token');
+      debugPrint(
+        'Notification permission: '
+        '${settings.authorizationStatus}',
+      );
 
-    if (token != null) {
-      await saveFcmToken(userId, token);
+      // Get FCM registration token
+      final token = await messaging.getToken();
+
+      debugPrint('🔥 FCM TOKEN: $token');
+
+      if (token != null) {
+        await saveFcmToken(userId, token);
+      }
+
+      // Configure local notifications only when permission is granted
+      if (settings.authorizationStatus ==
+          AuthorizationStatus.authorized) {
+        await _initializeLocalNotifications();
+        await _setupForegroundNotifications();
+      }
+
+      // Handle FCM token changes
+      messaging.onTokenRefresh.listen((token) async {
+        debugPrint('🔥 FCM TOKEN REFRESHED: $token');
+
+        await saveFcmToken(userId, token);
+      });
+
+      return const Success(null);
+    } catch (e) {
+      debugPrint('Notification setup error: $e');
+
+      return Failure(e.toString());
     }
-
-    // Only configure notification display if permission is granted
-    if (settings.authorizationStatus ==
-        AuthorizationStatus.authorized) {
-      await _initializeLocalNotifications();
-      await _setupForegroundNotifications();
-    }
-
-    messaging.onTokenRefresh.listen((token) async {
-      debugPrint('🔥 FCM TOKEN REFRESHED: $token');
-      await saveFcmToken(userId, token);
-    });
-
-    return const Success(null);
-  } catch (e) {
-    debugPrint('Notification setup error: $e');
-    return Failure(e.toString());
   }
-}
+
+  // --------------------------------------------------
+  // Mapping
+  // --------------------------------------------------
 
   Notification _fromMap(Map<String, dynamic> map) {
     return Notification(
@@ -120,43 +143,72 @@ Future<Result<void>> setupNotifications(String userId) async {
     );
   }
 
+  // --------------------------------------------------
+  // Foreground notifications
+  // --------------------------------------------------
 
+  Future<void> _setupForegroundNotifications() async {
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) async {
+        final notification = message.notification;
 
-Future<void> _setupForegroundNotifications() async {
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    final notification = message.notification;
+        if (notification == null) {
+          return;
+        }
 
-    if (notification == null) return;
+        debugPrint(
+          'Foreground notification: ${notification.title}',
+        );
 
-    print('Foreground notification: ${notification.title}');
-    print('Body: ${notification.body}');
+        debugPrint(
+          'Body: ${notification.body}',
+        );
 
-    await _localNotifications.show(
-      id: notification.hashCode,
-      title: notification.title,
-      body: notification.body,
-      notificationDetails: const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'pety_notifications',
-          'Pety Notifications',
-          channelDescription: 'Notifications from Pety',
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-      ),
+        await _localNotifications.show(
+          id: notification.hashCode,
+          title: notification.title,
+          body: notification.body,
+          notificationDetails: const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'pety_notifications',
+              'Pety Notifications',
+              channelDescription: 'Notifications from Pety',
+              importance: Importance.high,
+              priority: Priority.high,
+            ),
+          ),
+        );
+      },
     );
-  });
-}
+  }
 
-Future<void> _initializeLocalNotifications() async {
-  const androidSettings = AndroidInitializationSettings(
-    '@mipmap/ic_launcher',
-  );
+  // --------------------------------------------------
+  // Local notification initialization
+  // --------------------------------------------------
 
-  const settings = InitializationSettings(
-    android: androidSettings,
-  );
+  Future<void> _initializeLocalNotifications() async {
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
 
-  await _localNotifications.initialize(settings: settings);
-}
+    const settings = InitializationSettings(
+      android: androidSettings,
+    );
+
+    await _localNotifications.initialize(
+      settings: settings,
+    );
+
+    const channel = AndroidNotificationChannel(
+      'pety_notifications',
+      'Pety Notifications',
+      description: 'Notifications from Pety',
+      importance: Importance.high,
+    );
+
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+  }
 }
