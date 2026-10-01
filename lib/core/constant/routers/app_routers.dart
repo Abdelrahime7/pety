@@ -13,6 +13,7 @@ import 'package:pet_care/features/health/vaccination/domain/entities/vaccination
 import 'package:pet_care/features/health/vaccination/presentation/screens/add_vaccination.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccination_details.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccinations_list.dart';
+import 'package:pet_care/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/features/pets/screens/pet_details_screen.dart';
@@ -40,6 +41,7 @@ const String appointmentEdit = '/appointment-edit';
 const String home = '/home';
 const String health = '/health';
 const String healthRecords = '/health-records';
+const String notifications= '/notifications';
 
 final appRouter = GoRouter(
   initialLocation: login,
@@ -100,6 +102,13 @@ final appRouter = GoRouter(
            return  PetEditScreen(pet:pet);
           }),
 
+          GoRoute(
+  path: notifications,
+  builder: (context, state) {
+    return const NotificationsScreen();
+  },
+),
+
     /// Screens WITH bottom nav
     ShellRoute(
       builder: (context, state, child) {
@@ -111,6 +120,7 @@ final appRouter = GoRouter(
           builder: (_, _) =>
               const Scaffold(body: Center(child: Text("Home coming soon..."))),
         ),
+        
         GoRoute(path: petList, builder: (_, _) => PetsListScreen()),
         GoRoute(path: health, builder: (_, _) => HealthScreen()),
         GoRoute(path: calendar, builder: (_, _) => const AppointmentsScreen()),
