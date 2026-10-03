@@ -5,6 +5,7 @@ import 'package:pet_care/features/appointments/domain/enums/appointment_types.da
 enum AppointmentStatus { upcoming, past }
 
 class Appointment {
+  final String userId;
   final String appointmentId;
   final String petId;
   final DateTime date;
@@ -13,6 +14,7 @@ class Appointment {
   final AppointmentType type;
 
   const Appointment({
+    required this.userId,
     required this.appointmentId,
     required this.petId,
     required this.date,
@@ -33,6 +35,7 @@ class Appointment {
   Map<String, dynamic> toMap() {
     return {
       'appointmentId': appointmentId,
+      'userId':userId,
       'petId': petId,
       'date': Timestamp.fromDate(date),
       'veterinarian': veterinarian,
@@ -69,6 +72,7 @@ class Appointment {
     );
 
     return Appointment(
+      userId: map['userId'] as String? ?? '',
       appointmentId: map['appointmentId'] as String? ?? id ?? '',
       petId: map['petId'] as String? ?? '',
       date: parsedDate,
@@ -80,6 +84,7 @@ class Appointment {
 
   Appointment copyWith({
     String? appointmentId,
+    String? userId,
     String? petId,
     DateTime? date,
     String? veterinarian,
@@ -88,6 +93,7 @@ class Appointment {
   }) {
     return Appointment(
       appointmentId: appointmentId ?? this.appointmentId,
+      userId: userId?? this .userId,
       petId: petId ?? this.petId,
       date: date ?? this.date,
       veterinarian: veterinarian ?? this.veterinarian,

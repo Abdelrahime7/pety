@@ -86,6 +86,7 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
 
       final appointment = Appointment(
         appointmentId: const Uuid().v4(),
+        userId:_ownerId! ,
         petId: petId,
         date: date,
         veterinarian: veterinarian,
