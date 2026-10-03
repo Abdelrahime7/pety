@@ -187,11 +187,19 @@ def main():
             appointment_date = appointment_date.replace(
                 tzinfo=timezone.utc
             )
+            
 
-        reminder_due_at = appointment_date - REMINDER_BEFORE
+     
+    print(
+        f"Appointment {doc.id}: "
+        f"date={appointment_date}, "
+        f"reminder_due_at={reminder_due_at}, "
+        f"now={now}"
+    )
 
-        if reminder_due_at <= now < appointment_date:
-            process_appointment(doc)
+    if reminder_due_at <= now < appointment_date:
+        print(f"Processing appointment: {doc.id}")
+        process_appointment(doc)
 
 
 if __name__ == "__main__":
