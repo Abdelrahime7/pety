@@ -1,7 +1,8 @@
+```python
 from datetime import datetime, timedelta, timezone
 
 import firebase_admin
-from firebase_admin import credentials, firestore, messaging
+from firebase_admin import firestore, messaging
 
 
 # ---------------------------------------------------------
@@ -18,15 +19,7 @@ db = firestore.client()
 # Reminder configuration
 # ---------------------------------------------------------
 
-REMINDER_WINDOW_BEFORE = timedelta(
-    hours=23,
-    minutes=55,
-)
-
-REMINDER_WINDOW_AFTER = timedelta(
-    hours=24,
-    minutes=5,
-)
+REMINDER_BEFORE = timedelta(hours=24)
 
 
 # ---------------------------------------------------------
@@ -34,29 +27,17 @@ REMINDER_WINDOW_AFTER = timedelta(
 # ---------------------------------------------------------
 
 def get_user_fcm_tokens(user_id: str) -> list[str]:
-    """
-    Get all FCM registration tokens belonging to the user.
-    """
-
     tokens_ref = (
         db.collection("users")
         .document(user_id)
         .collection("fcmTokens")
     )
 
-    documents = tokens_ref.stream()
-
-    tokens = []
-
-    for document in documents:
-        data = document.to_dict()
-
-        token = data.get("token")
-
-        if token:
-            tokens.append(token)
-
-    return tokens
+    return [
+        data.get("token")
+        for document in tokens_ref.stream()
+        if (data := document.to_dict()).get("token")
+    ]
 
 
 def create_notification(
@@ -65,13 +46,6 @@ def create_notification(
     pet_id: str,
     appointment_type: str,
 ) -> str:
-    """
-    Create the persistent notification in Firestore.
-
-    A deterministic document ID prevents duplicate
-    notifications if GitHub Actions runs more than once.
-    """
-
     notification_id = f"{appointment_id}_24h"
 
     notification_ref = (
@@ -105,14 +79,7 @@ def send_fcm_notifications(
     pet_id: str,
     appointment_type: str,
 ) -> int:
-    """
-    Send the FCM notification to all user's devices.
-
-    Returns the number of successful deliveries.
-    """
-
     if not tokens:
-        print("No FCM tokens found for this user.")
         return 0
 
     message = messaging.MulticastMessage(
@@ -131,19 +98,6 @@ def send_fcm_notifications(
 
     response = messaging.send_each_for_multicast(message)
 
-    print(
-        f"FCM result: "
-        f"{response.success_count} successful, "
-        f"{response.failure_count} failed"
-    )
-
-    for index, send_response in enumerate(response.responses):
-        if not send_response.success:
-            print(
-                f"FCM failed for token {tokens[index]}: "
-                f"{send_response.exception}"
-            )
-
     return response.success_count
 
 
@@ -151,39 +105,21 @@ def send_fcm_notifications(
 # Appointment processing
 # ---------------------------------------------------------
 
-def process_appointment(doc):
+def process_appointment(doc) -> None:
     appointment = doc.to_dict()
-
     appointment_id = doc.id
 
     user_id = appointment.get("userId")
     pet_id = appointment.get("petId")
-    appointment_type = appointment.get(
-        "type",
-        "appointment",
-    )
-
+    appointment_type = appointment.get("type", "appointment")
     appointment_date = appointment.get("date")
 
-    if not user_id:
-        print(
-            f"Skipping {appointment_id}: "
-            "missing userId"
-        )
+    if not user_id or not appointment_date:
         return
 
-    if not appointment_date:
-        print(
-            f"Skipping {appointment_id}: "
-            "missing date"
-        )
-        return
-
-    # Already processed
     if appointment.get("reminder24hSent", False):
         return
 
-    # Firestore Timestamp -> Python datetime
     if appointment_date.tzinfo is None:
         appointment_date = appointment_date.replace(
             tzinfo=timezone.utc
@@ -191,29 +127,13 @@ def process_appointment(doc):
 
     now = datetime.now(timezone.utc)
 
-    time_until_appointment = appointment_date - now
+    # Reminder becomes due 24 hours before the appointment.
+    reminder_due_at = appointment_date - REMINDER_BEFORE
 
-    # We only want appointments approximately 24h away.
-    if not (
-        REMINDER_WINDOW_BEFORE
-        <= time_until_appointment
-        <= REMINDER_WINDOW_AFTER
-    ):
+    # Do not send before the 24-hour point.
+    # Do not send after the appointment.
+    if not (reminder_due_at <= now < appointment_date):
         return
-
-    print()
-    print("========================================")
-    print("Appointment due for 24h reminder")
-    print("========================================")
-    print(f"ID: {appointment_id}")
-    print(f"Pet: {pet_id}")
-    print(f"Type: {appointment_type}")
-    print(f"Date: {appointment_date}")
-    print(f"User: {user_id}")
-
-    # -----------------------------------------------------
-    # 1. Create Firestore notification
-    # -----------------------------------------------------
 
     notification_id = create_notification(
         appointment_id=appointment_id,
@@ -222,24 +142,7 @@ def process_appointment(doc):
         appointment_type=str(appointment_type),
     )
 
-    print(
-        f"Firestore notification created: "
-        f"{notification_id}"
-    )
-
-    # -----------------------------------------------------
-    # 2. Get user's FCM tokens
-    # -----------------------------------------------------
-
     tokens = get_user_fcm_tokens(user_id)
-
-    print(
-        f"Found {len(tokens)} FCM token(s)"
-    )
-
-    # -----------------------------------------------------
-    # 3. Send FCM
-    # -----------------------------------------------------
 
     successful_sends = send_fcm_notifications(
         tokens=tokens,
@@ -248,24 +151,16 @@ def process_appointment(doc):
         appointment_type=str(appointment_type),
     )
 
-    print(
-        f"FCM successful sends: "
-        f"{successful_sends}"
-    )
-
-    # -----------------------------------------------------
-    # 4. Mark reminder as processed
-    # -----------------------------------------------------
-
-    doc.reference.update(
-        {
-            "reminder24hSent": True,
-            "reminder24hSentAt": firestore.SERVER_TIMESTAMP,
-            "reminder24hNotificationId": notification_id,
-        }
-    )
-
-    print("Appointment marked as reminded.")
+    # Only mark the reminder as sent when at least one
+    # device successfully received the FCM request.
+    if successful_sends > 0:
+        doc.reference.update(
+            {
+                "reminder24hSent": True,
+                "reminder24hSentAt": firestore.SERVER_TIMESTAMP,
+                "reminder24hNotificationId": notification_id,
+            }
+        )
 
 
 # ---------------------------------------------------------
@@ -273,58 +168,17 @@ def process_appointment(doc):
 # ---------------------------------------------------------
 
 def main():
-
     now = datetime.now(timezone.utc)
 
-    reminder_start = (
-        now + REMINDER_WINDOW_BEFORE
-    )
+    appointments = db.collection("appointments").stream()
 
-    reminder_end = (
-        now + REMINDER_WINDOW_AFTER
-    )
-
-    print(
-        f"Current time: {now}"
-    )
-
-    print(
-        f"Checking appointments between:"
-    )
-
-    print(
-        f"  {reminder_start}"
-    )
-
-    print(
-        f"  {reminder_end}"
-    )
-
-    # -----------------------------------------------------
-    # Get appointments
-    # -----------------------------------------------------
-
-    appointments_ref = db.collection(
-        "appointments"
-    )
-
-    documents = appointments_ref.stream()
-
-    found = 0
-
-    for doc in documents:
-
+    for doc in appointments:
         appointment = doc.to_dict()
 
-        if appointment.get(
-            "reminder24hSent",
-            False,
-        ):
+        if appointment.get("reminder24hSent", False):
             continue
 
-        appointment_date = appointment.get(
-            "date"
-        )
+        appointment_date = appointment.get("date")
 
         if not appointment_date:
             continue
@@ -334,22 +188,12 @@ def main():
                 tzinfo=timezone.utc
             )
 
-        if (
-            reminder_start
-            <= appointment_date
-            <= reminder_end
-        ):
-            found += 1
+        reminder_due_at = appointment_date - REMINDER_BEFORE
 
+        if reminder_due_at <= now < appointment_date:
             process_appointment(doc)
-
-    print()
-
-    print(
-        f"Appointments requiring reminder: "
-        f"{found}"
-    )
 
 
 if __name__ == "__main__":
     main()
+```
