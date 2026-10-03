@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter/widgets.dart' hide Notification;
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
 import 'package:pet_care/features/notifications/domain/enums/notification_type.dart';
 
@@ -12,7 +14,7 @@ class NotificationCard extends StatelessWidget {
     required this.onTap,
   });
 
-  IconData _getIcon() {
+  IconData? _getIcon() {
     switch (notification.type) {
       case NotificationType.appointment:
         return Icons.calendar_month_rounded;
@@ -29,25 +31,11 @@ class NotificationCard extends StatelessWidget {
     final now = DateTime.now();
     final difference = now.difference(date);
 
-    if (difference.inMinutes < 1) {
-      return 'Just now';
-    }
-
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
-    }
-
-    if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
-    }
-
-    if (difference.inDays == 1) {
-      return 'Yesterday';
-    }
-
-    if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
-    }
+    if (difference.inMinutes < 1) return 'Just now';
+    if (difference.inMinutes < 60) return '${difference.inMinutes}m ago';
+    if (difference.inHours < 24) return '${difference.inHours}h ago';
+    if (difference.inDays == 1) return 'Yesterday';
+    if (difference.inDays < 7) return '${difference.inDays}d ago';
 
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -55,6 +43,9 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final appointmentType =
+        notification.data?['appointmentType'] as String?;
 
     return Material(
       color: Colors.transparent,
@@ -134,6 +125,29 @@ class NotificationCard extends StatelessWidget {
                         height: 1.4,
                       ),
                     ),
+
+                    if (appointmentType != null) ...[
+                      const SizedBox(height: 10),
+
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary
+                              .withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          appointmentType,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
 
                     const SizedBox(height: 8),
 

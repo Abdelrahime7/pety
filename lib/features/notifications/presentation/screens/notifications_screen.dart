@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/features/notifications/presentation/riverpod/notification_provider.dart';
 import 'package:pet_care/features/notifications/presentation/widgets/notification_card.dart';
 import 'package:pet_care/features/notifications/presentation/widgets/notification_empty_state.dart';
@@ -105,6 +106,7 @@ class NotificationsScreen extends ConsumerWidget {
                       await ref
                           .read(notificationProvider.notifier)
                           .markAsRead(notification.id!);
+                          appRouter.push(appointmentDetails);
                     }
 
                     // Later:
