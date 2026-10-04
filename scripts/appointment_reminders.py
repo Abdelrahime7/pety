@@ -22,6 +22,25 @@ REMINDER_BEFORE = timedelta(hours=24)
 
 
 # ---------------------------------------------------------
+# Pet
+# ---------------------------------------------------------
+
+def get_pet_name(pet_id: str) -> str:
+    if not pet_id:
+        return "Your pet"
+
+    pet_ref = db.collection("pets").document(pet_id)
+    pet_doc = pet_ref.get()
+
+    if not pet_doc.exists:
+        print(f"Pet not found: {pet_id}")
+        return "Your pet"
+
+    pet_data = pet_doc.to_dict()
+    return pet_data.get("name") or "Your pet"
+
+
+# ---------------------------------------------------------
 # FCM tokens
 # ---------------------------------------------------------
 
@@ -52,6 +71,7 @@ def create_notification(
     appointment_id: str,
     user_id: str,
     pet_id: str,
+    pet_name: str,
     appointment_type: str,
 ) -> str:
 
@@ -65,14 +85,15 @@ def create_notification(
     notification_ref.set(
         {
             "userId": user_id,
-            "title": "Upcoming appointment",
-            "body": "Your pet has an appointment tomorrow.",
+            "title": f"Upcoming appointment for {pet_name}",
+            "body": f"{pet_name} has a {appointment_type} appointment tomorrow.",
             "type": "appointment",
             "isRead": False,
             "createdAt": firestore.SERVER_TIMESTAMP,
             "data": {
                 "appointmentId": appointment_id,
                 "petId": pet_id,
+                "petName": pet_name,
                 "appointmentType": appointment_type,
             },
         },
@@ -90,6 +111,7 @@ def send_fcm_notifications(
     tokens: list[str],
     appointment_id: str,
     pet_id: str,
+    pet_name: str,
     appointment_type: str,
 ) -> int:
 
@@ -99,13 +121,14 @@ def send_fcm_notifications(
 
     message = messaging.MulticastMessage(
         notification=messaging.Notification(
-            title="Upcoming appointment",
-            body="Your pet has an appointment tomorrow.",
+            title=f"Upcoming appointment for {pet_name}",
+            body=f"{pet_name} has a {appointment_type} appointment tomorrow.",
         ),
         data={
             "type": "appointment",
             "appointmentId": appointment_id,
             "petId": pet_id,
+            "petName": pet_name,
             "appointmentType": appointment_type,
         },
         tokens=tokens,
@@ -158,13 +181,23 @@ def process_appointment(doc) -> None:
     print(f"Processing appointment: {appointment_id}")
 
     # -----------------------------------------------------
+    # Get pet
+    # -----------------------------------------------------
+
+    pet_id = str(pet_id or "")
+    pet_name = get_pet_name(pet_id)
+
+    print(f"Pet: {pet_name}")
+
+    # -----------------------------------------------------
     # 1. Create Firestore notification
     # -----------------------------------------------------
 
     notification_id = create_notification(
         appointment_id=appointment_id,
         user_id=user_id,
-        pet_id=str(pet_id or ""),
+        pet_id=pet_id,
+        pet_name=pet_name,
         appointment_type=str(appointment_type),
     )
 
@@ -187,7 +220,8 @@ def process_appointment(doc) -> None:
     successful_sends = send_fcm_notifications(
         tokens=tokens,
         appointment_id=appointment_id,
-        pet_id=str(pet_id or ""),
+        pet_id=pet_id,
+        pet_name=pet_name,
         appointment_type=str(appointment_type),
     )
 

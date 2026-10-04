@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter/widgets.dart' hide Notification;
+import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
 import 'package:pet_care/features/notifications/domain/enums/notification_type.dart';
 
@@ -72,12 +73,12 @@ class NotificationCard extends StatelessWidget {
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
                   _getIcon(),
-                  color: theme.colorScheme.primary,
+                  color: AppColors.tealLight,
                   size: 23,
                 ),
               ),
@@ -135,7 +136,7 @@ class NotificationCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primary
+                          color: AppColors.primary
                               .withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(8),
                         ),
