@@ -10,7 +10,7 @@ class InfoCard extends StatelessWidget {
   final IconData icon;
   final List<Widget> children;
 
- InfoCard({
+ const InfoCard({super.key, 
     required this.title,
     required this.icon,
     required this.children,

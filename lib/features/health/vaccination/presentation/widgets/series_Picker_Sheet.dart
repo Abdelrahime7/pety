@@ -8,7 +8,7 @@ class SeriesPickerSheet extends StatefulWidget {
   final List<VaccinationSerie> series;
   final VaccinationSerie? selectedSeries;
 
-  const SeriesPickerSheet({
+  const SeriesPickerSheet({super.key, 
     required this.series,
     this.selectedSeries,
   });
@@ -129,7 +129,7 @@ class _SeriesPickerSheetState
                         itemCount:
                             filteredSeries.length,
                         separatorBuilder:
-                            (_, __) => Divider(
+                            (_, _) => Divider(
                           height: 1,
                           color:
                               Colors.grey.shade200,

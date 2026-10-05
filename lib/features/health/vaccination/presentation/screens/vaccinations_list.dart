@@ -115,7 +115,7 @@ class VaccinationListScreen extends ConsumerWidget {
                 100,
               ),
               itemCount: vaccinations.length,
-              separatorBuilder: (_, __) => const SizedBox(
+              separatorBuilder: (_, _) => const SizedBox(
                 height: 12,
               ),
               itemBuilder: (context, index) {

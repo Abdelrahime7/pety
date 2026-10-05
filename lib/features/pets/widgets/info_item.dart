@@ -6,7 +6,7 @@ class InfoItem extends StatelessWidget {
   final String label;
   final String value;
 
-  const InfoItem({
+  const InfoItem({super.key, 
     required this.label,
     required this.value,
   });

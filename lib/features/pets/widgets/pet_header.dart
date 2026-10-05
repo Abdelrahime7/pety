@@ -10,7 +10,7 @@ import 'package:pet_care/features/pets/domain/entity/pet.dart';
 class PetHeader extends StatelessWidget {
   final Pet pet;
 
-  const PetHeader({
+  const PetHeader({super.key, 
     required this.pet,
   });
 
@@ -30,7 +30,7 @@ class PetHeader extends StatelessWidget {
               ? Image.network(
                   pet.photoUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) {
+                  errorBuilder: (_, _, _) {
                     return const Icon(
                       Icons.pets_rounded,
                       size: 48,

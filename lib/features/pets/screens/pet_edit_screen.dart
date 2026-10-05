@@ -279,7 +279,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                     ? Image.network(
                         widget.pet.photoUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) {
+                        errorBuilder: (_, _, _) {
                           return const Icon(
                             Icons.pets_rounded,
                             size: 48,
