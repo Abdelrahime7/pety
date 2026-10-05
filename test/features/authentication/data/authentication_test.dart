@@ -22,7 +22,6 @@ class MockUser extends Mock implements User {}
 void main() {
   late MockFirebaseAuthDataSource dataSource;
   late AuthenticationService service;
-  late MockNotificationService notificationService;
 
   setUpAll(() {
     registerFallbackValue((
@@ -34,10 +33,8 @@ void main() {
 
   setUp(() {
     dataSource = MockFirebaseAuthDataSource();
-    notificationService = MockNotificationService();
     service = AuthenticationService(
       dataSource: dataSource,
-      notificationService: notificationService
     );
   });
 
