@@ -13,12 +13,14 @@ import 'package:pet_care/features/health/vaccination/domain/entities/vaccination
 import 'package:pet_care/features/health/vaccination/presentation/screens/add_vaccination.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccination_details.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccinations_list.dart';
+import 'package:pet_care/features/notifications/presentation/screens/notification_settings_screen.dart';
 import 'package:pet_care/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/features/pets/screens/pet_details_screen.dart';
 import 'package:pet_care/features/pets/screens/pet_edit_screen.dart';
 import 'package:pet_care/features/pets/screens/pets_list_screen.dart';
+import 'package:pet_care/features/users/domain/entity/user.dart';
 import 'package:pet_care/features/users/presentation/personal_information.dart';
 import 'package:pet_care/features/users/presentation/profile_screen.dart';
 import 'package:pet_care/features/users/presentation/upgrad_to_premium_screen.dart';
@@ -42,16 +44,17 @@ const String home = '/home';
 const String health = '/health';
 const String healthRecords = '/health-records';
 const String notifications= '/notifications';
+const String notificationSettings ='/notificationSettings';
 
 final appRouter = GoRouter(
   initialLocation: login,
   routes: [
     /// Screens WITHOUT bottom nav
-    GoRoute(path: login, builder: (_, __) => const LoginScreen()),
-    GoRoute(path: addNewPet, builder: (_, __) => const AddPetScreen()),
+    GoRoute(path: login, builder: (_, _) => const LoginScreen()),
+    GoRoute(path: addNewPet, builder: (_, _) => const AddPetScreen()),
     GoRoute(
       path: addNewAppointment,
-      builder: (_, __) => const AddAppointmentScreen(),
+      builder: (_, _) => const AddAppointmentScreen(),
     ),
     GoRoute(
       path: appointmentDetails,
@@ -65,9 +68,9 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: upgradeToPremium,
-      builder: (_, __) => const UpgradeToPremiumScreen(),
+      builder: (_, _) => const UpgradeToPremiumScreen(),
     ),
-    GoRoute(path: profileInfo, builder: (_, __) => ProfileInfoScreen()),
+    GoRoute(path: profileInfo, builder: (_, _) => ProfileInfoScreen()),
     GoRoute(
       path: healthRecords,
       builder: (_, state) => HealthRecordsScreen(pet: state.extra as Pet?),
@@ -106,6 +109,13 @@ final appRouter = GoRouter(
   path: notifications,
   builder: (context, state) {
     return const NotificationsScreen();
+  },
+),
+GoRoute(
+  path: notificationSettings,
+  builder: (context, state) {
+    final user =state.extra as User;
+    return  NotificationSettingsScreen(user: user,);
   },
 ),
 

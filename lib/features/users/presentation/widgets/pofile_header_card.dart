@@ -14,30 +14,22 @@ import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart'
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
 
 class ProfileHeaderCard extends ConsumerWidget {
-  const ProfileHeaderCard({super.key});
+  final dynamic user;
+
+  const ProfileHeaderCard({super.key,required this.user});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
 
-    return user.when(
-      loading: () => Container(
-        height: 100,
-        alignment: Alignment.center,
-        child: const CircularProgressIndicator(),
-      ),
+    
 
-      error: (e, st) => const Text(
-        'Error loading profile',
-      ),
-
-      data: (domainUser) {
-        final displayName = domainUser.name;
-        final email = domainUser.email;
-        final photoUrl = domainUser.photoUrl;
+     
+        final displayName = user.name;
+        final email = user.email;
+        final photoUrl = user.photoUrl;
 
         final isPremium =
-            domainUser.subscriptionTier == SubscriptionTier.premium;
+            user.subscriptionTier == SubscriptionTier.premium;
 
         return Container(
           padding: const EdgeInsets.all(16.0),
@@ -252,7 +244,7 @@ class ProfileHeaderCard extends ConsumerWidget {
                             loading: () =>
                                 const SizedBox.shrink(),
 
-                            error: (_, __) =>
+                            error: (_, _) =>
                                 const SizedBox.shrink(),
                           ),
                         ],
@@ -289,7 +281,6 @@ class ProfileHeaderCard extends ConsumerWidget {
             ],
           ),
         );
-      },
-    );
+      
   }
 }

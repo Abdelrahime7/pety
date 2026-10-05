@@ -56,7 +56,7 @@ return FirebaseAuthDataSource ( FirebaseAuth.instance,
 final authenticationServiceProvider =
     Provider<AuthenticationService>((ref) {
   return AuthenticationService(dataSource:ref.read(firbasedatasourceProvider),
-  notificationService: ref.read(notificationServiceProvider)
+  
   );
 }); 
 

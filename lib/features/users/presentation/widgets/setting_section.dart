@@ -6,7 +6,9 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class SettingsSections extends StatefulWidget {
-  const SettingsSections({super.key});
+  final dynamic user;
+
+  const SettingsSections({super.key,required this.user });
 
   @override
   State<SettingsSections> createState() => _SettingsSectionsState();
@@ -38,7 +40,9 @@ class _SettingsSectionsState extends State<SettingsSections> {
             _buildNavigationTile(
               icon: Icons.notifications,
               title: 'Notification Settings',
-              onTap: () {},
+              onTap: () {
+                appRouter.push(notificationSettings,extra: widget.user);
+              },
             ),
             _buildDivider(),
             _buildNavigationTile(

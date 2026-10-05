@@ -98,7 +98,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _features.length,
-                separatorBuilder: (_, __) => SizedBox(height: 16.h),
+                separatorBuilder: (_, _) => SizedBox(height: 16.h),
                 itemBuilder: (context, index) {
                   final feature = _features[index];
                   return FeatureItem(
