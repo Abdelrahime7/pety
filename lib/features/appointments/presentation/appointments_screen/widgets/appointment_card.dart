@@ -214,7 +214,7 @@ class _PetAvatar extends StatelessWidget {
             ? Image.network(
                 photoUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Icon(
+                errorBuilder: (_, _, _) => Icon(
                   Icons.pets,
                   size: 20.sp,
                   color: AppColors.icon,

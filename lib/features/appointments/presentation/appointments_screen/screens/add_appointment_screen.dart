@@ -353,7 +353,7 @@ class _AddAppointmentScreenState
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: pets.length + 1,
-        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+        separatorBuilder: (_, _) => SizedBox(width: 12.w),
         itemBuilder: (context, index) {
           if (index == pets.length) {
             return _buildAddPetCard();
