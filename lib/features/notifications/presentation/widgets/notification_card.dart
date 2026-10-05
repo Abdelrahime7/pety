@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart' hide Notification;
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
@@ -14,7 +13,7 @@ class NotificationCard extends StatelessWidget {
     required this.onTap,
   });
 
-  IconData? _getIcon() {
+  IconData _getIcon() {
     switch (notification.type) {
       case NotificationType.appointment:
         return Icons.calendar_month_rounded;
@@ -32,10 +31,16 @@ class NotificationCard extends StatelessWidget {
     final difference = now.difference(date);
 
     if (difference.inMinutes < 1) return 'Just now';
-    if (difference.inMinutes < 60) return '${difference.inMinutes}m ago';
-    if (difference.inHours < 24) return '${difference.inHours}h ago';
+    if (difference.inMinutes < 60) {
+      return '${difference.inMinutes}m ago';
+    }
+    if (difference.inHours < 24) {
+      return '${difference.inHours}h ago';
+    }
     if (difference.inDays == 1) return 'Yesterday';
-    if (difference.inDays < 7) return '${difference.inDays}d ago';
+    if (difference.inDays < 7) {
+      return '${difference.inDays}d ago';
+    }
 
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -43,6 +48,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isRead = notification.isRead;
 
     final appointmentType =
         notification.data?['appointmentType'] as String?;
@@ -55,13 +61,13 @@ class NotificationCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: notification.isRead
-                ? theme.cardColor
+            color: isRead
+                ? AppColors.surface.withValues(alpha: 0.55)
                 : theme.colorScheme.primary.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: notification.isRead
-                  ? theme.dividerColor.withValues(alpha: 0.15)
+              color: isRead
+                  ? theme.dividerColor.withValues(alpha: 0.08)
                   : theme.colorScheme.primary.withValues(alpha: 0.18),
             ),
           ),
@@ -72,12 +78,16 @@ class NotificationCard extends StatelessWidget {
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: isRead
+                      ? theme.dividerColor.withValues(alpha: 0.06)
+                      : AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
                   _getIcon(),
-                  color: AppColors.tealLight,
+                  color: isRead
+                      ? AppColors.tealLight.withValues(alpha: 0.4)
+                      : AppColors.tealLight,
                   size: 23,
                 ),
               ),
@@ -94,19 +104,23 @@ class NotificationCard extends StatelessWidget {
                           child: Text(
                             notification.title,
                             style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: notification.isRead
-                                  ? FontWeight.w600
+                              fontWeight: isRead
+                                  ? FontWeight.w500
                                   : FontWeight.w700,
+                              color: isRead
+                                  ? theme.textTheme.titleSmall?.color
+                                      ?.withValues(alpha: 0.55)
+                                  : null,
                             ),
                           ),
                         ),
 
-                        if (!notification.isRead)
+                        if (!isRead)
                           Container(
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.primary,
+                              color: AppColors.primary,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -120,8 +134,9 @@ class NotificationCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.textTheme.bodyMedium?.color
-                            ?.withValues(alpha: 0.65),
+                        color: theme.textTheme.bodyMedium?.color?.withValues(
+                          alpha: isRead ? 0.4 : 0.65,
+                        ),
                         height: 1.4,
                       ),
                     ),
@@ -135,14 +150,17 @@ class NotificationCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary
-                              .withValues(alpha: 0.08),
+                          color: AppColors.primary.withValues(
+                            alpha: isRead ? 0.04 : 0.08,
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           appointmentType,
                           style: theme.textTheme.labelMedium?.copyWith(
-                            color: theme.colorScheme.primary,
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: isRead ? 0.45 : 1,
+                            ),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -154,8 +172,9 @@ class NotificationCard extends StatelessWidget {
                     Text(
                       _formatDate(notification.createdAt),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.textTheme.bodySmall?.color
-                            ?.withValues(alpha: 0.5),
+                        color: theme.textTheme.bodySmall?.color?.withValues(
+                          alpha: isRead ? 0.3 : 0.5,
+                        ),
                       ),
                     ),
                   ],

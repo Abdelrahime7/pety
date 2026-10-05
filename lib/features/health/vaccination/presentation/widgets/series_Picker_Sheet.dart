@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 
