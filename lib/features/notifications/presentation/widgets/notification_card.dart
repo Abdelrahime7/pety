@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart' hide Notification;
-import 'package:flutter/widgets.dart' hide Notification;
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
 import 'package:pet_care/features/notifications/domain/enums/notification_type.dart';

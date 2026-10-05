@@ -53,6 +53,19 @@ Future<void> saveFcmToken(
     'updatedAt': FieldValue.serverTimestamp(),
   }, SetOptions(merge: true));
 }
+
+
+Future<void> deleteFcmToken(
+  String userId,
+  String token,
+) async {
+  await _firestore
+      .collection('users')
+      .doc(userId)
+      .collection('fcmTokens')
+      .doc(token)
+      .delete();
+}
 }
 
 

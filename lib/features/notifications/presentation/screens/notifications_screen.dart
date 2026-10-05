@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/features/notifications/presentation/riverpod/notification_provider.dart';
 import 'package:pet_care/features/notifications/presentation/widgets/notification_card.dart';
 import 'package:pet_care/features/notifications/presentation/widgets/notification_empty_state.dart';
@@ -40,7 +39,7 @@ class NotificationsScreen extends ConsumerWidget {
               );
             },
             loading: () => const SizedBox.shrink(),
-            error: (_, __) => const SizedBox.shrink(),
+            error: (_, _) => const SizedBox.shrink(),
           ),
         ],
       ),
@@ -93,7 +92,7 @@ class NotificationsScreen extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(16),
               itemCount: notifications.length,
-              separatorBuilder: (_, __) =>
+              separatorBuilder: (_, _) =>
                   const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final notification = notifications[index];
@@ -106,7 +105,6 @@ class NotificationsScreen extends ConsumerWidget {
                       await ref
                           .read(notificationProvider.notifier)
                           .markAsRead(notification.id!);
-                          appRouter.push(appointmentDetails);
                     }
 
                     // Later:

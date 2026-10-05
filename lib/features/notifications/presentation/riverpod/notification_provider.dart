@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
+import 'package:pet_care/features/notifications/presentation/riverpod/notification_settings_notifier.dart';
 import 'package:pet_care/features/notifications/presentation/riverpod/notificaton_notifier.dart';
 
 
@@ -7,4 +8,9 @@ import 'package:pet_care/features/notifications/presentation/riverpod/notificato
 final notificationProvider =
     AsyncNotifierProvider<NotificationNotifier, List<Notification>>(
   NotificationNotifier.new,
+);
+
+final notificationSettingsProvider =
+    AsyncNotifierProvider<NotificationSettingsNotifier, bool>(
+  NotificationSettingsNotifier.new,
 );

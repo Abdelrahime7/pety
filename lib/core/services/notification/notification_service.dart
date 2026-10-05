@@ -1,17 +1,22 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
 import 'package:pet_care/features/notifications/domain/enums/notification_type.dart';
 import 'package:pet_care/infrastructure/firebase/data_source/notification/firebase_notification_data_source.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class NotificationService {
   final NotificationDataSource _dataSource;
 
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
+
+
+      StreamSubscription<RemoteMessage>? _onMessageSubscription;
 
   NotificationService(this._dataSource);
 
@@ -70,56 +75,67 @@ class NotificationService {
     }
   }
 
-  // --------------------------------------------------
-  // Notification setup
-  // --------------------------------------------------
-
-  Future<Result<void>> setupNotifications(String userId) async {
+ Future<Result<void>> deleteFcmToken (
+    String userId,
+    String token,
+  ) async {
     try {
-      final messaging = FirebaseMessaging.instance;
+      await _dataSource.deleteFcmToken(userId, token);
 
-      // Request notification permission
+      return const Success(null);
+    } catch (e) {
+      return Failure(e.toString());
+    }
+  }
+
+
+
+
+  // --------------------------------------------------
+  // enable Notificatio
+  // --------------------------------------------------
+
+Future<Result<void>> enableNotifications(String userId) async {
+  try {
+    final messaging = FirebaseMessaging.instance;
+
+    // Android 13+ requires runtime notification permission.
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+
+    if (androidInfo.version.sdkInt >= 33) {
       final settings = await messaging.requestPermission(
         alert: true,
         badge: true,
         sound: true,
       );
 
-      debugPrint(
-        'Notification permission: '
-        '${settings.authorizationStatus}',
-      );
-
-      // Get FCM registration token
-      final token = await messaging.getToken();
-
-      debugPrint('🔥 FCM TOKEN: $token');
-
-      if (token != null) {
-        await saveFcmToken(userId, token);
-      }
-
-      // Configure local notifications only when permission is granted
-      if (settings.authorizationStatus ==
+      if (settings.authorizationStatus !=
           AuthorizationStatus.authorized) {
-        await _initializeLocalNotifications();
-        await _setupForegroundNotifications();
+        return Failure(
+          'Notification permission was not granted.',
+        );
       }
-
-      // Handle FCM token changes
-      messaging.onTokenRefresh.listen((token) async {
-        debugPrint('🔥 FCM TOKEN REFRESHED: $token');
-
-        await saveFcmToken(userId, token);
-      });
-
-      return const Success(null);
-    } catch (e) {
-      debugPrint('Notification setup error: $e');
-
-      return Failure(e.toString());
     }
+
+    // Android 12 and below don't need runtime
+    // notification permission.
+    final token = await messaging.getToken();
+
+    if (token == null) {
+      return Failure('Could not get FCM token.');
+    }
+
+    await saveFcmToken(userId, token);
+
+    await _initializeLocalNotifications();
+    await _setupForegroundNotifications();
+
+    return const Success(null);
+  } catch (e) {
+    return Failure(e.toString());
   }
+}
+
 
   // --------------------------------------------------
   // Mapping
@@ -143,44 +159,58 @@ class NotificationService {
     );
   }
 
+   // --------------------------------------------------
+  // disable Notificatio
+  // --------------------------------------------------
+
+Future<Result<void>> disableNotifications(String userId) async {
+  try {
+    final messaging = FirebaseMessaging.instance;
+
+    final token = await messaging.getToken();
+
+    if (token != null) {
+      await deleteFcmToken(userId, token);
+    }
+
+    return const Success(null);
+  } catch (e) {
+    return Failure(e.toString());
+  }
+}
+
   // --------------------------------------------------
   // Foreground notifications
   // --------------------------------------------------
 
-  Future<void> _setupForegroundNotifications() async {
-    FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) async {
-        final notification = message.notification;
+ Future<void> _setupForegroundNotifications() async {
+  await _onMessageSubscription?.cancel();
 
-        if (notification == null) {
-          return;
-        }
+  _onMessageSubscription = FirebaseMessaging.onMessage.listen(
+    (RemoteMessage message) async {
+      final notification = message.notification;
 
-        debugPrint(
-          'Foreground notification: ${notification.title}',
-        );
+      if (notification == null) {
+        return;
+      }
 
-        debugPrint(
-          'Body: ${notification.body}',
-        );
-
-        await _localNotifications.show(
-          id: notification.hashCode,
-          title: notification.title,
-          body: notification.body,
-          notificationDetails: const NotificationDetails(
-            android: AndroidNotificationDetails(
-              'pety_notifications',
-              'Pety Notifications',
-              channelDescription: 'Notifications from Pety',
-              importance: Importance.high,
-              priority: Priority.high,
-            ),
+      await _localNotifications.show(
+        id: notification.hashCode,
+        title: notification.title,
+        body: notification.body,
+        notificationDetails: const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'pety_notifications',
+            'Pety Notifications',
+            channelDescription: 'Notifications from Pety',
+            importance: Importance.high,
+            priority: Priority.high,
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 
   // --------------------------------------------------
   // Local notification initialization
