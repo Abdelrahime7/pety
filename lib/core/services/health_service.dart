@@ -20,4 +20,20 @@ class HealthService {
       return const Failure('Unable to load health records.');
     }
   }
+
+   Future<Result<void>> createRecord (HealthRecord record) async {
+    try {
+      final doc = await dataSource.createRecord(record);
+
+      return Success(doc);
+    } on FirebaseException catch (error) {
+      return Failure(
+        error.message ?? 'Unable to add health record.',
+      );
+    } catch (_) {
+      return const Failure(
+        'Unable to add health record.',
+      );
+    }
+  }
 }

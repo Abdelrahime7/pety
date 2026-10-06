@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 enum HealthRecordType {
-  vaccination,
   checkup,
   medication,
   allergy,
@@ -19,7 +18,6 @@ HealthRecordType healthRecordTypeFromValue(Object? value) {
 
 extension HealthRecordTypeX on HealthRecordType {
   String get displayName => switch (this) {
-        HealthRecordType.vaccination => 'Vaccination',
         HealthRecordType.checkup => 'Checkup',
         HealthRecordType.medication => 'Medication',
         HealthRecordType.allergy => 'Allergy',
@@ -28,7 +26,6 @@ extension HealthRecordTypeX on HealthRecordType {
       };
 
   Color get color => switch (this) {
-        HealthRecordType.vaccination => const Color(0xFF0D9488),
         HealthRecordType.checkup => const Color(0xFF0284C7),
         HealthRecordType.medication => const Color(0xFFEA580C),
         HealthRecordType.allergy => const Color(0xFFEF4444),
@@ -37,7 +34,6 @@ extension HealthRecordTypeX on HealthRecordType {
       };
 
   Color get backgroundColor => switch (this) {
-        HealthRecordType.vaccination => const Color(0xFFE6FFFA),
         HealthRecordType.checkup => const Color(0xFFE0F2FE),
         HealthRecordType.medication => const Color(0xFFFFF7ED),
         HealthRecordType.allergy => const Color(0xFFFEF2F2),
@@ -46,7 +42,6 @@ extension HealthRecordTypeX on HealthRecordType {
       };
 
   IconData get icon => switch (this) {
-        HealthRecordType.vaccination => Icons.vaccines_outlined,
         HealthRecordType.checkup => Icons.medical_services_outlined,
         HealthRecordType.medication => Icons.medication_outlined,
         HealthRecordType.allergy => Icons.warning_amber_rounded,

@@ -8,6 +8,7 @@ class HealthRecord {
   final String title;
   final DateTime date;
   final String notes;
+  final String veterinarian;
 
   const HealthRecord({
     required this.recordId,
@@ -16,6 +17,7 @@ class HealthRecord {
     required this.title,
     required this.date,
     required this.notes,
+    required this.veterinarian
   });
 
   factory HealthRecord.fromFirestore(
@@ -36,6 +38,7 @@ class HealthRecord {
       title: data['title'] as String? ?? 'Health record',
       date: date,
       notes: data['notes'] as String? ?? '',
+      veterinarian: data['veterinarian']as String? ?? "" 
     );
   }
 
@@ -46,6 +49,7 @@ class HealthRecord {
       'title': title,
       'date': Timestamp.fromDate(date),
       'notes': notes,
+      'veterinarian':veterinarian
     };
   }
 
@@ -56,6 +60,7 @@ class HealthRecord {
     String? title,
     DateTime? date,
     String? notes,
+    String ? veterinarian
   }) {
     return HealthRecord(
       recordId: recordId ?? this.recordId,
@@ -64,6 +69,7 @@ class HealthRecord {
       title: title ?? this.title,
       date: date ?? this.date,
       notes: notes ?? this.notes,
+      veterinarian: veterinarian?? this.veterinarian
     );
   }
 }
