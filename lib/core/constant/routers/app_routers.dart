@@ -7,6 +7,7 @@ import 'package:pet_care/features/appointments/presentation/appointments_screen/
 import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/appointment_details.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/edit_appointment_screen.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
+import 'package:pet_care/features/health/presentation/screens/add_record_screen.dart';
 import 'package:pet_care/features/health/presentation/screens/health_screen.dart';
 import 'package:pet_care/features/health/presentation/screens/health_records_screen.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
@@ -43,6 +44,7 @@ const String appointmentEdit = '/appointment-edit';
 const String home = '/home';
 const String health = '/health';
 const String healthRecords = '/health-records';
+const String addHealthRecord ='/addHealth-Record';
 const String notifications= '/notifications';
 const String notificationSettings ='/notificationSettings';
 
@@ -71,10 +73,15 @@ final appRouter = GoRouter(
       builder: (_, _) => const UpgradeToPremiumScreen(),
     ),
     GoRoute(path: profileInfo, builder: (_, _) => ProfileInfoScreen()),
+   
     GoRoute(
       path: healthRecords,
-      builder: (_, state) => HealthRecordsScreen(pet: state.extra as Pet?),
+      builder: (_, state) => HealthRecordsScreen(pet: state.extra as Pet),
     ),
+    GoRoute(path: addHealthRecord,builder: (context, state) {
+      final pet = state.extra as Pet;
+     return  AddHealthRecordScreen(pet: pet);}
+       ),
 
      GoRoute(path: addVaccination ,builder: (context,state ){
              final petId = state.extra as String ;

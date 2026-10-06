@@ -35,4 +35,14 @@ class HealthRecordsNotifier
       );
     });
   }
+
+Future<Result<void>> createRecord(HealthRecord record) async {
+  final result = await _service.createRecord(record);
+
+  if (result is Success<void>) {
+    await refreshRecords();
+  }
+
+  return result;
+}
 }

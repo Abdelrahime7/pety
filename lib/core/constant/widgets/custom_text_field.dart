@@ -21,6 +21,7 @@ class CustomeTextField extends StatelessWidget {
   final String? suffixText;
   final String? label;
   final Color? fillColor;
+  final TextInputAction? textInputAction ;
 
   const CustomeTextField({
     super.key,
@@ -41,6 +42,7 @@ class CustomeTextField extends StatelessWidget {
     this.label,
     this.enabled,
     this.fillColor,
+    this.textInputAction
   });
 
   @override
@@ -71,6 +73,7 @@ class CustomeTextField extends StatelessWidget {
           readOnly: readOnly,
           onTap: onTap,
           style: AppStyle.regular14,
+          textInputAction: textInputAction,
 
           decoration: InputDecoration(
             suffixText: suffixText,
