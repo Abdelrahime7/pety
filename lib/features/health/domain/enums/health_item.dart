@@ -1,0 +1,4 @@
+enum HealthItemType {
+  health,
+  vaccination,
+}

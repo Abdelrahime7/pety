@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pet_care/features/health/domain/entity/health_item_entity.dart';
+import 'package:pet_care/features/health/domain/enums/health_item.dart';
 
-class VaccinationRecord {
+class VaccinationRecord extends HealthItem {
   final String? id;
 
   final String petId;
@@ -53,5 +55,12 @@ class VaccinationRecord {
       'notes': notes,
     };
   }
+
+  @override
+  DateTime get date => vaccinationDate ;
+
+  @override
+
+  HealthItemType get type => HealthItemType.vaccination;
 
 }
