@@ -41,12 +41,12 @@ class HealthRecordCard extends StatelessWidget {
               width: 42.w,
               height: 42.w,
               decoration: BoxDecoration(
-                color: record.type.backgroundColor,
+                color: record.recordType.backgroundColor,
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
-                record.type.icon,
-                color: record.type.color,
+                record.recordType.icon,
+                color: record.recordType.color,
                 size: 20.sp,
               ),
             ),
@@ -85,14 +85,14 @@ class HealthRecordCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
                     decoration: BoxDecoration(
-                      color: record.type.backgroundColor,
+                      color: record.recordType.backgroundColor,
                       borderRadius: BorderRadius.circular(999.r),
                     ),
                     child: Text(
-                      record.type.displayName,
+                      record.recordType.displayName,
                       style: TextStyle(
                         fontSize: 10.sp,
-                        color: record.type.color,
+                        color: record.recordType.color,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

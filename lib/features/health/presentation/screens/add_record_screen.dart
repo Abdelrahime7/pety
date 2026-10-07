@@ -95,7 +95,7 @@ class _AddHealthRecordScreenState
           HealthRecord(
             recordId: '',
             petId: widget.pet.id,
-            type: _selectedType,
+            recordType: _selectedType,
             title: _titleController.text.trim(),
             date: _selectedDate,
             notes: _notesController.text.trim(),
