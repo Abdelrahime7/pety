@@ -1,4 +1,8 @@
+
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:go_router/go_router.dart';
+import 'package:pet_care/core/constant/routers/router_refresh_stream.dart';
+import 'package:pet_care/core/constant/routers/routes_strings.dart';
 import 'package:pet_care/core/layout/main_layout.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/appointments_screen.dart';
@@ -28,34 +32,33 @@ import 'package:pet_care/features/users/presentation/personal_information.dart';
 import 'package:pet_care/features/users/presentation/profile_screen.dart';
 import 'package:pet_care/features/users/presentation/upgrad_to_premium_screen.dart';
 
-final String profile = '/profile';
-final String login = '/login';
-final String upgradeToPremium = '/upgrade-to-premium';
-final String petList = '/pet-list';
-final String addNewPet = '/add-new-pet';
-final String profileInfo = '/profile-info';
-final String petDetails ='/pet-details';
-final String petEdit = '/Pet-Edit';
-final String addVaccination = '/Add-Vaccination';
-final String vaccinationList= '/Vaccination-List';
-final String vaccinationDetails='/vaccination-Details';
-const String calendar = '/calendar';
-const String addNewAppointment = '/add-new-appointment';
-const String appointmentDetails = '/appointment-details';
-const String appointmentEdit = '/appointment-edit';
-const String home = '/home';
-const String health = '/health';
-const String healthRecords = '/health-records';
-const String addHealthRecord ='/addHealth-Record';
-const String notifications= '/notifications';
-const String notificationSettings ='/notificationSettings';
-const String homeScreen = '/home';
-const String allHealthRecords = '/all-Health-Records';
-const String allVaccinationsRecords = '/all-Vaccinations-records';
 
+final _authRefreshStream = GoRouterRefreshStream(
+  FirebaseAuth.instance.authStateChanges(),
+);
 
 final appRouter = GoRouter(
   initialLocation: login,
+  refreshListenable: _authRefreshStream,
+
+  redirect: (context, state) {
+    final isLoggedIn =
+        FirebaseAuth.instance.currentUser != null;
+
+    final isLoggingIn = state.matchedLocation == login;
+
+    // Unauthenticated users must log in.
+    if (!isLoggedIn) {
+      return isLoggingIn ? null : login;
+    }
+
+    // Authenticated users should not remain on the login screen.
+    if (isLoggingIn) {
+      return home;
+    }
+
+    return null;
+  },
   routes: [
     /// Screens WITHOUT bottom nav
     GoRoute(path: login, builder: (_, _) => const LoginScreen()),
@@ -207,3 +210,4 @@ StatefulShellRoute.indexedStack(
 ),
   ],
 );
+
