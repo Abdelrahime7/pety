@@ -93,6 +93,7 @@ class _AddHealthRecordScreenState
         .read(healthRecordsProvider(widget.pet.id).notifier)
         .createRecord(
           HealthRecord(
+            ownerId:widget.pet.ownerId,
             recordId: '',
             petId: widget.pet.id,
             recordType: _selectedType,
