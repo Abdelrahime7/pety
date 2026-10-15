@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/widht_widget.dart';
@@ -12,6 +11,9 @@ import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 import 'package:pet_care/features/users/presentation/riverpod/unread_notificatins_provider.dart';
 import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart';
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
+import 'package:pet_care/core/constant/routers/routes_strings.dart';
+
+
 
 class ProfileHeaderCard extends ConsumerWidget {
   final dynamic user;
