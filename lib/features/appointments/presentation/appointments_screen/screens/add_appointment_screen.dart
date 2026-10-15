@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/constant/routers/app_routers.dart';
+import 'package:pet_care/core/constant/routers/routes_strings.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/app_save_button.dart';
