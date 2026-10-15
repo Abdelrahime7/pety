@@ -6,6 +6,8 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/helath_card_info.dart';
 import 'package:pet_care/features/pets/widgets/health_item.dart';
+import 'package:pet_care/core/constant/routers/routes_strings.dart';
+
 
 class HealthCard extends StatelessWidget {
   final String petId;
