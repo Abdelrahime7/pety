@@ -1,4 +1,6 @@
+
 class AddVaccinationRequest {
+  final String ownerId;
   final String petId;
   final String? seriesId;
   final String? vaccineName;
@@ -6,7 +8,8 @@ class AddVaccinationRequest {
   final DateTime vaccinationDate;
   final String? notes;
 
-  const AddVaccinationRequest({
+   AddVaccinationRequest({
+    required this .ownerId,
     required this.petId,
     this.seriesId,
     this.vaccineName,

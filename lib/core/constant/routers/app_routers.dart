@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/layout/main_layout.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
@@ -8,12 +7,15 @@ import 'package:pet_care/features/appointments/presentation/appointments_screen/
 import 'package:pet_care/features/appointments/presentation/appointments_screen/screens/edit_appointment_screen.dart';
 import 'package:pet_care/features/authentication/presentation/login_screen.dart';
 import 'package:pet_care/features/health/presentation/screens/add_record_screen.dart';
+import 'package:pet_care/features/health/presentation/screens/all_health_records_screen.dart';
 import 'package:pet_care/features/health/presentation/screens/health_screen.dart';
 import 'package:pet_care/features/health/presentation/screens/health_records_screen.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/add_vaccination.dart';
+import 'package:pet_care/features/health/vaccination/presentation/screens/all_vaccinations_screen.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccination_details.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccinations_list.dart';
+import 'package:pet_care/features/home/presentation%20/screens/home_screen.dart';
 import 'package:pet_care/features/notifications/presentation/screens/notification_settings_screen.dart';
 import 'package:pet_care/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
@@ -47,6 +49,10 @@ const String healthRecords = '/health-records';
 const String addHealthRecord ='/addHealth-Record';
 const String notifications= '/notifications';
 const String notificationSettings ='/notificationSettings';
+const String homeScreen = '/home';
+const String allHealthRecords = '/all-Health-Records';
+const String allVaccinationsRecords = '/all-Vaccinations-records';
+
 
 final appRouter = GoRouter(
   initialLocation: login,
@@ -113,40 +119,91 @@ final appRouter = GoRouter(
           }),
 
           GoRoute(
-  path: notifications,
-  builder: (context, state) {
-    return const NotificationsScreen();
-  },
-),
-GoRoute(
-  path: notificationSettings,
-  builder: (context, state) {
-    final user =state.extra as User;
-    return  NotificationSettingsScreen(user: user,);
-  },
-),
+            path: notifications,
+            builder: (context, state) {
+            return const NotificationsScreen();
+              },
+            )         ,
+      GoRoute(
+            path: notificationSettings,
+            builder: (context, state) {
+            final user =state.extra as User;
+             return  NotificationSettingsScreen(user: user,);
+              },
+)            ,
 
+      GoRoute(path: allHealthRecords,
+      builder: (context,state){
+        return const AllHealthRecordsScreen();
+      }
+      ),
+       GoRoute(path: allVaccinationsRecords,
+      builder: (context,state){
+        return const AllVaccinationsScreen();
+      }
+      ),
     /// Screens WITH bottom nav
-    ShellRoute(
-      builder: (context, state, child) {
-        return MainLayout(child: child);
-      },
+    /// 
+    /// 
+
+
+StatefulShellRoute.indexedStack(
+  builder: (context, state, navigationShell) {
+    return MainLayout(
+      navigationShell: navigationShell,
+    );
+  },
+  branches: [
+    // Home tab
+    StatefulShellBranch(
       routes: [
         GoRoute(
-          path: '/home',
-          builder: (_, _) =>
-              const Scaffold(body: Center(child: Text("Home coming soon..."))),
+          path: homeScreen,
+          builder: (context, state) => const HomeScreen(),
         ),
-        
-        GoRoute(path: petList, builder: (_, _) => PetsListScreen()),
-        GoRoute(path: health, builder: (_, _) => HealthScreen()),
-        GoRoute(path: calendar, builder: (_, _) => const AppointmentsScreen()),
-        GoRoute(path: profile, builder: (_, _) => const ProfilePage()),
-
-      
-         
-  
       ],
     ),
+
+    // Pets tab
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: petList,
+          builder: (context, state) => PetsListScreen(),
+        ),
+      ],
+    ),
+
+    // Health tab
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: health,
+          builder: (context, state) => HealthScreen(),
+        ),
+      ],
+    ),
+
+    // Calendar tab
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: calendar,
+          builder: (context, state) => const AppointmentsScreen(),
+        ),
+      ],
+    ),
+
+    // Profile tab
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: profile,
+          builder: (context, state) => const ProfilePage(),
+        ),
+      ],
+    ),
+  ],
+),
   ],
 );

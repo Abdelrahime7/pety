@@ -11,15 +11,15 @@ import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:uuid/uuid.dart';
 
 class PetNotifier extends AsyncNotifier<List<Pet>> {
-  late final PetService _service;
-  late final ImageService _imageService;
+  PetService get _service => ref.read(petServiceProvider);
+
+ImageService get _imageService => ref.read(imageServiceProvider);
 
   String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
 
   @override
   FutureOr<List<Pet>> build() async {
-    _service = ref.read(petServiceProvider);
-    _imageService = ref.read(imageServiceProvider);
+   
 
     if (_ownerId == null) {
       return [];
