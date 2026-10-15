@@ -3,6 +3,7 @@ import 'package:pet_care/features/health/domain/entity/health_item_entity.dart';
 import 'package:pet_care/features/health/domain/enums/health_item.dart';
 
 class VaccinationRecord extends HealthItem {
+  final String ?ownerId;
   final String? id;
 
   final String petId;
@@ -22,6 +23,7 @@ class VaccinationRecord extends HealthItem {
   final String? notes;
 
   VaccinationRecord({
+    required this.ownerId,
     required this.id,
     required this.petId,
     this.seriesId,
@@ -33,6 +35,7 @@ class VaccinationRecord extends HealthItem {
 
   factory VaccinationRecord.fromMap(Map<String, dynamic> data) {
     return VaccinationRecord(
+      ownerId:data['ownerId'] as String ? ??"",
       id: data['id'] as String?,
       petId: data['petId'] as String,
       seriesId: data['seriesId'] as String?,
@@ -46,6 +49,7 @@ class VaccinationRecord extends HealthItem {
 
   Map<String, dynamic> toMap() {
     return {
+      'ownerId':ownerId,
       'id': id,
       'petId': petId,
       'seriesId': seriesId,

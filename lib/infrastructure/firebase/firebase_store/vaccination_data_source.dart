@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pet_care/core/constant/result/result.dart';
 
 class VaccinationDataSource {
   final FirebaseFirestore _firestore;
@@ -32,6 +33,29 @@ class VaccinationDataSource {
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
+  Future<
+    Result<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+> getAllOwnerVaccinations(
+  String ownerId,
+  String collectionName,
+) async {
+  try {
+    final snapshot = await _firestore
+        .collection(collectionName)
+        .where('ownerId', isEqualTo: ownerId)
+        .get();
+
+    return Success(snapshot.docs);
+  } on FirebaseException catch (error) {
+    return Failure(
+      error.message ?? 'Unable to load vaccination data.',
+    );
+  } catch (_) {
+    return const Failure(
+      'Unable to load vaccination data.',
+    );
+  }
+}
 
   Future<Map<String, dynamic>?> getById(
     String collectionName,

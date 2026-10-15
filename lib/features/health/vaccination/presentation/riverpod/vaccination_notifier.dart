@@ -121,6 +121,7 @@ class VaccinationNotifier
       // ==========================================================
 
       final vaccination = VaccinationRecord(
+        ownerId:request.ownerId ,
         id: const Uuid().v4(),
         petId: request.petId,
         seriesId: serie.id,

@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
@@ -172,6 +173,7 @@ Future<void> _addVaccination() async {
   }
 
   final request = AddVaccinationRequest(
+    ownerId: FirebaseAuth.instance.currentUser!.uid,
     petId: widget.petId,
     seriesId: _selectedSeries?.id,
     vaccineName: _isNewSeries
