@@ -3,9 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 
 class MainLayout extends StatelessWidget {
-  final Widget child;
-
-  const MainLayout({super.key, required this.child});
+  final StatefulNavigationShell navigationShell;
+  const MainLayout({super.key, required this.navigationShell});
 
   int _calculateSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
@@ -33,7 +32,7 @@ class MainLayout extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
-      body: child,
+      body: navigationShell,
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
