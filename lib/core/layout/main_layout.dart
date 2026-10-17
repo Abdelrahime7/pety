@@ -144,7 +144,7 @@ class _MainLayoutState extends State<MainLayout> {
           height: size,
           color: isSelected
               ? AppColors.primary
-              : const Color(0xFF94A3B8),
+              : AppColors.icon,
         ),
       ),
     );

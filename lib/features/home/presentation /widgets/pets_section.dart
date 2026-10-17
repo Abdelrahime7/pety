@@ -116,7 +116,7 @@ class HomePetsSection extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemCount: pets.length,
-              separatorBuilder: (_, __) => SizedBox(width: 15.w),
+              separatorBuilder: (_, _) => SizedBox(width: 15.w),
               itemBuilder: (context, index) {
                 final pet = pets[index];
 

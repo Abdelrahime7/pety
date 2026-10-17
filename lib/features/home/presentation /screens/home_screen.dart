@@ -7,7 +7,6 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/health_summary_section.dart';
 import 'package:pet_care/features/home/presentation%20/widgets/home_header.dart';
 import 'package:pet_care/features/home/presentation%20/widgets/home_section_header.dart';
 import 'package:pet_care/features/home/presentation%20/widgets/pets_section.dart';
@@ -84,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               SizedBox(height: 14.h),
 
-              const HealthSummarySection(),
+           //   const HealthSummarySection(),
             ],
           ),
         ),

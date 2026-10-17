@@ -4,7 +4,6 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart';
 import 'package:pet_care/features/users/presentation/widgets/pofile_header_card.dart';
-import 'package:pet_care/features/users/presentation/widgets/premium_promo_card.dart';
 import 'package:pet_care/features/users/presentation/widgets/setting_section.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -34,7 +33,7 @@ Widget build(BuildContext context, WidgetRef ref) {
               children: [
                 ProfileHeaderCard(user: user),
                 HeightSpace(height: 38),
-                PremiumPromoCard(),
+            //    PremiumPromoCard(),
                 HeightSpace(height: 36),
                 SettingsSections(user: user),
               ],

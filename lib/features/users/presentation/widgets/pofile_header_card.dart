@@ -257,27 +257,27 @@ class ProfileHeaderCard extends ConsumerWidget {
                   const SizedBox(width: 8),
 
                   // Settings button
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      border: Border.all(
-                        color: const Color(0xFFE2E8F0),
-                        width: 1.2,
-                      ),
-                    ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(
-                        Icons.settings_rounded,
-                        color: Color(0xFF5B6B82),
-                        size: 20,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
+                  // Container(
+                  //   width: 42,
+                  //   height: 42,
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     color: Colors.white,
+                  //     border: Border.all(
+                  //       color: const Color(0xFFE2E8F0),
+                  //       width: 1.2,
+                  //     ),
+                  //   ),
+                  //   child: IconButton(
+                  //     padding: EdgeInsets.zero,
+                  //     icon: const Icon(
+                  //       Icons.settings_rounded,
+                  //       color: Color(0xFF5B6B82),
+                  //       size: 20,
+                  //     ),
+                  //     onPressed: () {},
+                  //   ),
+                  // ),
                 ],
               ),
             ],

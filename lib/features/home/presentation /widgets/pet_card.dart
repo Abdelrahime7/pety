@@ -75,7 +75,7 @@ class HomePetCard extends StatelessWidget {
       return Image.network(
         pet.photoUrl,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(),
+        errorBuilder: (_, _, _) => _buildPlaceholder(),
       );
     }
 
