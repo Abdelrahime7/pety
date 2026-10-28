@@ -19,7 +19,7 @@ Widget buildHeader() {
 
        SizedBox(height: 8.h),
 
-        Text('PetCare', style: AppStyle.title),
+        Text('PetPaw+', style: AppStyle.title),
 
         SizedBox(height: 4.h),
 
