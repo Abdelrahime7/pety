@@ -56,7 +56,9 @@ dependencies:
 
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.2.16
   flutter_test:
     sdk: flutter 
   mockito: ^5.6.4
@@ -78,7 +80,17 @@ flutter:
   assets:
      -  assets/images/
      -  assets/icons/
-    
+     -  assets/splash/
+     -  assets/appIcon/
+
+flutter_launcher_icons:
+   android: true
+   ios: true
+   image_path: "assets/appIcon/Appicon.png"
+
+flutter_native_splash:
+   color: "#FFF4E6"
+   image: assets/splash/splash_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
