@@ -8,90 +8,67 @@ class FirebaseAuthDataSource {
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   final UserFirestoreDataSource _userdataSource;
 
+  FirebaseAuthDataSource(
+    this._auth, {
+    required UserFirestoreDataSource userdataSource,
+  }) : _userdataSource = userdataSource;
 
-  FirebaseAuthDataSource(this._auth, {required UserFirestoreDataSource userdataSource}) : _userdataSource = userdataSource ;
-
-
- Future<void> sendPasswordResetEmail({
-  required String email,
-}) async {
-  await _auth.sendPasswordResetEmail(
-    email: email,
-  );
-}
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
 
   // ignore: pty_constructor_bodies
-  Future<UserCredential> register (
-    AutUserRequest request
-  )async {
-    
-     final credential = await  _auth.createUserWithEmailAndPassword(
+  Future<UserCredential> register(AutUserRequest request) async {
+    final credential = await _auth.createUserWithEmailAndPassword(
       email: request.email,
       password: request.password,
     );
-  
 
-     await _userdataSource .createUser(
-      
+    await _userdataSource.createUser(
       uid: credential.user!.uid,
       email: credential.user!.email!,
-      name: request.name!
-       );
-  
-  return credential;
+      name: request.name!,
+    );
+
+    return credential;
   }
 
-  
-
-  Future<UserCredential> login(
-    AutUserRequest request
-  ) {
+  Future<UserCredential> login(AutUserRequest request) {
     return _auth.signInWithEmailAndPassword(
-      email:request.email,
+      email: request.email,
       password: request.password,
     );
   }
 
+  Future logout() => _auth.signOut();
 
-  Future logout() =>  _auth.signOut();
-  
-
-
-   UserResponse?  getCurrentUser() {
+  UserResponse? getCurrentUser() {
     final firebaseUser = _auth.currentUser;
 
     if (firebaseUser == null) {
       return null;
     }
 
-    return (
-    uid: firebaseUser.uid,
-    email: firebaseUser.email!
-    );
+    return (uid: firebaseUser.uid, email: firebaseUser.email!);
   }
 
- Future<UserCredential> loginWithGoogle() async {
-  final googleUser = await _googleSignIn.authenticate();
+  Future<UserCredential> loginWithGoogle() async {
+    final googleUser = await _googleSignIn.authenticate();
 
-  final googleAuth = googleUser.authentication;
+    final googleAuth = googleUser.authentication;
 
-  final credential = GoogleAuthProvider.credential(
-    idToken: googleAuth.idToken,
-  );
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
 
-  final userCredential = await _auth.signInWithCredential(credential);
+    final userCredential = await _auth.signInWithCredential(credential);
 
-  await _userdataSource.createUserIfNotExists(
-    uid: userCredential.user!.uid,
-    email: userCredential.user!.email!,
-    name: userCredential.user!.displayName!, 
-  );
+    await _userdataSource.createUserIfNotExists(
+      uid: userCredential.user!.uid,
+      email: userCredential.user!.email!,
+      name: userCredential.user!.displayName!,
+    );
 
-  return userCredential;
-}
-
-
-
-
-
+    return userCredential;
+  }
 }

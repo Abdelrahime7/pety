@@ -2,11 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 
-final allHealthRecordsProvider =
-    FutureProvider<List<HealthRecord>>((ref) async {
+final allHealthRecordsProvider = FutureProvider<List<HealthRecord>>((
+  ref,
+) async {
   final ownerId = FirebaseAuth.instance.currentUser?.uid;
 
   if (ownerId == null) {

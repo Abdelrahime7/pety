@@ -3,9 +3,7 @@ import 'package:pet_care/core/errors/authfailure.dart';
 import 'package:pet_care/core/errors/common_faillure.dart';
 import 'package:pet_care/core/errors/firstore_faillure.dart';
 
-ErrorFailure mapFirestoreExceptionToFailure(
-  FirebaseException exception,
-) {
+ErrorFailure mapFirestoreExceptionToFailure(FirebaseException exception) {
   switch (exception.code) {
     case 'permission-denied':
       return const PermissionDeniedFailure();

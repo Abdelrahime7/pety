@@ -1,6 +1,1 @@
-enum VaccinationDueStatus {
-  unscheduled,
-  upcoming,
-  dueToday,
-  overdue,
-}
+enum VaccinationDueStatus { unscheduled, upcoming, dueToday, overdue }

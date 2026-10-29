@@ -1,13 +1,9 @@
-
 import 'package:flutter/material.dart';
 
 class LogoutActionCard extends StatelessWidget {
   final VoidCallback onTap;
 
-  const LogoutActionCard({
-    super.key,
-    required this.onTap,
-  });
+  const LogoutActionCard({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +19,9 @@ class LogoutActionCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(32),
-          border: Border.all(
-            color: const Color(0xFFF1F5F9),
-          ),
+          border: Border.all(color: const Color(0xFFF1F5F9)),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.02),
-              blurRadius: 4,
-            ),
+            BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4),
           ],
         ),
         child: Row(
@@ -62,15 +53,10 @@ class LogoutActionCard extends StatelessWidget {
                 ),
               ],
             ),
-            const Icon(
-              Icons.chevron_right,
-              color: inkSoft,
-              size: 16,
-            ),
+            const Icon(Icons.chevron_right, color: inkSoft, size: 16),
           ],
         ),
       ),
     );
   }
 }
-

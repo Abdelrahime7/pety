@@ -15,8 +15,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-
-      StreamSubscription<RemoteMessage>? _onMessageSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageSubscription;
 
   NotificationService(this._dataSource);
 
@@ -24,9 +23,7 @@ class NotificationService {
   // Firestore notifications
   // --------------------------------------------------
 
-  Future<Result<List<Notification>>> getNotifications(
-    String userId,
-  ) async {
+  Future<Result<List<Notification>>> getNotifications(String userId) async {
     try {
       final data = await _dataSource.getNotifications(userId);
 
@@ -62,10 +59,7 @@ class NotificationService {
   // FCM token
   // --------------------------------------------------
 
-  Future<Result<void>> saveFcmToken(
-    String userId,
-    String token,
-  ) async {
+  Future<Result<void>> saveFcmToken(String userId, String token) async {
     try {
       await _dataSource.saveFcmToken(userId, token);
 
@@ -75,10 +69,7 @@ class NotificationService {
     }
   }
 
- Future<Result<void>> deleteFcmToken (
-    String userId,
-    String token,
-  ) async {
+  Future<Result<void>> deleteFcmToken(String userId, String token) async {
     try {
       await _dataSource.deleteFcmToken(userId, token);
 
@@ -88,54 +79,47 @@ class NotificationService {
     }
   }
 
-
-
-
   // --------------------------------------------------
   // enable Notificatio
   // --------------------------------------------------
 
-Future<Result<void>> enableNotifications(String userId) async {
-  try {
-    final messaging = FirebaseMessaging.instance;
+  Future<Result<void>> enableNotifications(String userId) async {
+    try {
+      final messaging = FirebaseMessaging.instance;
 
-    // Android 13+ requires runtime notification permission.
-    final androidInfo = await DeviceInfoPlugin().androidInfo;
+      // Android 13+ requires runtime notification permission.
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
 
-    if (androidInfo.version.sdkInt >= 33) {
-      final settings = await messaging.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-
-      if (settings.authorizationStatus !=
-          AuthorizationStatus.authorized) {
-        return Failure(
-          'Notification permission was not granted.',
+      if (androidInfo.version.sdkInt >= 33) {
+        final settings = await messaging.requestPermission(
+          alert: true,
+          badge: true,
+          sound: true,
         );
+
+        if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+          return Failure('Notification permission was not granted.');
+        }
       }
+
+      // Android 12 and below don't need runtime
+      // notification permission.
+      final token = await messaging.getToken();
+
+      if (token == null) {
+        return Failure('Could not get FCM token.');
+      }
+
+      await saveFcmToken(userId, token);
+
+      await _initializeLocalNotifications();
+      await _setupForegroundNotifications();
+
+      return const Success(null);
+    } catch (e) {
+      return Failure(e.toString());
     }
-
-    // Android 12 and below don't need runtime
-    // notification permission.
-    final token = await messaging.getToken();
-
-    if (token == null) {
-      return Failure('Could not get FCM token.');
-    }
-
-    await saveFcmToken(userId, token);
-
-    await _initializeLocalNotifications();
-    await _setupForegroundNotifications();
-
-    return const Success(null);
-  } catch (e) {
-    return Failure(e.toString());
   }
-}
-
 
   // --------------------------------------------------
   // Mapping
@@ -153,41 +137,40 @@ Future<Result<void>> enableNotifications(String userId) async {
       ),
       isRead: map['isRead'] as bool? ?? false,
       createdAt: (map['createdAt'] as Timestamp).toDate(),
-      data: map['data'] != null
-          ? Map<String, dynamic>.from(map['data'])
-          : null,
+      data: map['data'] != null ? Map<String, dynamic>.from(map['data']) : null,
     );
   }
 
-   // --------------------------------------------------
+  // --------------------------------------------------
   // disable Notificatio
   // --------------------------------------------------
 
-Future<Result<void>> disableNotifications(String userId) async {
-  try {
-    final messaging = FirebaseMessaging.instance;
+  Future<Result<void>> disableNotifications(String userId) async {
+    try {
+      final messaging = FirebaseMessaging.instance;
 
-    final token = await messaging.getToken();
+      final token = await messaging.getToken();
 
-    if (token != null) {
-      await deleteFcmToken(userId, token);
+      if (token != null) {
+        await deleteFcmToken(userId, token);
+      }
+
+      return const Success(null);
+    } catch (e) {
+      return Failure(e.toString());
     }
-
-    return const Success(null);
-  } catch (e) {
-    return Failure(e.toString());
   }
-}
 
   // --------------------------------------------------
   // Foreground notifications
   // --------------------------------------------------
 
- Future<void> _setupForegroundNotifications() async {
-  await _onMessageSubscription?.cancel();
+  Future<void> _setupForegroundNotifications() async {
+    await _onMessageSubscription?.cancel();
 
-  _onMessageSubscription = FirebaseMessaging.onMessage.listen(
-    (RemoteMessage message) async {
+    _onMessageSubscription = FirebaseMessaging.onMessage.listen((
+      RemoteMessage message,
+    ) async {
       final notification = message.notification;
 
       if (notification == null) {
@@ -208,9 +191,8 @@ Future<Result<void>> disableNotifications(String userId) async {
           ),
         ),
       );
-    },
-  );
-}
+    });
+  }
 
   // --------------------------------------------------
   // Local notification initialization
@@ -221,13 +203,9 @@ Future<Result<void>> disableNotifications(String userId) async {
       '@mipmap/ic_launcher',
     );
 
-    const settings = InitializationSettings(
-      android: androidSettings,
-    );
+    const settings = InitializationSettings(android: androidSettings);
 
-    await _localNotifications.initialize(
-      settings: settings,
-    );
+    await _localNotifications.initialize(settings: settings);
 
     const channel = AndroidNotificationChannel(
       'pety_notifications',
@@ -238,7 +216,8 @@ Future<Result<void>> disableNotifications(String userId) async {
 
     await _localNotifications
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
   }
 }

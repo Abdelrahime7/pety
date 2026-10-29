@@ -8,19 +8,14 @@ class NotificationDataSource {
   CollectionReference<Map<String, dynamic>> get _collection =>
       _firestore.collection('notifications');
 
-  Future<List<Map<String, dynamic>>> getNotifications(
-    String userId,
-  ) async {
+  Future<List<Map<String, dynamic>>> getNotifications(String userId) async {
     final snapshot = await _collection
         .where('userId', isEqualTo: userId)
         .orderBy('createdAt', descending: true)
         .get();
 
     return snapshot.docs.map((doc) {
-      return {
-        ...doc.data(),
-        'id': doc.id,
-      };
+      return {...doc.data(), 'id': doc.id};
     }).toList();
   }
 
@@ -35,37 +30,27 @@ class NotificationDataSource {
   }
 
   Future<void> markAsRead(String notificationId) async {
-    await _collection.doc(notificationId).update({
-      'isRead': true,
-    });
+    await _collection.doc(notificationId).update({'isRead': true});
   }
-Future<void> saveFcmToken(
-  String userId,
-  String token,
-) async {
-  await _firestore
-      .collection('users')
-      .doc(userId)
-      .collection('fcmTokens')
-      .doc(token)
-      .set({
-    'token': token,
-    'updatedAt': FieldValue.serverTimestamp(),
-  }, SetOptions(merge: true));
+
+  Future<void> saveFcmToken(String userId, String token) async {
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('fcmTokens')
+        .doc(token)
+        .set({
+          'token': token,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+  }
+
+  Future<void> deleteFcmToken(String userId, String token) async {
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('fcmTokens')
+        .doc(token)
+        .delete();
+  }
 }
-
-
-Future<void> deleteFcmToken(
-  String userId,
-  String token,
-) async {
-  await _firestore
-      .collection('users')
-      .doc(userId)
-      .collection('fcmTokens')
-      .doc(token)
-      .delete();
-}
-}
-
-

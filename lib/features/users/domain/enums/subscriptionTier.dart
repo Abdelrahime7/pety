@@ -1,6 +1,1 @@
-  
-
-  enum SubscriptionTier {
-  normal,
-  premium,
-}
+enum SubscriptionTier { normal, premium }

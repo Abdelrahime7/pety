@@ -27,15 +27,14 @@ class Appointment {
 
   DateTime get dateTime => date;
 
-  AppointmentStatus get status =>
-      date.isBefore(DateTime.now())
-          ? AppointmentStatus.past
-          : AppointmentStatus.upcoming;
+  AppointmentStatus get status => date.isBefore(DateTime.now())
+      ? AppointmentStatus.past
+      : AppointmentStatus.upcoming;
 
   Map<String, dynamic> toMap() {
     return {
       'appointmentId': appointmentId,
-      'userId':userId,
+      'userId': userId,
       'petId': petId,
       'date': Timestamp.fromDate(date),
       'veterinarian': veterinarian,
@@ -52,17 +51,14 @@ class Appointment {
     return Appointment.fromMap(map, doc.id);
   }
 
-  factory Appointment.fromMap(
-    Map<String, dynamic> map, [
-    String? id,
-  ]) {
+  factory Appointment.fromMap(Map<String, dynamic> map, [String? id]) {
     final rawDate = map['date'] ?? map['dateTime'];
 
     final parsedDate = rawDate is Timestamp
         ? rawDate.toDate()
         : rawDate is String
-            ? DateTime.tryParse(rawDate) ?? DateTime.now()
-            : DateTime.now();
+        ? DateTime.tryParse(rawDate) ?? DateTime.now()
+        : DateTime.now();
 
     final rawType = map['type'] as String?;
 
@@ -93,7 +89,7 @@ class Appointment {
   }) {
     return Appointment(
       appointmentId: appointmentId ?? this.appointmentId,
-      userId: userId?? this .userId,
+      userId: userId ?? this.userId,
       petId: petId ?? this.petId,
       date: date ?? this.date,
       veterinarian: veterinarian ?? this.veterinarian,

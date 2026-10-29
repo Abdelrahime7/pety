@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HealthPetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback onTap;
 
-  const HealthPetCard({
-    super.key,
-    required this.pet,
-    required this.onTap,
-  });
+  const HealthPetCard({super.key, required this.pet, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +43,7 @@ class HealthPetCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15.5.sp,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.text,
+                      color: context.colors.onSurface,
                     ),
                   ),
                   SizedBox(height: 3.h),
@@ -55,12 +51,15 @@ class HealthPetCard extends StatelessWidget {
                     meta,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: AppColors.secondaryText,
+                      color: context.colors.onSurfaceVariant,
                     ),
                   ),
                   SizedBox(height: 7.h),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 3.h,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFE6FFFA),
                       borderRadius: BorderRadius.circular(999.r),
@@ -102,7 +101,8 @@ class HealthPetCard extends StatelessWidget {
   String _age(DateTime birthDate) {
     final now = DateTime.now();
     var years = now.year - birthDate.year;
-    if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now)) years--;
+    if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now))
+      years--;
     return years > 0 ? '$years years' : 'Less than a year';
   }
 }
@@ -122,24 +122,32 @@ class _Image extends StatelessWidget {
         borderRadius: BorderRadius.circular(14.r),
       ),
       child: url.isEmpty
-          ? const Center(
-              child: Icon(Icons.pets, color: AppColors.icon, size: 24),
+          ? Center(
+              child: Icon(
+                Icons.pets,
+                color: context.colors.onSurfaceVariant,
+                size: 24,
+              ),
             )
           : Image.network(
               url,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => const Center(
-                child: Icon(Icons.pets, color: AppColors.icon, size: 24),
+              errorBuilder: (context, error, stackTrace) => Center(
+                child: Icon(
+                  Icons.pets,
+                  color: context.colors.onSurfaceVariant,
+                  size: 24,
+                ),
               ),
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return const Center(
+                return Center(
                   child: SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                 );

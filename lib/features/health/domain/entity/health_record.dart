@@ -4,7 +4,7 @@ import 'package:pet_care/features/health/domain/enums/health_item.dart';
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
 class HealthRecord extends HealthItem {
-   final String ownerId ;
+  final String ownerId;
   final String recordId;
   final String petId;
   final HealthRecordType recordType;
@@ -19,7 +19,7 @@ class HealthRecord extends HealthItem {
   final DateTime date;
 
   HealthRecord({
-    required this. ownerId,
+    required this.ownerId,
     required this.recordId,
     required this.petId,
     required this.recordType,
@@ -39,11 +39,11 @@ class HealthRecord extends HealthItem {
     final date = rawDate is Timestamp
         ? rawDate.toDate()
         : rawDate is String
-            ? DateTime.tryParse(rawDate) ?? DateTime.now()
-            : DateTime.now();
+        ? DateTime.tryParse(rawDate) ?? DateTime.now()
+        : DateTime.now();
 
     return HealthRecord(
-      ownerId: data['ownerId'] as String ? ??''  ,
+      ownerId: data['ownerId'] as String? ?? '',
       recordId: doc.id,
       petId: data['petId'] as String? ?? '',
       recordType: healthRecordTypeFromValue(data['type']),
@@ -56,7 +56,7 @@ class HealthRecord extends HealthItem {
 
   Map<String, dynamic> toMap() {
     return {
-      'ownerId':ownerId,
+      'ownerId': ownerId,
       'petId': petId,
       'type': recordType.name,
       'title': title,
@@ -67,7 +67,7 @@ class HealthRecord extends HealthItem {
   }
 
   HealthRecord copyWith({
-    String ?ownerId,
+    String? ownerId,
     String? recordId,
     String? petId,
     HealthRecordType? recordType,
@@ -77,7 +77,7 @@ class HealthRecord extends HealthItem {
     String? veterinarian,
   }) {
     return HealthRecord(
-      ownerId:ownerId ?? this.ownerId,
+      ownerId: ownerId ?? this.ownerId,
       recordId: recordId ?? this.recordId,
       petId: petId ?? this.petId,
       recordType: recordType ?? this.recordType,

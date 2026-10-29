@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/presentation/riverpod/all_Health_Records_Provider.dart';
 import 'package:pet_care/features/health/presentation/widgets/health_record_filters.dart';
 import 'package:pet_care/features/health/presentation/widgets/health_records_empty_state.dart';
@@ -18,7 +18,8 @@ class AllHealthRecordsScreen extends ConsumerStatefulWidget {
       _AllHealthRecordsScreenState();
 }
 
-class _AllHealthRecordsScreenState extends ConsumerState<AllHealthRecordsScreen> {
+class _AllHealthRecordsScreenState
+    extends ConsumerState<AllHealthRecordsScreen> {
   String _selectedFilter = 'All';
 
   @override
@@ -27,33 +28,45 @@ class _AllHealthRecordsScreenState extends ConsumerState<AllHealthRecordsScreen>
     final petsAsync = ref.watch(petProvider);
 
     final petNames = <String, String>{
-      for (final pet in petsAsync.valueOrNull ?? <Pet>[])
-        pet.id: pet.name,
+      for (final pet in petsAsync.valueOrNull ?? <Pet>[]) pet.id: pet.name,
     };
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.colors.surface,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: AppColors.text),
-        title: const Text(
+        iconTheme: IconThemeData(color: context.colors.onSurface),
+        title: Text(
           'All Health Records',
-          style: TextStyle(color: AppColors.text, fontSize: 18, fontWeight: FontWeight.w700),
+          style: TextStyle(
+            color: context.colors.onSurface,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
       body: recordsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+        loading: () => Center(
+          child: CircularProgressIndicator(color: context.colors.primary),
+        ),
         error: (error, stackTrace) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.cloud_off_outlined, size: 42, color: AppColors.error),
+                Icon(
+                  Icons.cloud_off_outlined,
+                  size: 42,
+                  color: context.colors.error,
+                ),
                 const SizedBox(height: 12),
-                const Text('Unable to load health records.', textAlign: TextAlign.center),
+                const Text(
+                  'Unable to load health records.',
+                  textAlign: TextAlign.center,
+                ),
                 TextButton(
                   onPressed: () => ref.invalidate(allHealthRecordsProvider),
                   child: const Text('Try again'),
@@ -65,10 +78,16 @@ class _AllHealthRecordsScreenState extends ConsumerState<AllHealthRecordsScreen>
         data: (records) {
           final filtered = _selectedFilter == 'All'
               ? records
-              : records.where((r) => r.type.name.toLowerCase() == _selectedFilter.toLowerCase()).toList();
+              : records
+                    .where(
+                      (r) =>
+                          r.type.name.toLowerCase() ==
+                          _selectedFilter.toLowerCase(),
+                    )
+                    .toList();
 
           return RefreshIndicator(
-            color: AppColors.primary,
+            color: context.colors.primary,
             onRefresh: () async {
               ref.invalidate(allHealthRecordsProvider);
               ref.invalidate(petProvider);
@@ -84,7 +103,8 @@ class _AllHealthRecordsScreenState extends ConsumerState<AllHealthRecordsScreen>
                 const SizedBox(height: 20),
                 OwnerHealthRecordFilterChips(
                   selected: _selectedFilter,
-                  onSelected: (value) => setState(() => _selectedFilter = value),
+                  onSelected: (value) =>
+                      setState(() => _selectedFilter = value),
                 ),
                 const SizedBox(height: 16),
                 if (filtered.isEmpty)

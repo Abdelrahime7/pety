@@ -1,7 +1,7 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class OwnerVaccinationEmptyState extends StatelessWidget {
   const OwnerVaccinationEmptyState({super.key});
@@ -19,15 +19,22 @@ class OwnerVaccinationEmptyState extends StatelessWidget {
               color: Color(0xFFEAFBF8),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.vaccines_outlined, size: 30, color: AppColors.tealDark),
+            child: const Icon(
+              Icons.vaccines_outlined,
+              size: 30,
+              color: AppColors.tealDark,
+            ),
           ),
           SizedBox(height: 14.h),
-          Text('No vaccinations yet', style: AppStyle.sectionHeader),
+          Text('No vaccinations yet', style: context.style.sectionHeader),
           SizedBox(height: 6.h),
           Text(
             'Vaccination records for all your pets will appear here.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12.sp, color: AppColors.secondaryText),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: context.colors.onSurfaceVariant,
+            ),
           ),
         ],
       ),

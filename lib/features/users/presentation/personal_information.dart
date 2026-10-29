@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_back_button.dart';
 import 'package:pet_care/core/constant/widgets/app_save_button.dart';
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
@@ -30,7 +30,7 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
   late TextEditingController _nameController;
   bool _isSaving = false;
   bool _isInit = false;
-  File ?imageFile;
+  File? imageFile;
 
   @override
   void initState() {
@@ -45,60 +45,43 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
   }
 
   Future<void> _handleSave(UserRequest request) async {
+    setState(() => _isSaving = true);
+    final data = toPatchMap(request);
+    try {
+      final result = await ref
+          .read(userProvider.notifier)
+          .patchUser(request.uid!, data);
 
-  setState(() => _isSaving = true);
-  final data = toPatchMap (request);
-  try {
+      switch (result) {
+        case Success<void>():
+          if (mounted) {
+            showNotification(context, 'Profile updated successfully');
+          }
 
-    final result = await ref
-        .read(userProvider.notifier)
-        .patchUser(request.uid!,data);
+        case Failure<void>(:final message):
+          if (mounted) {
+            showNotification(context, message, success: false);
+          }
 
-    switch (result) {
-      case Success<void>():
-        if (mounted) {
-          showNotification(
-            context,
-            'Profile updated successfully',
-          
-          );
-        }
-
-      case Failure<void>(:final message):
-        if (mounted) {
-          showNotification(
-            context,
-            message,
-           success: false
-          );
-        }
-
-      case Cancelled<void>():
-        if (mounted) {
-          showNotification(
-            context,
-            'Profile update cancelled',
-          );
-        }
-    }
-  } catch (e) {
-
-    if (mounted) {
-      showNotification(
-        context,
-        'Something went wrong',
-        
-      );
-    }
-  } finally {
-    if (mounted) {
-      setState(() => _isSaving = false);
+        case Cancelled<void>():
+          if (mounted) {
+            showNotification(context, 'Profile update cancelled');
+          }
+      }
+    } catch (e) {
+      if (mounted) {
+        showNotification(context, 'Something went wrong');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
     }
   }
-}
+
   @override
   Widget build(BuildContext context) {
-   final currentUser =  ref.watch(userProvider);
+    final currentUser = ref.watch(userProvider);
 
     const Color surface = Color(0xFFF8FAFC);
     const Color ink = Color(0xFF0F172A);
@@ -123,183 +106,169 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
         centerTitle: true,
         actions: [
           AppSaveButton(
-    onPressed: () async {
-      final user = currentUser.value;
+            onPressed: () async {
+              final user = currentUser.value;
 
-      if (user == null) return;
-      
-      String? photoUrl;
+              if (user == null) return;
 
-      // 1. Upload selected image if there is one
-      if (imageFile != null) {
-        final uniquePublicId =
-      '${user.userId}_${DateTime.now().millisecondsSinceEpoch}';
-        final imageResult = await ref
-            .read(userProvider.notifier)
-            .uploadImage(
-              imageFile!,
-              uniquePublicId
-            );
+              String? photoUrl;
 
-        if (imageResult is Success<String>) {
-          photoUrl = imageResult.data;
+              // 1. Upload selected image if there is one
+              if (imageFile != null) {
+                final uniquePublicId =
+                    '${user.userId}_${DateTime.now().millisecondsSinceEpoch}';
+                final imageResult = await ref
+                    .read(userProvider.notifier)
+                    .uploadImage(imageFile!, uniquePublicId);
 
-        } else {
-          return;
-        }
-      }
-
-      // 2. Create request
-      final UserRequest request = (
-        uid: user.userId,
-        email: null,
-        password: null,
-        name: _nameController.text.trim(),
-        photoUrl: photoUrl,
-        subscriptionTier: null,
-      );
-
-      // 3. Save everything
-      await _handleSave(request);
-    },
-    isLoading: _isSaving,
-  ),
-],
-        
-         
-      ),
-
-      body: currentUser
-          .when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, st) =>
-                const Center(child: Text('Error loading profile')),
-            data: (domainUser) {
-              if (!_isInit) {
-                _nameController.text = domainUser.name;
-                _isInit = true;
+                if (imageResult is Success<String>) {
+                  photoUrl = imageResult.data;
+                } else {
+                  return;
+                }
               }
 
-              return Stack(
-                children: [
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: Column(
-                      children: [
-                        // Profile Photo Component
+              // 2. Create request
+              final UserRequest request = (
+                uid: user.userId,
+                email: null,
+                password: null,
+                name: _nameController.text.trim(),
+                photoUrl: photoUrl,
+                subscriptionTier: null,
+              );
 
-                        ProfilePictureWidget(
-                          imageFile: imageFile,
-                        
-                          size: 112,
-                          imageUrl: domainUser.photoUrl,
-                          onEdit:() async { 
-                            final picker = ImagePicker();
- 
-                             final pickedFile = await picker.pickImage(
-                             source: ImageSource.gallery,
-                                imageQuality: 80,
-                             );
+              // 3. Save everything
+              await _handleSave(request);
+            },
+            isLoading: _isSaving,
+          ),
+        ],
+      ),
 
-                             if (pickedFile == null) {
-                                  return;
-                                  }
+      body: currentUser.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, st) => const Center(child: Text('Error loading profile')),
+        data: (domainUser) {
+          if (!_isInit) {
+            _nameController.text = domainUser.name;
+            _isInit = true;
+          }
 
-                            setState(() {
-                                imageFile = File(pickedFile.path);
-                            });
-                              
-                        
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                child: Column(
+                  children: [
+                    // Profile Photo Component
+                    ProfilePictureWidget(
+                      imageFile: imageFile,
+
+                      size: 112,
+                      imageUrl: domainUser.photoUrl,
+                      onEdit: () async {
+                        final picker = ImagePicker();
+
+                        final pickedFile = await picker.pickImage(
+                          source: ImageSource.gallery,
+                          imageQuality: 80,
+                        );
+
+                        if (pickedFile == null) {
+                          return;
+                        }
+
+                        setState(() {
+                          imageFile = File(pickedFile.path);
+                        });
+
                         //   ref.read(userProvider.notifier).changeProfilePicture(image);
-                        
-                          }
-                            
-                          
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'CHANGE PHOTO',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-
-                        // Form Fields
-                        PersonalInfoForm(
-                          nameController: _nameController,
-                          user: domainUser,
-                        ),
-                        const SizedBox(height: 32),
-
-                        // Account Details Group
-                        AccountDetailsGroup(user: domainUser),
-                        const SizedBox(height: 16),
-
-                        // Security Action
-                        SecurityActionCard(
-                          onTap: () async {
-                             final result = await ref
-                                  .read(authProvider.notifier)
-                                  .resetPassword(currentUser.value!.email);
-
-                             switch (result) {
-                                case Success(:final data):
-                                   showNotification(context,data);
-
-                                case Failure(:final message):
-                                   showNotification(context,message,success: false);
-
-                               case Cancelled():
-                                  break;
-                             }
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                      LogoutActionCard(
-                        onTap: () async {
-                  final result =
-                           await ref.read(authProvider.notifier).logout();
-
-                          if (result is Success<void>) {
-                           if (context.mounted) {
-                               appRouter.go('/login');
-                               }
-                                }
-                            },
-                      
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'CHANGE PHOTO',
+                      style: TextStyle(
+                        color: context.colors.primary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.0,
                       ),
-                        const SizedBox(height: 32),
-                      ],
+                    ),
+
+                    // Form Fields
+                    PersonalInfoForm(
+                      nameController: _nameController,
+                      user: domainUser,
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Account Details Group
+                    AccountDetailsGroup(user: domainUser),
+                    const SizedBox(height: 16),
+
+                    // Security Action
+                    SecurityActionCard(
+                      onTap: () async {
+                        final result = await ref
+                            .read(authProvider.notifier)
+                            .resetPassword(currentUser.value!.email);
+
+                        switch (result) {
+                          case Success(:final data):
+                            showNotification(context, data);
+
+                          case Failure(:final message):
+                            showNotification(context, message, success: false);
+
+                          case Cancelled():
+                            break;
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    LogoutActionCard(
+                      onTap: () async {
+                        final result = await ref
+                            .read(authProvider.notifier)
+                            .logout();
+
+                        if (result is Success<void>) {
+                          if (context.mounted) {
+                            appRouter.go('/login');
+                          }
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
+
+              // Loading Overlay identical to AddPetScreen
+              if (_isSaving) ...[
+                Positioned.fill(
+                  child: Container(color: Colors.black.withOpacity(0.3)),
+                ),
+                Center(
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(24),
+                      child: CircularProgressIndicator(
+                        color: context.colors.primary,
+                      ),
                     ),
                   ),
-
-                  // Loading Overlay identical to AddPetScreen
-                  if (_isSaving) ...[
-                    Positioned.fill(
-                      child: Container(color: Colors.black.withOpacity(0.3)),
-                    ),
-                    const Center(
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(24),
-                          child: CircularProgressIndicator(
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              );
-            },
-          ),
+                ),
+              ],
+            ],
+          );
+        },
+      ),
     );
   }
 }
- 

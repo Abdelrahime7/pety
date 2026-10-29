@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_details_widgets.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
@@ -16,10 +16,12 @@ class AppointmentDetailsScreen extends ConsumerStatefulWidget {
   const AppointmentDetailsScreen({super.key, required this.appointment});
 
   @override
-  ConsumerState<AppointmentDetailsScreen> createState() => _AppointmentDetailsScreenState();
+  ConsumerState<AppointmentDetailsScreen> createState() =>
+      _AppointmentDetailsScreenState();
 }
 
-class _AppointmentDetailsScreenState extends ConsumerState<AppointmentDetailsScreen> {
+class _AppointmentDetailsScreenState
+    extends ConsumerState<AppointmentDetailsScreen> {
   late Appointment _appointment;
 
   @override
@@ -51,9 +53,7 @@ class _AppointmentDetailsScreenState extends ConsumerState<AppointmentDetailsScr
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
           child: Column(
             children: [
-              AppointmentDetailsTopBar(
-                onEdit: _openEdit,
-              ),
+              AppointmentDetailsTopBar(onEdit: _openEdit),
               SizedBox(height: 18.h),
               AppointmentPetCard(pet: pet, isPast: isPast),
               SizedBox(height: 16.h),
@@ -65,11 +65,14 @@ class _AppointmentDetailsScreenState extends ConsumerState<AppointmentDetailsScr
                     child: AppointmentActionButton(
                       onTap: _openEdit,
                       icon: Icons.edit_outlined,
-                      iconColor: AppColors.primary,
-                      textColor: AppColors.textPrimary,
+                      iconColor: context.colors.primary,
+                      textColor: context.colors.onSurface,
                       text: 'Edit',
                       backgroundColor: Colors.white,
-                      border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
+                      border: Border.all(
+                        color: const Color(0xFFE2E8F0),
+                        width: 1.2,
+                      ),
                       hasShadow: true,
                     ),
                   ),
@@ -98,14 +101,26 @@ class _AppointmentDetailsScreenState extends ConsumerState<AppointmentDetailsScr
     final shouldDelete = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.r)),
-        title: const Text('Cancel Appointment?', style: TextStyle(fontWeight: FontWeight.bold)),
-        content: const Text('Are you sure you want to cancel this appointment? This action cannot be undone.'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.r),
+        ),
+        title: const Text(
+          'Cancel Appointment?',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          'Are you sure you want to cancel this appointment? This action cannot be undone.',
+        ),
         actions: [
-          TextButton(onPressed: () => dialogContext.pop(false), child: const Text('Keep')),
+          TextButton(
+            onPressed: () => dialogContext.pop(false),
+            child: const Text('Keep'),
+          ),
           FilledButton(
             onPressed: () => dialogContext.pop(true),
-            style: FilledButton.styleFrom(backgroundColor: const Color(0xFFEF4444)),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFEF4444),
+            ),
             child: const Text('Cancel Visit'),
           ),
         ],
@@ -114,13 +129,17 @@ class _AppointmentDetailsScreenState extends ConsumerState<AppointmentDetailsScr
 
     if (shouldDelete != true || !context.mounted) return;
 
-    final result = await ref.read(appointmentProvider.notifier).deleteAppointment(_appointment.appointmentId);
+    final result = await ref
+        .read(appointmentProvider.notifier)
+        .deleteAppointment(_appointment.appointmentId);
     if (!context.mounted) return;
 
     if (result is Success<void>) {
       context.pop();
     } else if (result is Failure<void>) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result.message)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.message)));
     }
   }
 }

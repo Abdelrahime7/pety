@@ -59,7 +59,9 @@ Widget _buildTabItem({
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            color: isSelected ? const Color(0xFF1E293B) : const Color(0xFF94A3B8),
+            color: isSelected
+                ? const Color(0xFF1E293B)
+                : const Color(0xFF94A3B8),
           ),
         ),
       ),

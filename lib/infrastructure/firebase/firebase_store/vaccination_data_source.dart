@@ -4,13 +4,10 @@ import 'package:pet_care/core/constant/result/result.dart';
 class VaccinationDataSource {
   final FirebaseFirestore _firestore;
 
-  VaccinationDataSource({
-    required FirebaseFirestore firestore,
-  }) : _firestore = firestore;
+  VaccinationDataSource({required FirebaseFirestore firestore})
+    : _firestore = firestore;
 
-  CollectionReference<Map<String, dynamic>> _collection(
-    String collectionName,
-  ) {
+  CollectionReference<Map<String, dynamic>> _collection(String collectionName) {
     return _firestore.collection(collectionName);
   }
 
@@ -19,7 +16,6 @@ class VaccinationDataSource {
     String id,
     Map<String, dynamic> data,
   ) async {
-
     await _collection(collectionName).doc(id).set(data);
   }
 
@@ -27,35 +23,28 @@ class VaccinationDataSource {
     String collectionName,
     String petId,
   ) async {
-    final snapshot = await _collection(collectionName)
-        .where('petId', isEqualTo: petId)
-        .get();
+    final snapshot = await _collection(
+      collectionName,
+    ).where('petId', isEqualTo: petId).get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
-  Future<
-    Result<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-> getAllOwnerVaccinations(
-  String ownerId,
-  String collectionName,
-) async {
-  try {
-    final snapshot = await _firestore
-        .collection(collectionName)
-        .where('ownerId', isEqualTo: ownerId)
-        .get();
 
-    return Success(snapshot.docs);
-  } on FirebaseException catch (error) {
-    return Failure(
-      error.message ?? 'Unable to load vaccination data.',
-    );
-  } catch (_) {
-    return const Failure(
-      'Unable to load vaccination data.',
-    );
+  Future<Result<List<QueryDocumentSnapshot<Map<String, dynamic>>>>>
+  getAllOwnerVaccinations(String ownerId, String collectionName) async {
+    try {
+      final snapshot = await _firestore
+          .collection(collectionName)
+          .where('ownerId', isEqualTo: ownerId)
+          .get();
+
+      return Success(snapshot.docs);
+    } on FirebaseException catch (error) {
+      return Failure(error.message ?? 'Unable to load vaccination data.');
+    } catch (_) {
+      return const Failure('Unable to load vaccination data.');
+    }
   }
-}
 
   Future<Map<String, dynamic>?> getById(
     String collectionName,
@@ -78,35 +67,25 @@ class VaccinationDataSource {
     await _collection(collectionName).doc(id).update(data);
   }
 
-  Future<void> delete(
-    String collectionName,
-    String id,
-  ) async {
+  Future<void> delete(String collectionName, String id) async {
     await _collection(collectionName).doc(id).delete();
   }
 
-  Future<int> getCount(
-    String collectionName,
-    String petId,
-  ) async {
+  Future<int> getCount(String collectionName, String petId) async {
+    final aggregateQuery = await _collection(
+      collectionName,
+    ).where('petId', isEqualTo: petId).count().get();
+
+    return aggregateQuery.count ?? 0;
+  }
+
+  Future<int> getActiveSerieCount(String collectionName, String petId) async {
     final aggregateQuery = await _collection(collectionName)
         .where('petId', isEqualTo: petId)
+        .where('isCompleted', isEqualTo: false)
         .count()
         .get();
 
     return aggregateQuery.count ?? 0;
   }
-
- Future<int> getActiveSerieCount(
-  String collectionName,
-  String petId,
-) async {
-  final aggregateQuery = await _collection(collectionName)
-      .where('petId', isEqualTo: petId)
-      .where('isCompleted', isEqualTo: false)
-      .count()
-      .get();
-
-  return aggregateQuery.count ?? 0;
-}
 }

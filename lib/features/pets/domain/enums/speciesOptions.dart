@@ -1,8 +1,1 @@
-
-enum SpeciesOptions  {
-    Dog,
-    Cat,
-    Bird,
-    Rabbit,
-    Other,
-}
+enum SpeciesOptions { Dog, Cat, Bird, Rabbit, Other }

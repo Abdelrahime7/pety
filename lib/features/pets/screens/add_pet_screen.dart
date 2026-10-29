@@ -1,9 +1,9 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
@@ -114,7 +114,9 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
             child: Text(
               'Save',
               style: TextStyle(
-                color: petState.isLoading ? Colors.grey : AppColors.primary,
+                color: petState.isLoading
+                    ? Colors.grey
+                    : context.colors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -255,7 +257,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                                 children: [
                                   Switch.adaptive(
                                     value: _isNeutered,
-                                    activeColor: AppColors.primary,
+                                    activeColor: context.colors.primary,
                                     onChanged: (val) =>
                                         setState(() => _isNeutered = val),
                                   ),
@@ -314,7 +316,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(color: AppColors.primary),
+                    CircularProgressIndicator(color: context.colors.primary),
                     const SizedBox(height: 16),
                     const Text(
                       "Saving your pet…",

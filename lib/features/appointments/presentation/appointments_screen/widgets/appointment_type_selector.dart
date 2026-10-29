@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/appointments/domain/enums/appointment_types.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_icon.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_label.dart';
 
-Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
-      required ValueChanged<AppointmentType?> onChanged})
- {
+Widget buildAppointmentTypeSelector(
+  BuildContext context, {
+  required AppointmentType selectedType,
+  required ValueChanged<AppointmentType?> onChanged,
+}) {
   return DropdownButtonFormField<AppointmentType>(
     initialValue: selectedType,
 
-    icon: const Icon(
+    icon: Icon(
       Icons.keyboard_arrow_down_rounded,
-      color: AppColors.textSecondary,
+      color: context.colors.onSurfaceVariant,
       size: 24,
     ),
 
-    dropdownColor: AppColors.surface,
+    dropdownColor: context.colors.surface,
 
     borderRadius: BorderRadius.circular(16.r),
 
@@ -27,25 +29,17 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
       filled: true,
       fillColor: Colors.white,
 
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 16.w,
-        vertical: 15.h,
-      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
 
       prefixIcon: Container(
-        margin: EdgeInsets.only(
-          left: 8.w,
-          right: 8.w,
-          top: 8.h,
-          bottom: 8.h,
-        ),
+        margin: EdgeInsets.only(left: 8.w, right: 8.w, top: 8.h, bottom: 8.h),
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.10),
+          color: context.colors.primary.withOpacity(0.10),
           borderRadius: BorderRadius.circular(10.r),
         ),
         child: Icon(
           appointmentTypeIcon(selectedType),
-          color: AppColors.primary,
+          color: context.colors.primary,
           size: 20.sp,
         ),
       ),
@@ -58,17 +52,14 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16.r),
         borderSide: BorderSide(
-          color: AppColors.border.withOpacity(0.5),
+          color: context.colors.outlineVariant.withOpacity(0.5),
           width: 1,
         ),
       ),
 
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16.r),
-        borderSide: const BorderSide(
-          color: AppColors.primary,
-          width: 1.5,
-        ),
+        borderSide: BorderSide(color: context.colors.primary, width: 1.5),
       ),
     ),
 
@@ -81,7 +72,7 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: context.colors.onSurface,
             ),
           ),
         );
@@ -94,13 +85,10 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
       return DropdownMenuItem<AppointmentType>(
         value: type,
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 4.w,
-            vertical: 8.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.primary.withOpacity(0.08)
+                ? context.colors.primary.withOpacity(0.08)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12.r),
           ),
@@ -111,7 +99,7 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
                 height: 38.w,
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? AppColors.primary.withOpacity(0.12)
+                      ? context.colors.primary.withOpacity(0.12)
                       : Colors.grey.withOpacity(0.07),
                   borderRadius: BorderRadius.circular(11.r),
                 ),
@@ -119,8 +107,8 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
                   appointmentTypeIcon(type),
                   size: 19.sp,
                   color: isSelected
-                      ? AppColors.primary
-                      : AppColors.textSecondary,
+                      ? context.colors.primary
+                      : context.colors.onSurfaceVariant,
                 ),
               ),
 
@@ -131,10 +119,8 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
                   appointmentTypeLabel(type),
                   style: TextStyle(
                     fontSize: 14.sp,
-                    fontWeight: isSelected
-                        ? FontWeight.w700
-                        : FontWeight.w500,
-                    color: AppColors.textPrimary,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    color: context.colors.onSurface,
                   ),
                 ),
               ),
@@ -142,7 +128,7 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
               if (isSelected)
                 Icon(
                   Icons.check_rounded,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   size: 20.sp,
                 ),
             ],
@@ -152,12 +138,9 @@ Widget buildAppointmentTypeSelector({required AppointmentType selectedType,
     }).toList(),
 
     onChanged: (value) {
-  if (value != null) {
-    onChanged(value);
-  }
-    }
+      if (value != null) {
+        onChanged(value);
+      }
+    },
   );
- }
- 
-
-
+}

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/domain/entity/health_item_entity.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
@@ -23,9 +23,7 @@ class HealthPetBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: const Color(0xFFF1F5F9),
-        ),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
         boxShadow: const [
           BoxShadow(
             color: Color(0x060F172A),
@@ -36,9 +34,7 @@ class HealthPetBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _PetThumbnail(
-            url: pet.photoUrl,
-          ),
+          _PetThumbnail(url: pet.photoUrl),
 
           SizedBox(width: 12.w),
 
@@ -61,7 +57,7 @@ class HealthPetBanner extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.text,
+                    color: context.colors.onSurface,
                   ),
                 ),
               ],
@@ -69,9 +65,7 @@ class HealthPetBanner extends StatelessWidget {
           ),
 
           recordsAsync.maybeWhen(
-            data: (items) => _RecordCount(
-              count: items.length,
-            ),
+            data: (items) => _RecordCount(count: items.length),
             orElse: () => const SizedBox.shrink(),
           ),
         ],
@@ -83,17 +77,12 @@ class HealthPetBanner extends StatelessWidget {
 class _RecordCount extends StatelessWidget {
   final int count;
 
-  const _RecordCount({
-    required this.count,
-  });
+  const _RecordCount({required this.count});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.w,
-        vertical: 4.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
       decoration: BoxDecoration(
         color: const Color(0xFFE6FFFA),
         borderRadius: BorderRadius.circular(999.r),
@@ -113,9 +102,7 @@ class _RecordCount extends StatelessWidget {
 class _PetThumbnail extends StatelessWidget {
   final String url;
 
-  const _PetThumbnail({
-    required this.url,
-  });
+  const _PetThumbnail({required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +115,10 @@ class _PetThumbnail extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.r),
       ),
       child: url.isEmpty
-          ? const Center(
+          ? Center(
               child: Icon(
                 Icons.pets,
-                color: AppColors.icon,
+                color: context.colors.onSurfaceVariant,
                 size: 20,
               ),
             )
@@ -139,10 +126,10 @@ class _PetThumbnail extends StatelessWidget {
               url,
               fit: BoxFit.cover,
               errorBuilder: (_, _, _) {
-                return const Center(
+                return Center(
                   child: Icon(
                     Icons.pets,
-                    color: AppColors.icon,
+                    color: context.colors.onSurfaceVariant,
                     size: 20,
                   ),
                 );

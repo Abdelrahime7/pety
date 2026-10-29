@@ -1,6 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/users/domain/entity/user.dart';
 
 class PersonalInfoForm extends StatefulWidget {
@@ -63,7 +63,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10.h,),
+        SizedBox(height: 10.h),
         // Name field — editable
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -72,7 +72,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: _isEditingName
-                  ? AppColors.primary
+                  ? context.colors.primary
                   : const Color(0xFFE2E8F0),
             ),
             boxShadow: [
@@ -91,13 +91,14 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                     ? Theme(
                         data: Theme.of(context).copyWith(
                           textSelectionTheme: TextSelectionThemeData(
-                            selectionColor: AppColors.primary.withOpacity(
+                            selectionColor: context.colors.primary.withOpacity(
                               0.2,
                             ), // the highlight color behind selected text
                             cursorColor:
-                                AppColors.primary, // the blinking cursor
-                            selectionHandleColor:
-                                AppColors.primary, // the teardrop drag handle
+                                context.colors.primary, // the blinking cursor
+                            selectionHandleColor: context
+                                .colors
+                                .primary, // the teardrop drag handle
                           ),
                         ),
                         child: TextField(
@@ -133,7 +134,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                 child: Icon(
                   _isEditingName ? Icons.check : Icons.edit_outlined,
                   color: _isEditingName
-                      ? AppColors.primary
+                      ? context.colors.primary
                       : inkMuted.withOpacity(0.6),
                   size: 16,
                 ),
@@ -179,11 +180,11 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
               ),
               GestureDetector(
                 onTap: () {},
-                child: const Text(
+                child: Text(
                   'Contact Support',
                   style: TextStyle(
                     fontSize: 11,
-                    color: AppColors.primary,
+                    color: context.colors.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

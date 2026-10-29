@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   final String text;
@@ -28,7 +28,7 @@ class AppPrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // Apply .h dynamically at build time
     final effectiveHeight = height ?? 56.h;
-    final buttonColor = backgroundColor ?? AppColors.primary;
+    final buttonColor = backgroundColor ?? context.colors.primary;
     final isDisabled = onPressed == null || isLoading;
 
     return Container(

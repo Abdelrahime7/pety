@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,24 +18,19 @@ import 'package:pet_care/features/pets/widgets/field_label.dart';
 class AddVaccinationScreen extends ConsumerStatefulWidget {
   final String petId;
 
-  const AddVaccinationScreen({
-    super.key,
-    required this.petId,
-  });
+  const AddVaccinationScreen({super.key, required this.petId});
 
   @override
   ConsumerState<AddVaccinationScreen> createState() =>
       _AddVaccinationScreenState();
 }
 
-class _AddVaccinationScreenState
-    extends ConsumerState<AddVaccinationScreen> {
+class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _vaccineNameController = TextEditingController();
 
-  final _requiredDosesController =
-      TextEditingController(text: '3');
+  final _requiredDosesController = TextEditingController(text: '3');
 
   final _vaccinationDateController = TextEditingController();
 
@@ -89,17 +85,13 @@ class _AddVaccinationScreenState
   // ============================================================
 
   Future<void> _selectExistingSeries() async {
-    final seriesState =
-        ref.read(vaccinationSerieProvider(widget.petId));
+    final seriesState = ref.read(vaccinationSerieProvider(widget.petId));
 
     final allSeries = seriesState.value ?? [];
 
     // Only active series should be selectable.
     final activeSeries = allSeries
-        .where(
-          (serie) =>
-              serie.completedDoses < serie.requiredDoses,
-        )
+        .where((serie) => serie.completedDoses < serie.requiredDoses)
         .toList();
 
     if (activeSeries.isEmpty) {
@@ -111,15 +103,12 @@ class _AddVaccinationScreenState
       return;
     }
 
-    final selected =
-        await showModalBottomSheet<VaccinationSerie>(
+    final selected = await showModalBottomSheet<VaccinationSerie>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
         return SeriesPickerSheet(
@@ -141,75 +130,62 @@ class _AddVaccinationScreenState
   // ============================================================
   // ADD VACCINATION
   // ============================================================
-Future<void> _addVaccination() async {
-  if (!_formKey.currentState!.validate()) {
-    return;
-  }
+  Future<void> _addVaccination() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
 
-  if (_vaccinationDate == null) {
-    showNotification(
-      context,
-      'Vaccination date is required.',
-      success: false,
-    );
-    return;
-  }
-
-  int? requiredDoses;
-
-  if (_isNewSeries) {
-    requiredDoses = int.tryParse(
-      _requiredDosesController.text.trim(),
-    );
-
-    if (requiredDoses == null || requiredDoses <= 0) {
+    if (_vaccinationDate == null) {
       showNotification(
         context,
-        'Number of doses must be greater than 0.',
+        'Vaccination date is required.',
         success: false,
       );
       return;
     }
-  }
 
-  final request = AddVaccinationRequest(
-    ownerId: FirebaseAuth.instance.currentUser!.uid,
-    petId: widget.petId,
-    seriesId: _selectedSeries?.id,
-    vaccineName: _isNewSeries
-        ? _vaccineNameController.text.trim()
-        : null,
-    requiredDoses: requiredDoses,
-    vaccinationDate: _vaccinationDate!,
-    notes: _notesController.text.trim().isEmpty
-        ? null
-        : _notesController.text.trim(),
-  );
+    int? requiredDoses;
 
-  final result = await ref
-      .read(
-        vaccinationNotifierProvider(widget.petId).notifier,
-      )
-      .addVaccination(request);
+    if (_isNewSeries) {
+      requiredDoses = int.tryParse(_requiredDosesController.text.trim());
 
-  if (!mounted) return;
+      if (requiredDoses == null || requiredDoses <= 0) {
+        showNotification(
+          context,
+          'Number of doses must be greater than 0.',
+          success: false,
+        );
+        return;
+      }
+    }
 
-  if (result is Failure<void>) {
-    showNotification(
-      context,
-      result.message,
-      success: false,
+    final request = AddVaccinationRequest(
+      ownerId: FirebaseAuth.instance.currentUser!.uid,
+      petId: widget.petId,
+      seriesId: _selectedSeries?.id,
+      vaccineName: _isNewSeries ? _vaccineNameController.text.trim() : null,
+      requiredDoses: requiredDoses,
+      vaccinationDate: _vaccinationDate!,
+      notes: _notesController.text.trim().isEmpty
+          ? null
+          : _notesController.text.trim(),
     );
-    return;
+
+    final result = await ref
+        .read(vaccinationNotifierProvider(widget.petId).notifier)
+        .addVaccination(request);
+
+    if (!mounted) return;
+
+    if (result is Failure<void>) {
+      showNotification(context, result.message, success: false);
+      return;
+    }
+
+    showNotification(context, 'Vaccination added successfully');
+
+    Navigator.of(context).pop();
   }
-
-  showNotification(
-    context,
-    'Vaccination added successfully',
-  );
-
-  Navigator.of(context).pop();
-}
 
   // ============================================================
   // BUILD
@@ -217,15 +193,9 @@ Future<void> _addVaccination() async {
 
   @override
   Widget build(BuildContext context) {
-    final vaccinationState =
-        ref.watch(
-      vaccinationRecordProvider(widget.petId),
-    );
+    final vaccinationState = ref.watch(vaccinationRecordProvider(widget.petId));
 
-    final seriesState =
-        ref.watch(
-      vaccinationSerieProvider(widget.petId),
-    );
+    final seriesState = ref.watch(vaccinationSerieProvider(widget.petId));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -233,7 +203,6 @@ Future<void> _addVaccination() async {
       // ========================================================
       // APP BAR
       // ========================================================
-
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -259,15 +228,13 @@ Future<void> _addVaccination() async {
 
         actions: [
           TextButton(
-            onPressed: vaccinationState.isLoading
-                ? null
-                : _addVaccination,
+            onPressed: vaccinationState.isLoading ? null : _addVaccination,
             child: Text(
               'Save',
               style: TextStyle(
                 color: vaccinationState.isLoading
                     ? Colors.grey
-                    : AppColors.primary,
+                    : context.colors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -279,71 +246,54 @@ Future<void> _addVaccination() async {
       // ========================================================
       // BODY
       // ========================================================
-
       body: Stack(
         children: [
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 16,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // ==================================================
                     // VACCINATION SERIES
                     // ==================================================
-
-                    const FieldLabel(
-                      label: 'VACCINATION SERIES',
-                    ),
+                    const FieldLabel(label: 'VACCINATION SERIES'),
 
                     const SizedBox(height: 8),
 
                     // ==================================================
                     // NEW SERIES CARD
                     // ==================================================
-
                     AnimatedContainer(
-                      duration:
-                          const Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: _isNewSeries
                             ? Colors.white
                             : Colors.grey.shade50,
-                        borderRadius:
-                            BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: _isNewSeries
-                              ? AppColors.primary
-                                  .withOpacity(0.35)
+                              ? context.colors.primary.withOpacity(0.35)
                               : Colors.grey.shade200,
                         ),
                         boxShadow: _isNewSeries
                             ? [
                                 BoxShadow(
-                                  color: Colors.black
-                                      .withOpacity(0.06),
+                                  color: Colors.black.withOpacity(0.06),
                                   blurRadius: 10,
-                                  offset:
-                                      const Offset(0, 4),
+                                  offset: const Offset(0, 4),
                                 ),
                               ]
                             : [],
                       ),
                       child: Column(
                         children: [
-
                           // Header
                           InkWell(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(14),
                             onTap: () {
                               setState(() {
                                 _isNewSeries = true;
@@ -351,8 +301,7 @@ Future<void> _addVaccination() async {
                               });
                             },
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 14,
                                 vertical: 14,
                               ),
@@ -360,13 +309,11 @@ Future<void> _addVaccination() async {
                                 children: [
                                   Icon(
                                     _isNewSeries
-                                        ? Icons
-                                            .radio_button_checked
-                                        : Icons
-                                            .radio_button_unchecked,
+                                        ? Icons.radio_button_checked
+                                        : Icons.radio_button_unchecked,
                                     size: 21,
                                     color: _isNewSeries
-                                        ? AppColors.primary
+                                        ? context.colors.primary
                                         : Colors.grey.shade500,
                                   ),
 
@@ -377,21 +324,18 @@ Future<void> _addVaccination() async {
                                       'Create new series',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontWeight:
-                                            FontWeight.w600,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
 
                                   Icon(
                                     _isNewSeries
-                                        ? Icons
-                                            .keyboard_arrow_up_rounded
-                                        : Icons
-                                            .add_circle_outline,
+                                        ? Icons.keyboard_arrow_up_rounded
+                                        : Icons.add_circle_outline,
                                     size: 21,
                                     color: _isNewSeries
-                                        ? AppColors.primary
+                                        ? context.colors.primary
                                         : Colors.grey.shade600,
                                   ),
                                 ],
@@ -401,41 +345,29 @@ Future<void> _addVaccination() async {
 
                           // New series fields
                           if (_isNewSeries) ...[
-                            Divider(
-                              height: 1,
-                              color: Colors.grey.shade200,
-                            ),
+                            Divider(height: 1, color: Colors.grey.shade200),
 
                             Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(
+                              padding: const EdgeInsets.fromLTRB(
                                 14,
                                 14,
                                 14,
                                 16,
                               ),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
-                                  const FieldLabel(
-                                    label: 'VACCINE NAME',
-                                  ),
+                                  const FieldLabel(label: 'VACCINE NAME'),
 
                                   const SizedBox(height: 6),
 
                                   CustomeTextField(
-                                    controller:
-                                        _vaccineNameController,
+                                    controller: _vaccineNameController,
                                     hintText: 'e.g. Rabies',
                                     validator: (value) {
                                       if (value == null ||
-                                          value
-                                              .trim()
-                                              .isEmpty) {
-                                        return
-                                            'Vaccine name is required';
+                                          value.trim().isEmpty) {
+                                        return 'Vaccine name is required';
                                       }
 
                                       return null;
@@ -444,28 +376,21 @@ Future<void> _addVaccination() async {
 
                                   const SizedBox(height: 14),
 
-                                  const FieldLabel(
-                                    label: 'NUMBER OF DOSES',
-                                  ),
+                                  const FieldLabel(label: 'NUMBER OF DOSES'),
 
                                   const SizedBox(height: 6),
 
                                   CustomeTextField(
-                                    controller:
-                                        _requiredDosesController,
+                                    controller: _requiredDosesController,
                                     hintText: 'e.g. 3',
-                                    keyboardType:
-                                        TextInputType.number,
+                                    keyboardType: TextInputType.number,
                                     validator: (value) {
-                                      final doses =
-                                          int.tryParse(
+                                      final doses = int.tryParse(
                                         value?.trim() ?? '',
                                       );
 
-                                      if (doses == null ||
-                                          doses <= 0) {
-                                        return
-                                            'Enter a valid number of doses';
+                                      if (doses == null || doses <= 0) {
+                                        return 'Enter a valid number of doses';
                                       }
 
                                       return null;
@@ -484,50 +409,41 @@ Future<void> _addVaccination() async {
                     // ==================================================
                     // EXISTING SERIES CARD
                     // ==================================================
-
                     AnimatedContainer(
-                      duration:
-                          const Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: !_isNewSeries
                             ? Colors.white
                             : Colors.grey.shade50,
-                        borderRadius:
-                            BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: !_isNewSeries
-                              ? AppColors.primary
-                                  .withOpacity(0.35)
+                              ? context.colors.primary.withOpacity(0.35)
                               : Colors.grey.shade200,
                         ),
                         boxShadow: !_isNewSeries
                             ? [
                                 BoxShadow(
-                                  color: Colors.black
-                                      .withOpacity(0.06),
+                                  color: Colors.black.withOpacity(0.06),
                                   blurRadius: 10,
-                                  offset:
-                                      const Offset(0, 4),
+                                  offset: const Offset(0, 4),
                                 ),
                               ]
                             : [],
                       ),
                       child: Column(
                         children: [
-
                           // Header
                           InkWell(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(14),
                             onTap: () {
                               setState(() {
                                 _isNewSeries = false;
                               });
                             },
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 14,
                                 vertical: 14,
                               ),
@@ -535,13 +451,11 @@ Future<void> _addVaccination() async {
                                 children: [
                                   Icon(
                                     !_isNewSeries
-                                        ? Icons
-                                            .radio_button_checked
-                                        : Icons
-                                            .radio_button_unchecked,
+                                        ? Icons.radio_button_checked
+                                        : Icons.radio_button_unchecked,
                                     size: 21,
                                     color: !_isNewSeries
-                                        ? AppColors.primary
+                                        ? context.colors.primary
                                         : Colors.grey.shade500,
                                   ),
 
@@ -552,21 +466,18 @@ Future<void> _addVaccination() async {
                                       'Use existing series',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontWeight:
-                                            FontWeight.w600,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
 
                                   Icon(
                                     !_isNewSeries
-                                        ? Icons
-                                            .keyboard_arrow_up_rounded
-                                        : Icons
-                                            .keyboard_arrow_right_rounded,
+                                        ? Icons.keyboard_arrow_up_rounded
+                                        : Icons.keyboard_arrow_right_rounded,
                                     size: 21,
                                     color: !_isNewSeries
-                                        ? AppColors.primary
+                                        ? context.colors.primary
                                         : Colors.grey.shade600,
                                   ),
                                 ],
@@ -576,147 +487,109 @@ Future<void> _addVaccination() async {
 
                           // Existing series selector
                           if (!_isNewSeries) ...[
-                            Divider(
-                              height: 1,
-                              color: Colors.grey.shade200,
-                            ),
+                            Divider(height: 1, color: Colors.grey.shade200),
 
                             Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(
+                              padding: const EdgeInsets.fromLTRB(
                                 14,
                                 14,
                                 14,
                                 16,
                               ),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
-                                  const FieldLabel(
-                                    label: 'SELECT SERIES',
-                                  ),
+                                  const FieldLabel(label: 'SELECT SERIES'),
 
                                   const SizedBox(height: 6),
 
                                   InkWell(
-                                    borderRadius:
-                                        BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(12),
                                     onTap: seriesState.isLoading
                                         ? null
                                         : _selectExistingSeries,
                                     child: Container(
                                       width: double.infinity,
-                                      padding:
-                                          const EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                         horizontal: 14,
                                         vertical: 14,
                                       ),
-                                      decoration:
-                                          BoxDecoration(
-                                        color:
-                                            Colors.grey.shade50,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
                                         border: Border.all(
-                                          color: Colors
-                                              .grey.shade200,
+                                          color: Colors.grey.shade200,
                                         ),
-                                        borderRadius:
-                                            BorderRadius.circular(
-                                          12,
-                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Row(
                                         children: [
-
                                           Icon(
-                                            Icons
-                                                .vaccines_outlined,
+                                            Icons.vaccines_outlined,
                                             size: 20,
-                                            color: Colors
-                                                .grey.shade600,
+                                            color: Colors.grey.shade600,
                                           ),
 
                                           const SizedBox(width: 10),
 
                                           Expanded(
-                                            child: seriesState
-                                                    .isLoading
+                                            child: seriesState.isLoading
                                                 ? const Text(
                                                     'Loading series...',
                                                   )
-                                                : _selectedSeries ==
-                                                        null
-                                                    ? Text(
-                                                        'Select a series',
-                                                        style:
-                                                            TextStyle(
+                                                : _selectedSeries == null
+                                                ? Text(
+                                                    'Select a series',
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade600,
+                                                    ),
+                                                  )
+                                                : Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        _selectedSeries!
+                                                            .vaccineName,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+
+                                                      const SizedBox(height: 3),
+
+                                                      Text(
+                                                        '${_selectedSeries!.completedDoses}/${_selectedSeries!.requiredDoses} doses completed',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
                                                           color: Colors
                                                               .grey
                                                               .shade600,
                                                         ),
-                                                      )
-                                                    : Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-
-                                                          Text(
-                                                            _selectedSeries!
-                                                                .vaccineName,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize:
-                                                                  14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                          ),
-
-                                                          const SizedBox(
-                                                            height: 3,
-                                                          ),
-
-                                                          Text(
-                                                            '${_selectedSeries!.completedDoses}/${_selectedSeries!.requiredDoses} doses completed',
-                                                            style:
-                                                                TextStyle(
-                                                              fontSize:
-                                                                  12,
-                                                              color: Colors
-                                                                  .grey
-                                                                  .shade600,
-                                                            ),
-                                                          ),
-
-                                                          const SizedBox(
-                                                            height: 3,
-                                                          ),
-
-                                                          Text(
-                                                            'Next dose: ${_selectedSeries!.completedDoses + 1}',
-                                                            style:
-                                                                TextStyle(
-                                                              fontSize:
-                                                                  12,
-                                                              color: AppColors
-                                                                  .primary,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ],
                                                       ),
+
+                                                      const SizedBox(height: 3),
+
+                                                      Text(
+                                                        'Next dose: ${_selectedSeries!.completedDoses + 1}',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color:
+                                                              AppColors.primary,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                           ),
 
                                           Icon(
-                                            Icons
-                                                .keyboard_arrow_down_rounded,
-                                            color: Colors
-                                                .grey.shade600,
+                                            Icons.keyboard_arrow_down_rounded,
+                                            color: Colors.grey.shade600,
                                           ),
                                         ],
                                       ),
@@ -725,23 +598,21 @@ Future<void> _addVaccination() async {
 
                                   if (!seriesState.isLoading &&
                                       seriesState.hasValue &&
-                                      seriesState.value!.where(
-                                        (serie) =>
-                                            serie.completedDoses <
-                                            serie.requiredDoses,
-                                      ).isEmpty)
+                                      seriesState.value!
+                                          .where(
+                                            (serie) =>
+                                                serie.completedDoses <
+                                                serie.requiredDoses,
+                                          )
+                                          .isEmpty)
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(
-                                        top: 8,
-                                      ),
+                                      padding: const EdgeInsets.only(top: 8),
                                       child: Text(
                                         'No active vaccination series found. '
                                         'Create a new series instead.',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Colors
-                                              .grey.shade600,
+                                          color: Colors.grey.shade600,
                                         ),
                                       ),
                                     ),
@@ -756,26 +627,20 @@ Future<void> _addVaccination() async {
                     // ==================================================
                     // VACCINATION DATE
                     // ==================================================
-
                     const SizedBox(height: 20),
 
-                    const FieldLabel(
-                      label: 'VACCINATION DATE',
-                    ),
+                    const FieldLabel(label: 'VACCINATION DATE'),
 
                     const SizedBox(height: 6),
 
                     CustomeTextField(
-                      controller:
-                          _vaccinationDateController,
+                      controller: _vaccinationDateController,
                       hintText: 'mm/dd/yyyy',
                       readOnly: true,
                       onTap: _selectVaccinationDate,
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty) {
-                          return
-                              'Vaccination date is required';
+                        if (value == null || value.isEmpty) {
+                          return 'Vaccination date is required';
                         }
 
                         return null;
@@ -790,19 +655,15 @@ Future<void> _addVaccination() async {
                     // ==================================================
                     // NOTES
                     // ==================================================
-
                     const SizedBox(height: 18),
 
-                    const FieldLabel(
-                      label: 'NOTES',
-                    ),
+                    const FieldLabel(label: 'NOTES'),
 
                     const SizedBox(height: 6),
 
                     CustomeTextField(
                       controller: _notesController,
-                      hintText:
-                          'Optional notes about this vaccination...',
+                      hintText: 'Optional notes about this vaccination...',
                       maxLines: 4,
                     ),
 
@@ -811,12 +672,10 @@ Future<void> _addVaccination() async {
                     // ==================================================
                     // ADD BUTTON
                     // ==================================================
-
                     AppPrimaryButton(
-                      onPressed:
-                          vaccinationState.isLoading
-                              ? null
-                              : _addVaccination,
+                      onPressed: vaccinationState.isLoading
+                          ? null
+                          : _addVaccination,
                       text: 'Add Vaccination',
                       height: 52,
                     ),
@@ -831,7 +690,6 @@ Future<void> _addVaccination() async {
           // ========================================================
           // LOADING OVERLAY
           // ========================================================
-
           if (vaccinationState.isLoading)
             Positioned.fill(
               child: Container(
@@ -841,21 +699,19 @@ Future<void> _addVaccination() async {
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              Colors.black.withOpacity(0.1),
+                          color: Colors.black.withOpacity(0.1),
                           blurRadius: 10,
                         ),
                       ],
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CircularProgressIndicator(
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                         ),
 
                         SizedBox(height: 16),
@@ -878,4 +734,4 @@ Future<void> _addVaccination() async {
       ),
     );
   }
-    }
+}

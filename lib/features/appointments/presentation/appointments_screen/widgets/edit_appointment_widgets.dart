@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
@@ -12,17 +13,52 @@ class EditingPetHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(18), border: const Border(left: BorderSide(color: AppColors.primary, width: 4))),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border(
+          left: BorderSide(color: context.colors.primary, width: 4),
+        ),
+      ),
       child: Row(
         children: [
           EditPetImage(url: pet?.photoUrl ?? ''),
           const SizedBox(width: 12),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: const Color(0xFFE4FBF7), borderRadius: BorderRadius.circular(8)), child: const Text('Editing', style: TextStyle(fontSize: 10, color: AppColors.tealDark, fontWeight: FontWeight.w700))),
-            const SizedBox(height: 5),
-            Text(pet?.name ?? 'Pet', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
-            Text(pet == null ? 'Pet details unavailable' : pet!.breed, style: const TextStyle(fontSize: 11, color: AppColors.secondaryText)),
-          ]),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE4FBF7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  'Editing',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AppColors.tealDark,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                pet?.name ?? 'Pet',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              Text(
+                pet == null ? 'Pet details unavailable' : pet!.breed,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: context.colors.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -34,7 +70,12 @@ class EditPetSelector extends StatelessWidget {
   final String selectedPetId;
   final ValueChanged<String> onSelected;
 
-  const EditPetSelector({super.key, required this.pets, required this.selectedPetId, required this.onSelected});
+  const EditPetSelector({
+    super.key,
+    required this.pets,
+    required this.selectedPetId,
+    required this.onSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +96,30 @@ class EditPetSelector extends StatelessWidget {
                   width: 58.w,
                   height: 58.w,
                   padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(14), border: Border.all(color: selected ? AppColors.primary : Colors.transparent, width: 2)),
-                  child: ClipRRect(borderRadius: BorderRadius.circular(12), child: EditPetImage(url: pet.photoUrl, fit: BoxFit.cover)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: selected
+                          ? context.colors.primary
+                          : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: EditPetImage(url: pet.photoUrl, fit: BoxFit.cover),
+                  ),
                 ),
                 const SizedBox(height: 4),
-                Text(pet.name, style: TextStyle(fontSize: 10, color: selected ? AppColors.text : AppColors.secondaryText)),
+                Text(
+                  pet.name,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: selected
+                        ? context.colors.onSurface
+                        : context.colors.onSurfaceVariant,
+                  ),
+                ),
               ],
             ),
           );
@@ -81,8 +141,18 @@ class EditPetImage extends StatelessWidget {
       width: 54,
       height: 54,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(14)),
-      child: url.isEmpty ? const Icon(Icons.pets, color: AppColors.icon) : Image.network(url, fit: fit, errorBuilder: (_, _, _) => const Icon(Icons.pets, color: AppColors.icon)),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: url.isEmpty
+          ? Icon(Icons.pets, color: context.colors.onSurfaceVariant)
+          : Image.network(
+              url,
+              fit: fit,
+              errorBuilder: (_, _, _) =>
+                  Icon(Icons.pets, color: context.colors.onSurfaceVariant),
+            ),
     );
   }
 }

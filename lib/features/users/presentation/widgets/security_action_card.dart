@@ -18,7 +18,9 @@ class SecurityActionCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(32),
           border: Border.all(color: const Color(0xFFF1F5F9)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4)],
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,12 +28,27 @@ class SecurityActionCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 40, height: 40,
-                  decoration: BoxDecoration(color: const Color(0xFFFFF1F2), borderRadius: BorderRadius.circular(16)),
-                  child: const Icon(Icons.key, color: Color(0xFFF43F5E), size: 16),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF1F2),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Icon(
+                    Icons.key,
+                    color: Color(0xFFF43F5E),
+                    size: 16,
+                  ),
                 ),
                 const SizedBox(width: 16),
-                const Text('Change Password', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ink)),
+                const Text(
+                  'Change Password',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: ink,
+                  ),
+                ),
               ],
             ),
             const Icon(Icons.chevron_right, color: inkSoft, size: 16),

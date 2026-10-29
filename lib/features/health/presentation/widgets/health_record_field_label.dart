@@ -1,7 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 
 class HealthRecordFieldLabel extends StatelessWidget {
   final String label;
@@ -22,7 +21,7 @@ class HealthRecordFieldLabel extends StatelessWidget {
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w700,
-            color: AppColors.text,
+            color: context.colors.onSurface,
           ),
         ),
         if (required)
@@ -31,7 +30,7 @@ class HealthRecordFieldLabel extends StatelessWidget {
             style: TextStyle(
               fontSize: 13.sp,
               fontWeight: FontWeight.w700,
-              color: AppColors.error,
+              color: context.colors.error,
             ),
           ),
       ],

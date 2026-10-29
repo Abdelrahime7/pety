@@ -1,6 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 
 class PlanCard extends StatelessWidget {
   final String title;
@@ -11,7 +11,8 @@ class PlanCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const PlanCard({super.key, 
+  const PlanCard({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.price,
@@ -35,7 +36,9 @@ class PlanCard extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: isSelected ? AppColors.primary : AppColors.border,
+                color: isSelected
+                    ? context.colors.primary
+                    : context.colors.outlineVariant,
                 width: isSelected ? 2 : 1,
               ),
             ),
@@ -50,7 +53,7 @@ class PlanCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: context.colors.onSurface,
                       ),
                     ),
                     SizedBox(height: 4.h),
@@ -58,7 +61,7 @@ class PlanCard extends StatelessWidget {
                       subtitle,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: AppColors.textSecondary,
+                        color: context.colors.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -71,7 +74,7 @@ class PlanCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
+                        color: context.colors.onSurface,
                       ),
                     ),
                     if (discountTag != null) ...[
@@ -81,7 +84,7 @@ class PlanCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                         ),
                       ),
                     ],
@@ -99,7 +102,7 @@ class PlanCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Text(

@@ -1,8 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
-
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class VaccinationListItem extends StatelessWidget {
   final String vaccineName;
@@ -28,7 +26,7 @@ class VaccinationListItem extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.background,
+            color: context.colors.surface,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -44,13 +42,13 @@ class VaccinationListItem extends StatelessWidget {
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.10),
+                  color: context.colors.primary.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.vaccines_rounded,
                   size: 23,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                 ),
               ),
 
@@ -64,16 +62,14 @@ class VaccinationListItem extends StatelessWidget {
                       vaccineName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppStyle.tileTitle.copyWith(
-                        fontSize: 14,
-                      ),
+                      style: context.style.tileTitle.copyWith(fontSize: 14),
                     ),
 
                     const SizedBox(height: 6),
 
                     Text(
                       ' $completedDoses/$requiredDoses ${completedDoses == 1 ? 'dose' : 'doses'} compelted',
-                      style: AppStyle.regular12.copyWith(
+                      style: context.style.regular12.copyWith(
                         fontSize: 12,
                         color: Colors.grey.shade600,
                       ),
@@ -88,13 +84,13 @@ class VaccinationListItem extends StatelessWidget {
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
+                  color: context.colors.primary.withValues(alpha: 0.08),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.chevron_right_rounded,
                   size: 21,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                 ),
               ),
             ],
@@ -104,5 +100,3 @@ class VaccinationListItem extends StatelessWidget {
     );
   }
 }
-
-

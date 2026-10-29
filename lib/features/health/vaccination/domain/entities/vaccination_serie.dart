@@ -11,9 +11,11 @@ class VaccinationSerie {
 
   /// Total number of doses required to complete the series.
   final int requiredDoses;
+
   /// number of doses completed
-  final int completedDoses ;
-  /// 
+  final int completedDoses;
+
+  ///
   final bool isCompleted;
 
   /// Optional description of the vaccination series.
@@ -28,7 +30,7 @@ class VaccinationSerie {
     required this.vaccineName,
     required this.requiredDoses,
     required this.completedDoses,
-    required this.isCompleted, 
+    required this.isCompleted,
     this.description,
     required this.createdAt,
   });
@@ -39,7 +41,7 @@ class VaccinationSerie {
       petId: data['petId'] as String,
       vaccineName: data['vaccineName'] as String,
       requiredDoses: data['requiredDoses'] as int,
-      completedDoses:data['completedDoses'] as int ,
+      completedDoses: data['completedDoses'] as int,
       isCompleted: data['isCompleted'] as bool,
       description: data['description'] as String?,
       createdAt: (data['createdAt'] as Timestamp).toDate(),
@@ -52,36 +54,32 @@ class VaccinationSerie {
       'petId': petId,
       'vaccineName': vaccineName,
       'requiredDoses': requiredDoses,
-      'completedDoses':completedDoses,
-      'isCompleted':isCompleted,
+      'completedDoses': completedDoses,
+      'isCompleted': isCompleted,
       'description': description,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 
-
-VaccinationSerie copyWith({
-  String? id,
-  String? petId,
-  String? vaccineName,
-  int? requiredDoses,
-  int? completedDoses,
-  bool? isCompleted,
-  String? description,
-  DateTime? createdAt,
-}) {
-  return VaccinationSerie(
-    id: id ?? this.id,
-    petId: petId ?? this.petId,
-    vaccineName: vaccineName ?? this.vaccineName,
-    requiredDoses: requiredDoses ?? this.requiredDoses,
-    completedDoses: completedDoses ?? this.completedDoses,
-    isCompleted: isCompleted??this.isCompleted,
-    description: description ?? this.description,
-    createdAt: createdAt ?? this.createdAt,
-  );
+  VaccinationSerie copyWith({
+    String? id,
+    String? petId,
+    String? vaccineName,
+    int? requiredDoses,
+    int? completedDoses,
+    bool? isCompleted,
+    String? description,
+    DateTime? createdAt,
+  }) {
+    return VaccinationSerie(
+      id: id ?? this.id,
+      petId: petId ?? this.petId,
+      vaccineName: vaccineName ?? this.vaccineName,
+      requiredDoses: requiredDoses ?? this.requiredDoses,
+      completedDoses: completedDoses ?? this.completedDoses,
+      isCompleted: isCompleted ?? this.isCompleted,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
-
-
-}
-

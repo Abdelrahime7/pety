@@ -2,11 +2,9 @@ class HealthCardInfo {
   final VaccinationItemInfo vaccination;
   final AppointmentItemInfo appointment;
 
-  const HealthCardInfo({
-    required this.vaccination,
-    required this.appointment,
-  });
+  const HealthCardInfo({required this.vaccination, required this.appointment});
 }
+
 class VaccinationItemInfo {
   final int doseCount;
   final int activeSeriesCount;
@@ -19,11 +17,7 @@ class VaccinationItemInfo {
 
 class AppointmentItemInfo {
   final String? nextDueDate;
-  final int ? appointmentCount;
+  final int? appointmentCount;
 
-  const AppointmentItemInfo({
-    this.nextDueDate,
-    this.appointmentCount
-    
-  });
+  const AppointmentItemInfo({this.nextDueDate, this.appointmentCount});
 }

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class MainLayout extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
-  const MainLayout({
-    super.key,
-    required this.navigationShell,
-  });
+  const MainLayout({super.key, required this.navigationShell});
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -18,8 +15,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   DateTime? _lastBackPress;
 
-  static const Duration _exitConfirmationDuration =
-      Duration(seconds: 2);
+  static const Duration _exitConfirmationDuration = Duration(seconds: 2);
 
   void _onItemTapped(int index) {
     widget.navigationShell.goBranch(
@@ -31,9 +27,9 @@ class _MainLayoutState extends State<MainLayout> {
   void _handleBackPressed() {
     final now = DateTime.now();
 
-    final shouldExit = _lastBackPress != null &&
-        now.difference(_lastBackPress!) <
-            _exitConfirmationDuration;
+    final shouldExit =
+        _lastBackPress != null &&
+        now.difference(_lastBackPress!) < _exitConfirmationDuration;
 
     if (shouldExit) {
       SystemNavigator.pop();
@@ -71,7 +67,7 @@ class _MainLayoutState extends State<MainLayout> {
           currentIndex: currentIndex,
           onTap: _onItemTapped,
           backgroundColor: Colors.white,
-          selectedItemColor: AppColors.primary,
+          selectedItemColor: context.colors.primary,
           unselectedItemColor: const Color(0xFF94A3B8),
           selectedFontSize: 11,
           unselectedFontSize: 11,
@@ -88,10 +84,7 @@ class _MainLayoutState extends State<MainLayout> {
           iconSize: 22,
           items: [
             BottomNavigationBarItem(
-              icon: _navIcon(
-                'assets/icons/home.png',
-                currentIndex == 0,
-              ),
+              icon: _navIcon('assets/icons/home.png', currentIndex == 0),
               label: 'Home',
             ),
             BottomNavigationBarItem(
@@ -111,17 +104,11 @@ class _MainLayoutState extends State<MainLayout> {
               label: 'Health',
             ),
             BottomNavigationBarItem(
-              icon: _navIcon(
-                'assets/icons/calendar.png',
-                currentIndex == 3,
-              ),
+              icon: _navIcon('assets/icons/calendar.png', currentIndex == 3),
               label: 'Calendar',
             ),
             BottomNavigationBarItem(
-              icon: _navIcon(
-                'assets/icons/profile.png',
-                currentIndex == 4,
-              ),
+              icon: _navIcon('assets/icons/profile.png', currentIndex == 4),
               label: 'Profile',
             ),
           ],
@@ -130,11 +117,7 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
-  Widget _navIcon(
-    String path,
-    bool isSelected, {
-    double size = 22,
-  }) {
+  Widget _navIcon(String path, bool isSelected, {double size = 22}) {
     return SizedBox(
       height: 26,
       child: Center(
@@ -143,8 +126,8 @@ class _MainLayoutState extends State<MainLayout> {
           width: size,
           height: size,
           color: isSelected
-              ? AppColors.primary
-              : AppColors.icon,
+              ? context.colors.primary
+              : context.colors.onSurfaceVariant,
         ),
       ),
     );

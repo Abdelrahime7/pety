@@ -1,7 +1,7 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class OwnerVaccinationSummary extends StatelessWidget {
   const OwnerVaccinationSummary({
@@ -29,11 +29,20 @@ class OwnerVaccinationSummary extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Vaccination history',
-                    style: AppStyle.sectionHeader.copyWith(color: Colors.white)),
+                Text(
+                  'Vaccination history',
+                  style: context.style.sectionHeader.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
                 SizedBox(height: 5.h),
-                Text('$total records across $petCount pets',
-                    style: TextStyle(color: Colors.white.withOpacity(.9), fontSize: 12.sp)),
+                Text(
+                  '$total records across $petCount pets',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(.9),
+                    fontSize: 12.sp,
+                  ),
+                ),
               ],
             ),
           ),
@@ -43,8 +52,14 @@ class OwnerVaccinationSummary extends StatelessWidget {
               color: Colors.white.withOpacity(.18),
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Text('$total',
-                style: TextStyle(color: Colors.white, fontSize: 20.sp, fontWeight: FontWeight.w800)),
+            child: Text(
+              '$total',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
         ],
       ),

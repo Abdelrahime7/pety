@@ -1,8 +1,7 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 
 class HealthRecordSelectorField extends StatelessWidget {
   final IconData icon;
@@ -36,7 +35,7 @@ class HealthRecordSelectorField extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(14.r),
             border: Border.all(
-              color: AppColors.border.withValues(alpha: 0.6),
+              color: context.colors.outlineVariant.withValues(alpha: 0.6),
             ),
           ),
           child: Row(
@@ -48,11 +47,7 @@ class HealthRecordSelectorField extends StatelessWidget {
                   color: iconBackground,
                   borderRadius: BorderRadius.circular(11.r),
                 ),
-                child: Icon(
-                  icon,
-                  color: iconColor,
-                  size: 21.sp,
-                ),
+                child: Icon(icon, color: iconColor, size: 21.sp),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -64,7 +59,7 @@ class HealthRecordSelectorField extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13.5.sp,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.text,
+                        color: context.colors.onSurface,
                       ),
                     ),
                     SizedBox(height: 2.h),
@@ -72,7 +67,7 @@ class HealthRecordSelectorField extends StatelessWidget {
                       subtitle,
                       style: TextStyle(
                         fontSize: 11.5.sp,
-                        color: AppColors.secondaryText,
+                        color: context.colors.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -80,7 +75,7 @@ class HealthRecordSelectorField extends StatelessWidget {
               ),
               Icon(
                 Icons.keyboard_arrow_down_rounded,
-                color: AppColors.secondaryText,
+                color: context.colors.onSurfaceVariant,
                 size: 23.sp,
               ),
             ],

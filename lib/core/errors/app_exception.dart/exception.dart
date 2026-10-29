@@ -1,4 +1,3 @@
-
 class AppException implements Exception {
   final String message;
 
@@ -6,17 +5,13 @@ class AppException implements Exception {
 }
 
 class NetworkException extends AppException {
-  const NetworkException()
-      : super('Network error occurred');
+  const NetworkException() : super('Network error occurred');
 }
 
 class UnauthorizedException extends AppException {
-  const UnauthorizedException()
-      : super('Unauthorized');
+  const UnauthorizedException() : super('Unauthorized');
 }
 
 class ServerException extends AppException {
-  const ServerException()
-      : super('Server error occurred');
+  const ServerException() : super('Server error occurred');
 }
-

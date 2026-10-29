@@ -43,8 +43,9 @@ class NotificationEmptyState extends StatelessWidget {
               'We will notify you when something needs your attention.',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodyMedium?.color
-                    ?.withValues(alpha: 0.6),
+                color: theme.textTheme.bodyMedium?.color?.withValues(
+                  alpha: 0.6,
+                ),
                 height: 1.5,
               ),
             ),

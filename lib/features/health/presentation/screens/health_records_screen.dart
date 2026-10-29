@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_back_button.dart';
 import 'package:pet_care/features/health/presentation/riverpod/health_provider.dart';
 import 'package:pet_care/features/health/presentation/screens/add_record_screen.dart';
@@ -14,23 +14,16 @@ import 'package:pet_care/features/pets/domain/entity/pet.dart';
 class HealthRecordsScreen extends ConsumerWidget {
   final Pet pet;
 
-  const HealthRecordsScreen({
-    super.key,
-    required this.pet,
-  });
+  const HealthRecordsScreen({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordsAsync = ref.watch(
-      healthRecordsProvider(pet.id),
-    );
+    final recordsAsync = ref.watch(healthRecordsProvider(pet.id));
 
-    final selectedFilter = ref.watch(
-      healthFilterProvider,
-    );
+    final selectedFilter = ref.watch(healthFilterProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,7 +37,7 @@ class HealthRecordsScreen extends ConsumerWidget {
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w800,
-            color: AppColors.text,
+            color: context.colors.onSurface,
           ),
         ),
         centerTitle: true,
@@ -54,14 +47,12 @@ class HealthRecordsScreen extends ConsumerWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AddHealthRecordScreen(
-                    pet: pet,
-                  ),
+                  builder: (_) => AddHealthRecordScreen(pet: pet),
                 ),
               );
             },
             icon: const Icon(Icons.add),
-            color: AppColors.primary,
+            color: context.colors.primary,
           ),
           SizedBox(width: 8.w),
         ],
@@ -74,19 +65,14 @@ class HealthRecordsScreen extends ConsumerWidget {
             children: [
               SizedBox(height: 8.h),
 
-              HealthPetBanner(
-                pet: pet,
-                recordsAsync: recordsAsync,
-              ),
+              HealthPetBanner(pet: pet, recordsAsync: recordsAsync),
 
               SizedBox(height: 16.h),
 
               HealthFilterList(
                 selectedFilter: selectedFilter,
                 onFilterSelected: (filter) {
-                  ref
-                      .read(healthFilterProvider.notifier)
-                      .state = filter;
+                  ref.read(healthFilterProvider.notifier).state = filter;
                 },
               ),
 
@@ -99,9 +85,7 @@ class HealthRecordsScreen extends ConsumerWidget {
                   selectedFilter: selectedFilter,
                   onRetry: () {
                     ref
-                        .read(
-                          healthRecordsProvider(pet.id).notifier,
-                        )
+                        .read(healthRecordsProvider(pet.id).notifier)
                         .refreshRecords();
                   },
                 ),

@@ -1,29 +1,25 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/home_header.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/home_section_header.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/pets_section.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/quick_actions_section.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/upcoming_appointment_card.dart';
+import 'package:pet_care/features/home/presentation/widgets/home_header.dart';
+import 'package:pet_care/features/home/presentation/widgets/home_section_header.dart';
+import 'package:pet_care/features/home/presentation/widgets/pets_section.dart';
+import 'package:pet_care/features/home/presentation/widgets/quick_actions_section.dart';
+import 'package:pet_care/features/home/presentation/widgets/upcoming_appointment_card.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
-
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState()=>_HomeScreenState();
-   
-
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
@@ -41,11 +37,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HomeHeader(),
+               HomeHeader(),
 
               SizedBox(height: 24.h),
 
-             _buildPetsSection(ref),
+              _buildPetsSection(ref,context),
               SizedBox(height: 28.h),
 
               HomeSectionHeader(
@@ -63,13 +59,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 title: 'Upcoming Appointment',
                 actionText: 'See all',
                 onActionTap: () {
-                    appRouter.push(calendar);
+                  appRouter.push(calendar);
                 },
               ),
 
               SizedBox(height: 14.h),
 
-               UpcomingAppointmentCard(appointment:nearestAppointment),
+              UpcomingAppointmentCard(appointment: nearestAppointment),
 
               SizedBox(height: 28.h),
 
@@ -83,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               SizedBox(height: 14.h),
 
-           //   const HealthSummarySection(),
+              //   const HealthSummarySection(),
             ],
           ),
         ),
@@ -91,26 +87,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 }
-Widget _buildPetsSection(WidgetRef ref) {
+
+Widget _buildPetsSection(WidgetRef ref,BuildContext context) {
   final petsAsync = ref.watch(petProvider);
 
   return petsAsync.when(
-    loading: () => const Center(
-      child: CircularProgressIndicator(),
-    ),
+    loading: () => const Center(child: CircularProgressIndicator()),
 
     error: (error, stackTrace) => Padding(
       padding: const EdgeInsets.all(20),
-      child: Text(
-        'Unable to load your pets.',
-        style: AppStyle.regular14,
-      ),
+      child: Text('Unable to load your pets.', style: context.style.regular14),
     ),
 
     data: (pets) => HomePetsSection(
       pets: pets,
       onPetTap: (pet) {
-        appRouter.push(petDetails,extra: pet);
+        appRouter.push(petDetails, extra: pet);
       },
       onSeeAll: () {
         appRouter.push(petList);
@@ -118,24 +110,23 @@ Widget _buildPetsSection(WidgetRef ref) {
 
       onAddPet: () {
         appRouter.push(addNewPet);
-
       },
     ),
   );
 }
+
 Appointment? _getNearestAppointment(List<Appointment> appointments) {
   final now = DateTime.now();
 
-  final upcomingAppointments = appointments
-      .where(
-        (appointment) =>
-            appointment.status == AppointmentStatus.upcoming &&
-            !appointment.date.isBefore(now),
-      )
-      .toList()
-    ..sort((a, b) => a.date.compareTo(b.date));
+  final upcomingAppointments =
+      appointments
+          .where(
+            (appointment) =>
+                appointment.status == AppointmentStatus.upcoming &&
+                !appointment.date.isBefore(now),
+          )
+          .toList()
+        ..sort((a, b) => a.date.compareTo(b.date));
 
-  return upcomingAppointments.isNotEmpty
-      ? upcomingAppointments.first
-      : null;
+  return upcomingAppointments.isNotEmpty ? upcomingAppointments.first : null;
 }

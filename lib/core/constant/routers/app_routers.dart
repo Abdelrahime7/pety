@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/routers/router_refresh_stream.dart';
@@ -19,7 +18,7 @@ import 'package:pet_care/features/health/vaccination/presentation/screens/add_va
 import 'package:pet_care/features/health/vaccination/presentation/screens/all_vaccinations_screen.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccination_details.dart';
 import 'package:pet_care/features/health/vaccination/presentation/screens/vaccinations_list.dart';
-import 'package:pet_care/features/home/presentation%20/screens/home_screen.dart';
+import 'package:pet_care/features/home/presentation/screens/home_screen.dart';
 import 'package:pet_care/features/notifications/presentation/screens/notification_settings_screen.dart';
 import 'package:pet_care/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
@@ -32,7 +31,6 @@ import 'package:pet_care/features/users/presentation/personal_information.dart';
 import 'package:pet_care/features/users/presentation/profile_screen.dart';
 import 'package:pet_care/features/users/presentation/upgrad_to_premium_screen.dart';
 
-
 final _authRefreshStream = GoRouterRefreshStream(
   FirebaseAuth.instance.authStateChanges(),
 );
@@ -42,8 +40,7 @@ final appRouter = GoRouter(
   refreshListenable: _authRefreshStream,
 
   redirect: (context, state) {
-    final isLoggedIn =
-        FirebaseAuth.instance.currentUser != null;
+    final isLoggedIn = FirebaseAuth.instance.currentUser != null;
 
     final isLoggingIn = state.matchedLocation == login;
 
@@ -82,132 +79,139 @@ final appRouter = GoRouter(
       builder: (_, _) => const UpgradeToPremiumScreen(),
     ),
     GoRoute(path: profileInfo, builder: (_, _) => ProfileInfoScreen()),
-   
+
     GoRoute(
       path: healthRecords,
       builder: (_, state) => HealthRecordsScreen(pet: state.extra as Pet),
     ),
-    GoRoute(path: addHealthRecord,builder: (context, state) {
-      final pet = state.extra as Pet;
-     return  AddHealthRecordScreen(pet: pet);}
-       ),
+    GoRoute(
+      path: addHealthRecord,
+      builder: (context, state) {
+        final pet = state.extra as Pet;
+        return AddHealthRecordScreen(pet: pet);
+      },
+    ),
 
-     GoRoute(path: addVaccination ,builder: (context,state ){
-             final petId = state.extra as String ;
-            return AddVaccinationScreen(petId: petId);
-           }       
-          ),
-     GoRoute(path: vaccinationList , builder: ( context, state)
-          {
-            final petId = state.extra as String ;
-            return VaccinationListScreen(petId:petId) ;
-          }
-          ),
-    GoRoute(path: vaccinationDetails , builder: ( context, state)
-          {
-            final vaccination = state.extra as VaccinationSerie ;
-            return VaccinationDetailsScreen(vaccination:vaccination) ;
-          }
-          ),    
+    GoRoute(
+      path: addVaccination,
+      builder: (context, state) {
+        final petId = state.extra as String;
+        return AddVaccinationScreen(petId: petId);
+      },
+    ),
+    GoRoute(
+      path: vaccinationList,
+      builder: (context, state) {
+        final petId = state.extra as String;
+        return VaccinationListScreen(petId: petId);
+      },
+    ),
+    GoRoute(
+      path: vaccinationDetails,
+      builder: (context, state) {
+        final vaccination = state.extra as VaccinationSerie;
+        return VaccinationDetailsScreen(vaccination: vaccination);
+      },
+    ),
 
+    GoRoute(
+      path: petDetails,
+      builder: (context, stat) {
+        final pet = stat.extra as Pet;
+        return PetDetailsScreen(pet: pet);
+      },
+    ),
 
-     GoRoute(path: petDetails,builder:(context ,stat) {
-           final pet = stat.extra as Pet ;
-           return  PetDetailsScreen(pet:pet);
-          }),
+    GoRoute(
+      path: petEdit,
+      builder: (context, state) {
+        final pet = state.extra as Pet;
+        return PetEditScreen(pet: pet);
+      },
+    ),
 
-      GoRoute(path: petEdit,builder:(context ,state) {
-           final pet = state.extra as Pet ;
-           return  PetEditScreen(pet:pet);
-          }),
+    GoRoute(
+      path: notifications,
+      builder: (context, state) {
+        return const NotificationsScreen();
+      },
+    ),
+    GoRoute(
+      path: notificationSettings,
+      builder: (context, state) {
+        final user = state.extra as User;
+        return NotificationSettingsScreen(user: user);
+      },
+    ),
 
-          GoRoute(
-            path: notifications,
-            builder: (context, state) {
-            return const NotificationsScreen();
-              },
-            )         ,
-      GoRoute(
-            path: notificationSettings,
-            builder: (context, state) {
-            final user =state.extra as User;
-             return  NotificationSettingsScreen(user: user,);
-              },
-)            ,
-
-      GoRoute(path: allHealthRecords,
-      builder: (context,state){
+    GoRoute(
+      path: allHealthRecords,
+      builder: (context, state) {
         return const AllHealthRecordsScreen();
-      }
-      ),
-       GoRoute(path: allVaccinationsRecords,
-      builder: (context,state){
+      },
+    ),
+    GoRoute(
+      path: allVaccinationsRecords,
+      builder: (context, state) {
         return const AllVaccinationsScreen();
-      }
-      ),
+      },
+    ),
+
     /// Screens WITH bottom nav
-    /// 
-    /// 
+    ///
+    ///
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return MainLayout(navigationShell: navigationShell);
+      },
+      branches: [
+        // Home tab
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: homeScreen,
+              builder: (context, state) => const HomeScreen(),
+            ),
+          ],
+        ),
 
+        // Pets tab
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: petList,
+              builder: (context, state) => PetsListScreen(),
+            ),
+          ],
+        ),
 
-StatefulShellRoute.indexedStack(
-  builder: (context, state, navigationShell) {
-    return MainLayout(
-      navigationShell: navigationShell,
-    );
-  },
-  branches: [
-    // Home tab
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
-          path: homeScreen,
-          builder: (context, state) => const HomeScreen(),
+        // Health tab
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: health, builder: (context, state) => HealthScreen()),
+          ],
+        ),
+
+        // Calendar tab
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: calendar,
+              builder: (context, state) => const AppointmentsScreen(),
+            ),
+          ],
+        ),
+
+        // Profile tab
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: profile,
+              builder: (context, state) => const ProfilePage(),
+            ),
+          ],
         ),
       ],
     ),
-
-    // Pets tab
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
-          path: petList,
-          builder: (context, state) => PetsListScreen(),
-        ),
-      ],
-    ),
-
-    // Health tab
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
-          path: health,
-          builder: (context, state) => HealthScreen(),
-        ),
-      ],
-    ),
-
-    // Calendar tab
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
-          path: calendar,
-          builder: (context, state) => const AppointmentsScreen(),
-        ),
-      ],
-    ),
-
-    // Profile tab
-    StatefulShellBranch(
-      routes: [
-        GoRoute(
-          path: profile,
-          builder: (context, state) => const ProfilePage(),
-        ),
-      ],
-    ),
-  ],
-),
   ],
 );
-

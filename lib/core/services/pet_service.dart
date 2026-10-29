@@ -70,18 +70,15 @@ class PetService {
   }
 
   // DELETE
- Future<Result<void>> deletePet(String petId) async {
-  try {
-    await dataSource.deletePet(petId);
+  Future<Result<void>> deletePet(String petId) async {
+    try {
+      await dataSource.deletePet(petId);
 
-
-    return const Success(null);
-  } on FirebaseException catch (e) {
-
-    return Failure(mapFirestoreExceptionToFailure(e).message);
-  } catch (e) {
-
-    return Failure(e.toString());
+      return const Success(null);
+    } on FirebaseException catch (e) {
+      return Failure(mapFirestoreExceptionToFailure(e).message);
+    } catch (e) {
+      return Failure(e.toString());
+    }
   }
- }
 }

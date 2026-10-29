@@ -43,7 +43,7 @@ class GenderToggle extends StatelessWidget {
                       color: Colors.black.withOpacity(0.05),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
-                    )
+                    ),
                   ]
                 : [],
           ),
@@ -51,7 +51,9 @@ class GenderToggle extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected ? const Color(0xFF20C997) : const Color(0xFF7A869A),
+              color: isSelected
+                  ? const Color(0xFF20C997)
+                  : const Color(0xFF7A869A),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
               fontSize: 13,
             ),

@@ -8,17 +8,10 @@ import 'package:pet_care/core/constant/theme/app_theme.dart';
 import 'package:pet_care/infrastructure/firebase/cloud_messaging/message_notification.dart';
 import 'infrastructure/firebase/configue/firebase_options.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-
-
-void main()
-async {
-   WidgetsFlutterBinding.ensureInitialized();
-
- await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await GoogleSignIn.instance.initialize(
     serverClientId:
@@ -35,12 +28,10 @@ async {
       builder: (_, child) {
         return ProviderScope(
           child: MaterialApp.router(
-          
             title: 'PetCare',
             routerConfig: appRouter,
-            theme: AppTheme.light,
-  
-        )
+            theme: AppTheme.dark,
+          ),
         );
       },
     ),

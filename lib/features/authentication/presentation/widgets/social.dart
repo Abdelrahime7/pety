@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
-Widget buildSocialButtons({
+Widget buildSocialButtons(
+  BuildContext context, {
   required VoidCallback onGooglePressed,
 }) {
   return Padding(
@@ -11,6 +12,7 @@ Widget buildSocialButtons({
       children: [
         Expanded(
           child: _socialButton(
+            context,
             icon: Image.asset(
               'assets/icons/google.png',
               width: 18.w,
@@ -23,10 +25,11 @@ Widget buildSocialButtons({
         SizedBox(width: 12.w),
         Expanded(
           child: _socialButton(
+            context,
             icon: Icon(
               Icons.apple,
               size: 22.sp,
-              color: AppColors.textPrimary,
+              color: context.colors.onSurface,
             ),
             label: 'Apple',
             onPressed: () {},
@@ -37,7 +40,8 @@ Widget buildSocialButtons({
   );
 }
 
-Widget _socialButton({
+Widget _socialButton(
+  BuildContext context, {
   required Widget icon,
   required String label,
   required VoidCallback onPressed,
@@ -54,15 +58,13 @@ Widget _socialButton({
           fontSize: 14.sp,
           height: 17 / 14,
           fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
+          color: context.colors.onSurface,
         ),
       ),
       style: OutlinedButton.styleFrom(
         backgroundColor: Colors.white,
         padding: EdgeInsets.zero,
-        side: const BorderSide(
-          color: AppColors.border,
-        ),
+        side: BorderSide(color: context.colors.outlineVariant),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
         ),

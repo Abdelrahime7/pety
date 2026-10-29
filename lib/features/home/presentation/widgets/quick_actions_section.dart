@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
-import 'package:pet_care/features/home/presentation%20/widgets/quick_action_card.dart';
+import 'package:pet_care/features/home/presentation/widgets/quick_action_card.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
 
 class QuickActionsSection extends StatelessWidget {
   const QuickActionsSection({super.key});
@@ -25,7 +24,7 @@ class QuickActionsSection extends StatelessWidget {
           icon: Icons.calendar_month_rounded,
           iconColor: const Color(0xFF0D9488),
           iconBackground: const Color(0xFFE0F7F3),
-          onTap:() {
+          onTap: () {
             appRouter.push(addNewAppointment);
           },
         ),
@@ -35,27 +34,27 @@ class QuickActionsSection extends StatelessWidget {
           icon: Icons.health_and_safety_outlined,
           iconColor: const Color(0xFF6366F1),
           iconBackground: const Color(0xFFEEF2FF),
-          onTap:() {
+          onTap: () {
             appRouter.push(allHealthRecords);
           },
         ),
-         QuickActionCard(
+        QuickActionCard(
           title: 'Vaccinations',
           subtitle: 'vaccines',
           icon: Icons.vaccines_outlined,
           iconColor: Color(0xFFEA580C),
           iconBackground: Color(0xFFFFF1E6),
-          onTap:() {
+          onTap: () {
             appRouter.push(allVaccinationsRecords);
           },
         ),
-         QuickActionCard(
+        QuickActionCard(
           title: 'My Pets',
           subtitle: 'Pet profiles',
           icon: Icons.pets_rounded,
           iconColor: Color(0xFFDB2777),
           iconBackground: Color(0xFFFCE7F3),
-          onTap:() {
+          onTap: () {
             appRouter.push(petList);
           },
         ),

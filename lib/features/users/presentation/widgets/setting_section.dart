@@ -1,17 +1,14 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
-
 
 class SettingsSections extends StatefulWidget {
   final dynamic user;
 
-  const SettingsSections({super.key,required this.user });
+  const SettingsSections({super.key, required this.user});
 
   @override
   State<SettingsSections> createState() => _SettingsSectionsState();
@@ -44,7 +41,7 @@ class _SettingsSectionsState extends State<SettingsSections> {
               icon: Icons.notifications,
               title: 'Notification Settings',
               onTap: () {
-                appRouter.push(notificationSettings,extra: widget.user);
+                appRouter.push(notificationSettings, extra: widget.user);
               },
             ),
             _buildDivider(),
@@ -84,16 +81,19 @@ class _SettingsSectionsState extends State<SettingsSections> {
 
   // Section Header Label
   Widget _buildSectionHeader(String title) {
-    return Text(title, style: AppStyle.sectionHeader);
+    return Text(title, style: context.style.sectionHeader);
   }
 
   // White Rounded Card Container
   Widget _buildGroupCard({required List<Widget> children}) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border.withOpacity(0.6), width: 1),
+        border: Border.all(
+          color: context.colors.outlineVariant.withOpacity(0.6),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
@@ -121,11 +121,11 @@ class _SettingsSectionsState extends State<SettingsSections> {
           children: [
             _buildIconContainer(icon),
             const SizedBox(width: 14),
-            Expanded(child: Text(title, style: AppStyle.tileTitle)),
-            const Icon(
+            Expanded(child: Text(title, style: context.style.tileTitle)),
+            Icon(
               Icons.chevron_right,
               size: 20,
-              color: AppColors.secondaryText,
+              color: context.colors.onSurfaceVariant,
             ),
           ],
         ),
@@ -146,10 +146,10 @@ class _SettingsSectionsState extends State<SettingsSections> {
         children: [
           _buildIconContainer(icon),
           const SizedBox(width: 14),
-          Expanded(child: Text(title, style: AppStyle.tileTitle)),
+          Expanded(child: Text(title, style: context.style.tileTitle)),
           CupertinoSwitch(
             value: value,
-            activeTrackColor: AppColors.primary,
+            activeTrackColor: context.colors.primary,
             onChanged: onChanged,
           ),
         ],

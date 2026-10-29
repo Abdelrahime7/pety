@@ -1,8 +1,8 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class HealthSummarySection extends StatelessWidget {
   const HealthSummarySection({super.key});
@@ -14,9 +14,7 @@ class HealthSummarySection extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: AppColors.border,
-        ),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: [
@@ -34,10 +32,7 @@ class HealthSummarySection extends StatelessWidget {
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 14.h),
-            child: Divider(
-              height: 1,
-              color: AppColors.border,
-            ),
+            child: Divider(height: 1, color: AppColors.border),
           ),
 
           _HealthSummaryRow(
@@ -90,11 +85,7 @@ class _HealthSummaryRow extends StatelessWidget {
               color: iconBackground,
               borderRadius: BorderRadius.circular(13.r),
             ),
-            child: Icon(
-              icon,
-              size: 22.sp,
-              color: iconColor,
-            ),
+            child: Icon(icon, size: 22.sp, color: iconColor),
           ),
 
           SizedBox(width: 12.w),
@@ -105,24 +96,19 @@ class _HealthSummaryRow extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppStyle.tileTitle.copyWith(
-                    fontSize: 13.sp,
-                  ),
+                  style: context.style.tileTitle.copyWith(fontSize: 13.sp),
                 ),
 
                 SizedBox(height: 4.h),
 
-                Text(
-                  subtitle,
-                  style: AppStyle.regular10,
-                ),
+                Text(subtitle, style: context.style.regular10),
               ],
             ),
           ),
 
           Text(
             status,
-            style: AppStyle.buttonText.copyWith(
+            style: context.style.buttonText.copyWith(
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               color: AppColors.tealDark,

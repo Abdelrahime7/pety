@@ -1,14 +1,12 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/users/presentation/riverpod/unread_notificatins_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
-
 
 class HomeHeader extends ConsumerWidget {
   const HomeHeader({super.key});
@@ -22,21 +20,16 @@ class HomeHeader extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Good morning 👋',
-                style: AppStyle.regular14,
-              ),
+              Text('Good morning 👋', style: context.style.regular14),
               SizedBox(height: 4.h),
               Text(
                 'Hello, Pet Parent!',
-                style: AppStyle.title.copyWith(
-                  fontSize: 22.sp,
-                ),
+                style: context.style.title.copyWith(fontSize: 22.sp),
               ),
               SizedBox(height: 4.h),
               Text(
                 'Let’s make your pet happy today.',
-                style: AppStyle.regular12,
+                style: context.style.regular12,
               ),
             ],
           ),
@@ -44,18 +37,17 @@ class HomeHeader extends ConsumerWidget {
 
         SizedBox(width: 12.w),
 
-         _NotificationButton(
+        _NotificationButton(
           unreadCountAsync: unreadCountAsync,
           onPressed: () async {
             await appRouter.push(notifications);
             ref.invalidate(unreadNotificationCountProvider);
-          }
-         )
+          },
+        ),
       ],
     );
   }
 }
-
 
 class _NotificationButton extends StatelessWidget {
   final AsyncValue<int> unreadCountAsync;
@@ -96,18 +88,12 @@ class _NotificationButton extends StatelessWidget {
               right: -3,
               top: -5,
               child: Container(
-                constraints: const BoxConstraints(
-                  minWidth: 18,
-                  minHeight: 18,
-                ),
+                constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: AppColors.surface,
-                    width: 2,
-                  ),
+                  border: Border.all(color: AppColors.surface, width: 2),
                 ),
                 child: Center(
                   child: Text(

@@ -1,4 +1,1 @@
-enum HealthItemType {
-  health,
-  vaccination,
-}
+enum HealthItemType { health, vaccination }

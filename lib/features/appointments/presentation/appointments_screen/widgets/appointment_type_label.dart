@@ -21,4 +21,3 @@ String appointmentTypeLabel(AppointmentType type) {
       return 'Other';
   }
 }
-

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
@@ -43,7 +43,6 @@ class AuthForm extends ConsumerStatefulWidget {
 class _AuthFormState extends ConsumerState<AuthForm> {
   final _formKey = GlobalKey<FormState>();
 
-
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
@@ -58,7 +57,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
           children: [
             // 1. FULL NAME (Register only)
             if (!widget.isLogin && widget.nameController != null) ...[
-              buildFieldLabel('FULL NAME'),
+              buildFieldLabel('FULL NAME',context),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.nameController!,
@@ -67,21 +66,23 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                 prefixIcon: Icon(
                   Icons.person_outline_rounded,
                   size: 18.sp,
-                  color: AppColors.icon,
+                  color: context.colors.onSurfaceVariant,
                 ),
-                validator: (value) =>
-                    value == null || value.trim().isEmpty ? 'Please enter your name' : null,
+                validator: (value) => value == null || value.trim().isEmpty
+                    ? 'Please enter your name'
+                    : null,
               ),
               HeightSpace(height: 14.h),
             ],
 
             // 2. EMAIL ADDRESS (Both)
-            buildEmailField(widget.emailController),
+            buildEmailField(widget.emailController, context),
             HeightSpace(height: 14.h),
 
             // 3. PASSWORD (Both)
-            buildPasswordField( context,
-             resetPassword,
+            buildPasswordField(
+              context,
+              resetPassword,
               widget.passwordController,
               widget.onIconPressed,
               widget.obscurePassword,
@@ -89,9 +90,10 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             ),
 
             // 4. CONFIRM PASSWORD (Register only)
-            if (!widget.isLogin && widget.confirmPasswordController != null) ...[
+            if (!widget.isLogin &&
+                widget.confirmPasswordController != null) ...[
               HeightSpace(height: 14.h),
-              buildFieldLabel('CONFIRM PASSWORD'),
+              buildFieldLabel('CONFIRM PASSWORD',context),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.confirmPasswordController!,
@@ -100,14 +102,14 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                 prefixIcon: Icon(
                   Icons.lock_outline_rounded,
                   size: 18.sp,
-                  color: AppColors.icon,
+                  color: context.colors.onSurfaceVariant,
                 ),
                 suffixIcon: Icon(
                   widget.obscureConfirmPassword
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                   size: 18.sp,
-                  color: AppColors.secondaryText,
+                  color: context.colors.onSurfaceVariant,
                 ),
                 onSuffixIconPressed: widget.onConfirmIconPressed,
                 validator: (value) {
@@ -138,7 +140,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
     );
   }
 
-void _submit() {
+  void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
     final notifier = ref.read(authProvider.notifier);
@@ -146,36 +148,31 @@ void _submit() {
       notifier.login((
         email: widget.emailController.text.trim(),
         password: widget.passwordController.text.trim(),
-        name: null
+        name: null,
       ));
     } else {
       notifier.register((
-        email:widget.emailController.text.trim(),
+        email: widget.emailController.text.trim(),
         password: widget.passwordController.text.trim(),
-          name: widget.nameController!.text.trim(),
-
+        name: widget.nameController!.text.trim(),
       ));
     }
   }
 
-Future<void>  resetPassword()async{
-   
+  Future<void> resetPassword() async {
     final email = widget.emailController.text.trim();
 
-    final result = await ref
-        .read(authProvider.notifier)
-        .resetPassword(email);
+    final result = await ref.read(authProvider.notifier).resetPassword(email);
 
     switch (result) {
       case Success(:final data):
-        showNotification(context,data);
+        showNotification(context, data);
 
       case Failure(:final message):
-        showNotification(context,message,success: false);
+        showNotification(context, message, success: false);
 
       case Cancelled():
         break;
     }
   }
-
 }

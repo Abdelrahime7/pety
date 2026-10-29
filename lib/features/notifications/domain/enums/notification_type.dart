@@ -1,6 +1,1 @@
-enum NotificationType {
-  vaccination,
-  medication,
-  appointment,
-  system,
-}
+enum NotificationType { vaccination, medication, appointment, system }

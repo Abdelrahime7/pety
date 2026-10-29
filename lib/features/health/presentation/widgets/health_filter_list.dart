@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class HealthFilterList extends StatelessWidget {
   final String selectedFilter;
@@ -31,8 +30,7 @@ class HealthFilterList extends StatelessWidget {
       child: Row(
         children: filters.map((filter) {
           final isSelected =
-              filter.toLowerCase() ==
-              selectedFilter.toLowerCase();
+              filter.toLowerCase() == selectedFilter.toLowerCase();
 
           return Padding(
             padding: EdgeInsets.only(right: 8.w),
@@ -40,18 +38,13 @@ class HealthFilterList extends StatelessWidget {
               onTap: () => onFilterSelected(filter),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 8.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? AppColors.primary
-                      : Colors.white,
+                  color: isSelected ? context.colors.primary : Colors.white,
                   borderRadius: BorderRadius.circular(999.r),
                   border: Border.all(
                     color: isSelected
-                        ? AppColors.primary
+                        ? context.colors.primary
                         : const Color(0xFFE2E8F0),
                   ),
                 ),
@@ -59,12 +52,8 @@ class HealthFilterList extends StatelessWidget {
                   filter,
                   style: TextStyle(
                     fontSize: 12.5.sp,
-                    fontWeight: isSelected
-                        ? FontWeight.w700
-                        : FontWeight.w500,
-                    color: isSelected
-                        ? Colors.white
-                        : const Color(0xFF64748B),
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    color: isSelected ? Colors.white : const Color(0xFF64748B),
                   ),
                 ),
               ),

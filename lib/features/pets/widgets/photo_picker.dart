@@ -6,11 +6,7 @@ class PhotoPicker extends StatelessWidget {
   final Function(File)? onImageSelected;
   final File? imageFile;
 
-   PhotoPicker({
-    super.key,
-    this.onImageSelected,
-    this.imageFile,
-  });
+  PhotoPicker({super.key, this.onImageSelected, this.imageFile});
 
   final ImagePicker _picker = ImagePicker();
 
@@ -42,8 +38,11 @@ class PhotoPicker extends StatelessWidget {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(Icons.camera_alt_outlined,
-                          color: Color(0xFF8C9BA8), size: 30),
+                      Icon(
+                        Icons.camera_alt_outlined,
+                        color: Color(0xFF8C9BA8),
+                        size: 30,
+                      ),
                       SizedBox(height: 6),
                       Text(
                         'UPLOAD PHOTO',
@@ -57,10 +56,7 @@ class PhotoPicker extends StatelessWidget {
                   )
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.file(
-                      imageFile!,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Image.file(imageFile!, fit: BoxFit.cover),
                   ),
           ),
 

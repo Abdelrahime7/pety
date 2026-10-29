@@ -1,6 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 
 class OwnerVaccinationFilterChips extends StatelessWidget {
   const OwnerVaccinationFilterChips({
@@ -31,15 +31,21 @@ class OwnerVaccinationFilterChips extends StatelessWidget {
             selected: active,
             onSelected: (_) => onSelected(filter),
             showCheckmark: false,
-            backgroundColor: AppColors.surface,
-            selectedColor: AppColors.primary,
-            side: BorderSide(color: active ? AppColors.primary : AppColors.border),
+            backgroundColor: context.colors.surface,
+            selectedColor: context.colors.primary,
+            side: BorderSide(
+              color: active
+                  ? context.colors.primary
+                  : context.colors.outlineVariant,
+            ),
             labelStyle: TextStyle(
-              color: active ? Colors.white : AppColors.secondaryText,
+              color: active ? Colors.white : context.colors.onSurfaceVariant,
               fontWeight: active ? FontWeight.w700 : FontWeight.w500,
               fontSize: 12.sp,
             ),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
+            ),
           );
         },
       ),

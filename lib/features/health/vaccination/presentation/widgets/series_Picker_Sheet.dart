@@ -1,26 +1,24 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 
 class SeriesPickerSheet extends StatefulWidget {
   final List<VaccinationSerie> series;
   final VaccinationSerie? selectedSeries;
 
-  const SeriesPickerSheet({super.key, 
+  const SeriesPickerSheet({
+    super.key,
     required this.series,
     this.selectedSeries,
   });
 
   @override
-  State<SeriesPickerSheet> createState() =>
-      _SeriesPickerSheetState();
+  State<SeriesPickerSheet> createState() => _SeriesPickerSheetState();
 }
 
-class _SeriesPickerSheetState
-    extends State<SeriesPickerSheet> {
-  final _searchController =
-      TextEditingController();
+class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
+  final _searchController = TextEditingController();
 
   String _query = '';
 
@@ -34,9 +32,8 @@ class _SeriesPickerSheetState
   Widget build(BuildContext context) {
     final filteredSeries = widget.series
         .where(
-          (serie) => serie.vaccineName
-              .toLowerCase()
-              .contains(_query.toLowerCase()),
+          (serie) =>
+              serie.vaccineName.toLowerCase().contains(_query.toLowerCase()),
         )
         .toList();
 
@@ -46,16 +43,12 @@ class _SeriesPickerSheetState
           left: 20,
           right: 20,
           top: 20,
-          bottom:
-              MediaQuery.of(context).viewInsets.bottom +
-                  20,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
         ),
         child: SizedBox(
-          height:
-              MediaQuery.of(context).size.height * 0.75,
+          height: MediaQuery.of(context).size.height * 0.75,
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -88,25 +81,16 @@ class _SeriesPickerSheetState
                 },
                 decoration: InputDecoration(
                   hintText: 'Search vaccine...',
-                  prefixIcon: const Icon(
-                    Icons.search,
-                  ),
+                  prefixIcon: const Icon(Icons.search),
                   filled: true,
                   fillColor: Colors.grey.shade50,
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Colors.grey.shade200,
-                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade200),
                   ),
-                  enabledBorder:
-                      OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: Colors.grey.shade200,
-                    ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade200),
                   ),
                 ),
               ),
@@ -118,62 +102,41 @@ class _SeriesPickerSheetState
                     ? Center(
                         child: Text(
                           'No series found.',
-                          style: TextStyle(
-                            color:
-                                Colors.grey.shade600,
-                          ),
+                          style: TextStyle(color: Colors.grey.shade600),
                         ),
                       )
                     : ListView.separated(
-                        itemCount:
-                            filteredSeries.length,
-                        separatorBuilder:
-                            (_, _) => Divider(
-                          height: 1,
-                          color:
-                              Colors.grey.shade200,
-                        ),
-                        itemBuilder:
-                            (context, index) {
-                          final serie =
-                              filteredSeries[index];
+                        itemCount: filteredSeries.length,
+                        separatorBuilder: (_, _) =>
+                            Divider(height: 1, color: Colors.grey.shade200),
+                        itemBuilder: (context, index) {
+                          final serie = filteredSeries[index];
 
                           final isSelected =
-                              widget.selectedSeries
-                                      ?.id ==
-                                  serie.id;
+                              widget.selectedSeries?.id == serie.id;
 
                           return ListTile(
-                            contentPadding:
-                                const EdgeInsets
-                                    .symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                               horizontal: 4,
                               vertical: 4,
                             ),
                             leading: Icon(
                               isSelected
-                                  ? Icons
-                                      .radio_button_checked
-                                  : Icons
-                                      .radio_button_unchecked,
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
                               color: isSelected
-                                  ? AppColors.primary
+                                  ? context.colors.primary
                                   : Colors.grey.shade500,
                             ),
                             title: Text(
                               serie.vaccineName,
-                              style:
-                                  const TextStyle(
-                                fontWeight:
-                                    FontWeight.w600,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            subtitle: Text(
-                              '${serie.requiredDoses} doses',
-                            ),
+                            subtitle: Text('${serie.requiredDoses} doses'),
                             onTap: () {
-                              Navigator.of(context)
-                                  .pop(serie);
+                              Navigator.of(context).pop(serie);
                             },
                           );
                         },

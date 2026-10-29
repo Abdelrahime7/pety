@@ -6,11 +6,7 @@ class PetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback onTap;
 
-  const PetCard({
-    super.key,
-    required this.pet,
-    required this.onTap,
-  });
+  const PetCard({super.key, required this.pet, required this.onTap});
 
   String _calculateAge(DateTime birthDate) {
     final now = DateTime.now();
@@ -23,23 +19,26 @@ class PetCard extends StatelessWidget {
     }
     if (years > 0) return '$years years';
     if (months > 0) return '$months months';
-    
-     return 'Less than a month';
-    
+
+    return 'Less than a month';
   }
 
   @override
   Widget build(BuildContext context) {
     final ageStr = _calculateAge(pet.birthDate);
-    
+
     // Changing standard to show Gender based on allowed data model
     final genderText = pet.gender;
     final isMale = genderText.toLowerCase() == 'male';
-    
+
     // Color coding gender playfully
-    final tagBgColor = isMale ? const Color(0xFFF0FDFA) : const Color(0xFFFFF1F2);
-    final tagTextColor = isMale ? const Color(0xFF0F766E) : const Color.fromARGB(255, 187, 122, 149);
-    
+    final tagBgColor = isMale
+        ? const Color(0xFFF0FDFA)
+        : const Color(0xFFFFF1F2);
+    final tagTextColor = isMale
+        ? const Color(0xFF0F766E)
+        : const Color.fromARGB(255, 187, 122, 149);
+
     final inkMuted = const Color(0xFF64748B);
     final inkSoft = const Color(0xFF94A3B8);
     final ink = const Color(0xFF0F172A);
@@ -113,10 +112,7 @@ class PetCard extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Text(
                     '${pet.breed} • $ageStr',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: inkMuted,
-                    ),
+                    style: TextStyle(fontSize: 14.sp, color: inkMuted),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -125,10 +121,15 @@ class PetCard extends StatelessWidget {
                     children: [
                       // Status Tag
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 2.h,
+                        ),
                         decoration: BoxDecoration(
                           color: tagBgColor,
-                          borderRadius: BorderRadius.circular(999.r), // full rounded
+                          borderRadius: BorderRadius.circular(
+                            999.r,
+                          ), // full rounded
                         ),
                         child: Text(
                           genderText,
@@ -142,7 +143,10 @@ class PetCard extends StatelessWidget {
                       SizedBox(width: 8.w),
                       // Weight Tag
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 2.h,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFF1F5F9), // slate-100
                           borderRadius: BorderRadius.circular(999.r),

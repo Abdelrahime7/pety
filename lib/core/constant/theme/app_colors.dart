@@ -7,7 +7,9 @@ abstract final class AppColors {
 
   static const textPrimary = Color(0xFF1B1B1B);
   static const textSecondary = Color(0xFF6B7280);
-  static const textMuted = Color(0xFF94A3B8); // Muted / placeholder / caption text color
+  static const textMuted = Color(
+    0xFF94A3B8,
+  ); // Muted / placeholder / caption text color
 
   static const error = Color(0xFFD32F2F);
 

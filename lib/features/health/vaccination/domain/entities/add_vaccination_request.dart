@@ -1,4 +1,3 @@
-
 class AddVaccinationRequest {
   final String ownerId;
   final String petId;
@@ -8,8 +7,8 @@ class AddVaccinationRequest {
   final DateTime vaccinationDate;
   final String? notes;
 
-   AddVaccinationRequest({
-    required this .ownerId,
+  AddVaccinationRequest({
+    required this.ownerId,
     required this.petId,
     this.seriesId,
     this.vaccineName,

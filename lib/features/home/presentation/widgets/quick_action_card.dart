@@ -1,8 +1,8 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class QuickActionCard extends StatelessWidget {
   final String title;
@@ -34,9 +34,7 @@ class QuickActionCard extends StatelessWidget {
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.r),
-            border: Border.all(
-              color: AppColors.border,
-            ),
+            border: Border.all(color: AppColors.border),
           ),
           child: Row(
             children: [
@@ -47,11 +45,7 @@ class QuickActionCard extends StatelessWidget {
                   color: iconBackground,
                   borderRadius: BorderRadius.circular(13.r),
                 ),
-                child: Icon(
-                  icon,
-                  color: iconColor,
-                  size: 22.sp,
-                ),
+                child: Icon(icon, color: iconColor, size: 22.sp),
               ),
 
               SizedBox(width: 10.w),
@@ -65,9 +59,7 @@ class QuickActionCard extends StatelessWidget {
                       title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppStyle.tileTitle.copyWith(
-                        fontSize: 12.sp,
-                      ),
+                      style: context.style.tileTitle.copyWith(fontSize: 12.sp),
                     ),
 
                     SizedBox(height: 4.h),
@@ -76,7 +68,7 @@ class QuickActionCard extends StatelessWidget {
                       subtitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppStyle.regular10,
+                      style: context.style.regular10,
                     ),
                   ],
                 ),

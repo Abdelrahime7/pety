@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/week_day_selector.dart';
@@ -25,8 +25,9 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
   void initState() {
     super.initState();
     _selectedDay = DateTime.now();
-    final startOfWeek =
-        _selectedDay.subtract(Duration(days: _selectedDay.weekday - 1));
+    final startOfWeek = _selectedDay.subtract(
+      Duration(days: _selectedDay.weekday - 1),
+    );
     _weekDays = List.generate(6, (i) => startOfWeek.add(Duration(days: i)));
   }
 
@@ -36,13 +37,13 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
     final appointments = appointmentState.appointments;
 
     final filteredAppointments = _showAllAppointments
-      ? appointments.toList()
-      : appointments.where((appointment) {
-        final appointmentDate = appointment.date;
-        return appointmentDate.year == _selectedDay.year &&
-          appointmentDate.month == _selectedDay.month &&
-          appointmentDate.day == _selectedDay.day;
-        }).toList();
+        ? appointments.toList()
+        : appointments.where((appointment) {
+            final appointmentDate = appointment.date;
+            return appointmentDate.year == _selectedDay.year &&
+                appointmentDate.month == _selectedDay.month &&
+                appointmentDate.day == _selectedDay.day;
+          }).toList();
 
     final upcoming = filteredAppointments
         .where((a) => a.status == AppointmentStatus.upcoming)
@@ -52,7 +53,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
         .toList();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -74,7 +75,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                         style: TextStyle(
                           fontSize: 21.sp,
                           fontWeight: FontWeight.w900,
-                          color: AppColors.text,
+                          color: context.colors.onSurface,
                         ),
                       ),
                     ],
@@ -88,10 +89,10 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                     child: Container(
                       width: 34.w,
                       height: 34.w,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
+                      decoration: BoxDecoration(
+                        color: context.colors.primary,
                         shape: BoxShape.circle,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Color(0x332DD4BF),
                             blurRadius: 12,
@@ -117,7 +118,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                 child: TextButton(
                   onPressed: () => setState(() => _showAllAppointments = true),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.primary,
+                    foregroundColor: context.colors.primary,
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -147,8 +148,10 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                 child: Builder(
                   builder: (context) {
                     if (appointmentState.isLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(color: AppColors.primary),
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: context.colors.primary,
+                        ),
                       );
                     }
 
@@ -161,10 +164,12 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                     if (filteredAppointments.isEmpty) {
                       return Center(
                         child: Text(
-                            _showAllAppointments
+                          _showAllAppointments
                               ? 'No appointments yet.'
                               : 'No appointments on this day.',
-                          style: TextStyle(color: AppColors.secondaryText),
+                          style: TextStyle(
+                            color: context.colors.onSurfaceVariant,
+                          ),
                         ),
                       );
                     }
@@ -174,7 +179,9 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                       children: [
                         if (upcoming.isNotEmpty) ...[
                           const _SectionHeader(title: 'Upcoming'),
-                          ...upcoming.map((a) => AppointmentCard(appointment: a)),
+                          ...upcoming.map(
+                            (a) => AppointmentCard(appointment: a),
+                          ),
                         ],
                         if (past.isNotEmpty) ...[
                           const _SectionHeader(title: 'Past'),
@@ -208,7 +215,7 @@ class _SectionHeader extends StatelessWidget {
           fontSize: 12.sp,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
-          color: AppColors.secondaryText,
+          color: context.colors.onSurfaceVariant,
         ),
       ),
     );

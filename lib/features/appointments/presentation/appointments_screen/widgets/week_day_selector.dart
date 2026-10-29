@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 /// Horizontal row of selectable day chips (MON 20, TUE 21, ...).
 class WeekDaySelector extends StatelessWidget {
@@ -24,11 +24,14 @@ class WeekDaySelector extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: days
-            .map((day) => _DayChip(
-                  day: day,
-                  isSelected: selectedDay != null && _isSameDay(day, selectedDay!),
-                  onTap: () => onDaySelected(day),
-                ))
+            .map(
+              (day) => _DayChip(
+                day: day,
+                isSelected:
+                    selectedDay != null && _isSameDay(day, selectedDay!),
+                onTap: () => onDaySelected(day),
+              ),
+            )
             .toList(),
       ),
     );
@@ -46,12 +49,20 @@ class _DayChip extends StatelessWidget {
     required this.onTap,
   });
 
-  static const _weekdayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  static const _weekdayLabels = [
+    'MON',
+    'TUE',
+    'WED',
+    'THU',
+    'FRI',
+    'SAT',
+    'SUN',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    
-    final accentColor = AppColors.primary; // Use your app's accent color here  
+    final accentColor =
+        context.colors.primary; // Use your app's accent color here
 
     return GestureDetector(
       onTap: onTap,
@@ -60,7 +71,9 @@ class _DayChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: isSelected ? Border.all(color: accentColor, width: 1.5) : null,
+          border: isSelected
+              ? Border.all(color: accentColor, width: 1.5)
+              : null,
         ),
         child: Column(
           children: [

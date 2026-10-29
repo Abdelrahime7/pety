@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class ActionButton extends StatelessWidget {
   final String label;
@@ -20,14 +19,16 @@ class ActionButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: context.colors.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       child: Text(
         label,
-        style: AppStyle.badgeCapsule.copyWith(fontWeight: FontWeight.w500,
-          fontSize: 14),
+        style: context.style.badgeCapsule.copyWith(
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+        ),
       ),
     );
   }

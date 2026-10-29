@@ -1,15 +1,11 @@
-
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class InfoItem extends StatelessWidget {
   final String label;
   final String value;
 
-  const InfoItem({super.key, 
-    required this.label,
-    required this.value,
-  });
+  const InfoItem({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +14,13 @@ class InfoItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: AppStyle.regular13,
-          ),
+          Text(label, style: context.style.regular13),
 
           Flexible(
             child: Text(
               value,
               textAlign: TextAlign.right,
-              style: AppStyle.tileTitle,
+              style: context.style.tileTitle,
             ),
           ),
         ],

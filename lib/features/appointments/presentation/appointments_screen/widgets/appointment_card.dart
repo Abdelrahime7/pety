@@ -1,10 +1,10 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
@@ -33,9 +33,7 @@ class AppointmentCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isPast = appointment.status == AppointmentStatus.past;
 
-    final pet = ref.watch(
-      petByIdProvider(appointment.petId),
-    );
+    final pet = ref.watch(petByIdProvider(appointment.petId));
 
     final petPhotoUrl = pet?.photoUrl ?? '';
     final petName = pet?.name ?? 'Pet';
@@ -47,25 +45,18 @@ class AppointmentCard extends ConsumerWidget {
         : '$doctor — $petName';
 
     return InkWell(
-      onTap: onTap ??
-          () => context.push(
-                appointmentDetails,
-                extra: appointment,
-              ),
+      onTap:
+          onTap ?? () => context.push(appointmentDetails, extra: appointment),
       borderRadius: BorderRadius.circular(14.r),
       child: Container(
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          color: isPast
-              ? const Color(0xFFF9FAFB)
-              : Colors.white,
+          color: isPast ? const Color(0xFFF9FAFB) : Colors.white,
           borderRadius: BorderRadius.circular(14.r),
           border: Border(
             left: BorderSide(
-              color: isPast
-                  ? const Color(0xFFD1D5DB)
-                  : AppColors.primary,
+              color: isPast ? const Color(0xFFD1D5DB) : context.colors.primary,
               width: 4.w,
             ),
           ),
@@ -81,10 +72,7 @@ class AppointmentCard extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            _PetAvatar(
-              photoUrl: petPhotoUrl,
-              isPast: isPast,
-            ),
+            _PetAvatar(photoUrl: petPhotoUrl, isPast: isPast),
 
             SizedBox(width: 12.w),
 
@@ -98,8 +86,8 @@ class AppointmentCard extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 14.sp,
                       color: isPast
-                          ? AppColors.textSecondary
-                          : AppColors.textPrimary,
+                          ? context.colors.onSurfaceVariant
+                          : context.colors.onSurface,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -112,7 +100,7 @@ class AppointmentCard extends ConsumerWidget {
                       'Completed ${DateFormat('MMM d, yyyy').format(appointment.date)}',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: AppColors.secondaryText,
+                        color: context.colors.onSurfaceVariant,
                       ),
                     )
                   else
@@ -121,17 +109,15 @@ class AppointmentCard extends ConsumerWidget {
                         Icon(
                           Icons.calendar_today,
                           size: 12.sp,
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                         ),
                         SizedBox(width: 4.w),
 
                         Text(
-                          DateFormat(
-                            'MMM d, yyyy',
-                          ).format(appointment.date),
+                          DateFormat('MMM d, yyyy').format(appointment.date),
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: AppColors.textSecondary,
+                            color: context.colors.onSurfaceVariant,
                           ),
                         ),
 
@@ -140,17 +126,15 @@ class AppointmentCard extends ConsumerWidget {
                         Icon(
                           Icons.access_time,
                           size: 12.sp,
-                          color: AppColors.primary,
+                          color: context.colors.primary,
                         ),
                         SizedBox(width: 4.w),
 
                         Text(
-                          DateFormat(
-                            'h:mm a',
-                          ).format(appointment.date),
+                          DateFormat('h:mm a').format(appointment.date),
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: AppColors.textSecondary,
+                            color: context.colors.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -171,15 +155,12 @@ class AppointmentCard extends ConsumerWidget {
                 child: Icon(
                   Icons.check,
                   size: 14.sp,
-                  color: AppColors.textSecondary,
+                  color: context.colors.onSurfaceVariant,
                 ),
               )
             else
               IconButton(
-                icon: Icon(
-                  Icons.more_horiz,
-                  size: 20.sp,
-                ),
+                icon: Icon(Icons.more_horiz, size: 20.sp),
                 onPressed: onMorePressed,
               ),
           ],
@@ -193,10 +174,7 @@ class _PetAvatar extends StatelessWidget {
   final String photoUrl;
   final bool isPast;
 
-  const _PetAvatar({
-    required this.photoUrl,
-    required this.isPast,
-  });
+  const _PetAvatar({required this.photoUrl, required this.isPast});
 
   @override
   Widget build(BuildContext context) {
@@ -217,13 +195,13 @@ class _PetAvatar extends StatelessWidget {
                 errorBuilder: (_, _, _) => Icon(
                   Icons.pets,
                   size: 20.sp,
-                  color: AppColors.icon,
+                  color: context.colors.onSurfaceVariant,
                 ),
               )
             : Icon(
                 Icons.pets,
                 size: 20.sp,
-                color: AppColors.icon,
+                color: context.colors.onSurfaceVariant,
               ),
       ),
     );

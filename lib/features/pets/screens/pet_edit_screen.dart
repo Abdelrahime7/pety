@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,8 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
@@ -121,23 +120,23 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
 
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.colors.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
 
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 20,
-            color: AppColors.text,
+            color: context.colors.onSurface,
           ),
           onPressed: _isSaving ? null : () => Navigator.pop(context),
         ),
 
-        title: Text('Edit Pet', style: AppStyle.tileTitle),
+        title: Text('Edit Pet', style: context.style.tileTitle),
 
         centerTitle: true,
       ),
@@ -173,6 +172,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
               const SizedBox(height: 14),
 
               buildDropdown(
+                context,
                 label: 'Species',
                 value: _species,
                 items: SpeciesOptions.values.map((e) => e.name).toList(),
@@ -204,6 +204,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
               const SizedBox(height: 14),
 
               buildDropdown(
+                context,
                 label: 'Gender',
                 value: _gender,
                 items: _genderOptions,
@@ -268,9 +269,9 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 width: 130,
                 height: 130,
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: context.colors.surface,
                   borderRadius: BorderRadius.circular(40),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: context.colors.outlineVariant),
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: _selectedImage != null
@@ -280,17 +281,17 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                         widget.pet.photoUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (_, _, _) {
-                          return const Icon(
+                          return Icon(
                             Icons.pets_rounded,
                             size: 48,
-                            color: AppColors.icon,
+                            color: context.colors.onSurfaceVariant,
                           );
                         },
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.pets_rounded,
                         size: 48,
-                        color: AppColors.icon,
+                        color: context.colors.onSurfaceVariant,
                       ),
               ),
 
@@ -303,14 +304,17 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                     width: 38,
                     height: 38,
                     decoration: BoxDecoration(
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.surface, width: 3),
+                      border: Border.all(
+                        color: context.colors.surface,
+                        width: 3,
+                      ),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.camera_alt_outlined,
                       size: 18,
-                      color: AppColors.surface,
+                      color: context.colors.surface,
                     ),
                   ),
                 ),
@@ -320,38 +324,40 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
 
           const SizedBox(height: 12),
 
-          Text('Change photo', style: AppStyle.regular13),
+          Text('Change photo', style: context.style.regular13),
         ],
       ),
     );
   }
 
   Widget _buildSectionTitle(String title) {
-    return Text(title.toUpperCase(), style: AppStyle.sectionHeader);
+    return Text(title.toUpperCase(), style: context.style.sectionHeader);
   }
 
   Widget _buildNotesField() {
     return TextField(
       controller: _notesController,
       maxLines: 5,
-      style: AppStyle.regular14.copyWith(color: AppColors.text),
+      style: context.style.regular14.copyWith(color: context.colors.onSurface),
       decoration: InputDecoration(
         hintText: 'Add notes about your pet...',
-        hintStyle: AppStyle.regular14.copyWith(color: AppColors.textMuted),
+        hintStyle: context.style.regular14.copyWith(
+          color: context.colors.onSurfaceVariant,
+        ),
         filled: true,
-        fillColor: AppColors.surface,
-        contentPadding: const EdgeInsets.all(16),
+        fillColor: context.colors.surface,
+        contentPadding: EdgeInsets.all(16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: context.colors.outlineVariant),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: context.colors.outlineVariant),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: context.colors.primary, width: 1.5),
         ),
       ),
     );
@@ -364,27 +370,27 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
       child: ElevatedButton(
         onPressed: _isSaving ? null : _saveChanges,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.surface,
-          disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+          backgroundColor: context.colors.primary,
+          foregroundColor: context.colors.surface,
+          disabledBackgroundColor: context.colors.primary.withOpacity(0.5),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
         ),
         child: _isSaving
-            ? const SizedBox(
+            ? SizedBox(
                 width: 22,
                 height: 22,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
-                  color: AppColors.surface,
+                  color: context.colors.surface,
                 ),
               )
             : Text(
                 'Save Changes',
-                style: AppStyle.buttonText.copyWith(
-                  color: AppColors.surface,
+                style: context.style.buttonText.copyWith(
+                  color: context.colors.surface,
                   fontWeight: FontWeight.w600,
                 ),
               ),

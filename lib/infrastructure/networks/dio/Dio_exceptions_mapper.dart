@@ -2,9 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:pet_care/core/errors/authfailure.dart';
 import 'package:pet_care/core/errors/common_faillure.dart';
 
-ErrorFailure mapDioExceptionToFailure(
-  DioException exception,
-) {
+ErrorFailure mapDioExceptionToFailure(DioException exception) {
   final statusCode = exception.response?.statusCode;
 
   switch (statusCode) {

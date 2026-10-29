@@ -8,15 +8,18 @@ abstract final class AppTheme {
   static ThemeData _build(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
 
-    final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: brightness,
-    ).copyWith(
-      primary: AppColors.primary,            // keep the exact brand teal
-      onPrimary: const Color(0xFF0F172A),    // dark text: white on this teal is hard to read
-      surface: isDark ? AppColors.backgroundDark : AppColors.background,
-      error: AppColors.error,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: brightness,
+        ).copyWith(
+          primary: AppColors.primary, // keep the exact brand teal
+          onPrimary: const Color(
+            0xFF0F172A,
+          ), // dark text: white on this teal is hard to read
+          surface: isDark ? AppColors.backgroundDark : AppColors.background,
+          error: AppColors.error,
+        );
 
     return ThemeData(
       useMaterial3: true,
@@ -51,10 +54,7 @@ abstract final class AppTheme {
         suffixIconColor: scheme.onSurfaceVariant,
       ),
 
-      cardTheme: CardThemeData(
-        elevation: 0,
-        color: scheme.surfaceContainer,
-      ),
+      cardTheme: CardThemeData(elevation: 0, color: scheme.surfaceContainer),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

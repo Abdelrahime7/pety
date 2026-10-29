@@ -1,7 +1,7 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/all_vaccination_records_provider.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/owner_vaccination_card.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/vaccination_empty_state.dart';
@@ -9,7 +9,6 @@ import 'package:pet_care/features/health/vaccination/presentation/widgets/vaccin
 import 'package:pet_care/features/health/vaccination/presentation/widgets/vaccination_summary.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
-
 
 class AllVaccinationsScreen extends ConsumerStatefulWidget {
   const AllVaccinationsScreen({super.key});
@@ -19,8 +18,7 @@ class AllVaccinationsScreen extends ConsumerStatefulWidget {
       _AllVaccinationsScreenState();
 }
 
-class _AllVaccinationsScreenState
-    extends ConsumerState<AllVaccinationsScreen> {
+class _AllVaccinationsScreenState extends ConsumerState<AllVaccinationsScreen> {
   String _selectedFilter = 'All';
 
   @override
@@ -29,49 +27,49 @@ class _AllVaccinationsScreenState
     final petsAsync = ref.watch(petProvider);
 
     final petNames = <String, String>{
-      for (final pet in petsAsync.valueOrNull ?? <Pet>[])
-        pet.id: pet.name,
+      for (final pet in petsAsync.valueOrNull ?? <Pet>[]) pet.id: pet.name,
     };
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.colors.surface,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'All Vaccinations',
           style: TextStyle(
-            color: AppColors.text,
+            color: context.colors.onSurface,
             fontSize: 18,
             fontWeight: FontWeight.w700,
           ),
         ),
-        iconTheme: const IconThemeData(color: AppColors.text),
+        iconTheme: IconThemeData(color: context.colors.onSurface),
       ),
       body: vaccinationsAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
+        loading: () => Center(
+          child: CircularProgressIndicator(color: context.colors.primary),
         ),
         error: (error, stackTrace) {
-
-          return
-           _OwnerVaccinationError(
-          onRetry: () => ref.invalidate(allVaccinationRecordsProvider),
-        );},
+          return _OwnerVaccinationError(
+            onRetry: () => ref.invalidate(allVaccinationRecordsProvider),
+          );
+        },
         data: (vaccinations) {
           final filtered = _selectedFilter == 'All'
               ? vaccinations
               : vaccinations
-                  .where((record) =>
-                      (petNames[record.petId] ?? 'Unknown pet') ==
-                      _selectedFilter)
-                  .toList();
+                    .where(
+                      (record) =>
+                          (petNames[record.petId] ?? 'Unknown pet') ==
+                          _selectedFilter,
+                    )
+                    .toList();
 
           final petFilters = petNames.values.toSet().toList()..sort();
 
           return RefreshIndicator(
-            color: AppColors.primary,
+            color: context.colors.primary,
             onRefresh: () async {
               ref.invalidate(allVaccinationRecordsProvider);
               ref.invalidate(petProvider);
@@ -123,13 +121,16 @@ class _OwnerVaccinationError extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.cloud_off_outlined,
-                size: 42, color: AppColors.error),
+            Icon(
+              Icons.cloud_off_outlined,
+              size: 42,
+              color: context.colors.error,
+            ),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               'Unable to load vaccinations.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.text, fontSize: 15),
+              style: TextStyle(color: context.colors.onSurface, fontSize: 15),
             ),
             const SizedBox(height: 10),
             TextButton(onPressed: onRetry, child: const Text('Try again')),

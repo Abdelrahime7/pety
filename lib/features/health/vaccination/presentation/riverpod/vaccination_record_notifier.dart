@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 import 'package:pet_care/core/services/vaccination_service.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 
 class VaccinationRecordNotifier
     extends FamilyAsyncNotifier<List<VaccinationRecord>, String> {
-
   VaccinationService<VaccinationRecord> get _service =>
       ref.read(vaccinationRecordServiceProvider);
 
@@ -32,9 +31,7 @@ class VaccinationRecordNotifier
   // CREATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> createVaccination(
-    VaccinationRecord vaccination,
-  ) async {
+  Future<Result<void>> createVaccination(VaccinationRecord vaccination) async {
     state = const AsyncLoading();
 
     try {
@@ -53,16 +50,10 @@ class VaccinationRecordNotifier
         if (refreshedResult is Success<List<VaccinationRecord>>) {
           state = AsyncData(refreshedResult.data);
         } else if (refreshedResult is Failure<List<VaccinationRecord>>) {
-          state = AsyncError(
-            refreshedResult.message,
-            StackTrace.current,
-          );
+          state = AsyncError(refreshedResult.message, StackTrace.current);
         }
       } else if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
-        );
+        state = AsyncError(result.message, StackTrace.current);
       }
 
       return result;
@@ -76,9 +67,7 @@ class VaccinationRecordNotifier
   // READ ONE
   // ---------------------------------------------------------------------------
 
-  Future<Result<VaccinationRecord>> getVaccination(
-    String vaccinationId,
-  ) async {
+  Future<Result<VaccinationRecord>> getVaccination(String vaccinationId) async {
     try {
       return await _service.getById(vaccinationId);
     } catch (e) {
@@ -90,9 +79,7 @@ class VaccinationRecordNotifier
   // UPDATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> updateVaccination(
-    VaccinationRecord vaccination,
-  ) async {
+  Future<Result<void>> updateVaccination(VaccinationRecord vaccination) async {
     try {
       if (vaccination.id == null || vaccination.id!.isEmpty) {
         return const Failure('Vaccination ID is required.');
@@ -109,16 +96,10 @@ class VaccinationRecordNotifier
         if (refreshedResult is Success<List<VaccinationRecord>>) {
           state = AsyncData(refreshedResult.data);
         } else if (refreshedResult is Failure<List<VaccinationRecord>>) {
-          state = AsyncError(
-            refreshedResult.message,
-            StackTrace.current,
-          );
+          state = AsyncError(refreshedResult.message, StackTrace.current);
         }
       } else if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
-        );
+        state = AsyncError(result.message, StackTrace.current);
       }
 
       return result;
@@ -132,9 +113,7 @@ class VaccinationRecordNotifier
   // DELETE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> deleteVaccination(
-    String vaccinationId,
-  ) async {
+  Future<Result<void>> deleteVaccination(String vaccinationId) async {
     state = const AsyncLoading();
 
     try {
@@ -146,16 +125,10 @@ class VaccinationRecordNotifier
         if (refreshedResult is Success<List<VaccinationRecord>>) {
           state = AsyncData(refreshedResult.data);
         } else if (refreshedResult is Failure<List<VaccinationRecord>>) {
-          state = AsyncError(
-            refreshedResult.message,
-            StackTrace.current,
-          );
+          state = AsyncError(refreshedResult.message, StackTrace.current);
         }
       } else if (result is Failure<void>) {
-        state = AsyncError(
-          result.message,
-          StackTrace.current,
-        );
+        state = AsyncError(result.message, StackTrace.current);
       }
 
       return result;

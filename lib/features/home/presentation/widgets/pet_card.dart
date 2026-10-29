@@ -1,19 +1,15 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HomePetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback? onTap;
 
-  const HomePetCard({
-    super.key,
-    required this.pet,
-    this.onTap,
-  });
+  const HomePetCard({super.key, required this.pet, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +46,7 @@ class HomePetCard extends StatelessWidget {
                       pet.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppStyle.tileTitle.copyWith(
-                        fontSize: 13.sp,
-                      ),
+                      style: context.style.tileTitle.copyWith(fontSize: 13.sp),
                     ),
                   ),
                   SizedBox(width: 4.w),
@@ -86,11 +80,7 @@ class HomePetCard extends StatelessWidget {
     return Container(
       color: AppColors.background,
       child: Center(
-        child: Icon(
-          Icons.pets_rounded,
-          size: 30.sp,
-          color: AppColors.tealDark,
-        ),
+        child: Icon(Icons.pets_rounded, size: 30.sp, color: AppColors.tealDark),
       ),
     );
   }
