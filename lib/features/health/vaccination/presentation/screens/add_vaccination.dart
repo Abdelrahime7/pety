@@ -1,10 +1,8 @@
-import 'package:pet_care/core/constant/theme/context_x.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
@@ -12,7 +10,11 @@ import 'package:pet_care/features/authentication/presentation/helpers/helpers.da
 import 'package:pet_care/features/health/vaccination/domain/entities/add_vaccination_request.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_providers.dart';
+import 'package:pet_care/features/health/vaccination/presentation/widgets/existing_series_selector.dart';
+import 'package:pet_care/features/health/vaccination/presentation/widgets/new_series_form.dart';
+import 'package:pet_care/features/health/vaccination/presentation/widgets/saving_overlay.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/series_Picker_Sheet.dart';
+import 'package:pet_care/features/health/vaccination/presentation/widgets/series_option_card.dart';
 import 'package:pet_care/features/pets/widgets/field_label.dart';
 
 class AddVaccinationScreen extends ConsumerStatefulWidget {
@@ -27,19 +29,13 @@ class AddVaccinationScreen extends ConsumerStatefulWidget {
 
 class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final _vaccineNameController = TextEditingController();
-
   final _requiredDosesController = TextEditingController(text: '3');
-
   final _vaccinationDateController = TextEditingController();
-
   final _notesController = TextEditingController();
 
   DateTime? _vaccinationDate;
-
   bool _isNewSeries = true;
-
   VaccinationSerie? _selectedSeries;
 
   @override
@@ -48,12 +44,11 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
     _requiredDosesController.dispose();
     _vaccinationDateController.dispose();
     _notesController.dispose();
-
     super.dispose();
   }
 
   // ============================================================
-  // DATE PICKER
+  // ACTIONS
   // ============================================================
 
   Future<void> _selectVaccinationDate() async {
@@ -66,13 +61,10 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
       lastDate: now,
     );
 
-    if (picked == null) {
-      return;
-    }
+    if (picked == null) return;
 
     setState(() {
       _vaccinationDate = picked;
-
       _vaccinationDateController.text =
           '${picked.month.toString().padLeft(2, '0')}/'
           '${picked.day.toString().padLeft(2, '0')}/'
@@ -80,19 +72,13 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
     });
   }
 
-  // ============================================================
-  // SELECT EXISTING SERIES
-  // ============================================================
+  List<VaccinationSerie> _activeSeries(List<VaccinationSerie> all) =>
+      all.where((serie) => serie.completedDoses < serie.requiredDoses).toList();
 
   Future<void> _selectExistingSeries() async {
-    final seriesState = ref.read(vaccinationSerieProvider(widget.petId));
-
-    final allSeries = seriesState.value ?? [];
-
-    // Only active series should be selectable.
-    final activeSeries = allSeries
-        .where((serie) => serie.completedDoses < serie.requiredDoses)
-        .toList();
+    final allSeries =
+        ref.read(vaccinationSerieProvider(widget.petId)).value ?? [];
+    final activeSeries = _activeSeries(allSeries);
 
     if (activeSeries.isEmpty) {
       showNotification(
@@ -106,34 +92,23 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
     final selected = await showModalBottomSheet<VaccinationSerie>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.surfaceContainer,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) {
-        return SeriesPickerSheet(
-          series: activeSeries,
-          selectedSeries: _selectedSeries,
-        );
-      },
+      builder: (_) => SeriesPickerSheet(
+        series: activeSeries,
+        selectedSeries: _selectedSeries,
+      ),
     );
 
-    if (selected == null) {
-      return;
-    }
+    if (selected == null) return;
 
-    setState(() {
-      _selectedSeries = selected;
-    });
+    setState(() => _selectedSeries = selected);
   }
 
-  // ============================================================
-  // ADD VACCINATION
-  // ============================================================
   Future<void> _addVaccination() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     if (_vaccinationDate == null) {
       showNotification(
@@ -183,7 +158,6 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
     }
 
     showNotification(context, 'Vaccination added successfully');
-
     Navigator.of(context).pop();
   }
 
@@ -194,58 +168,16 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
   @override
   Widget build(BuildContext context) {
     final vaccinationState = ref.watch(vaccinationRecordProvider(widget.petId));
-
     final seriesState = ref.watch(vaccinationSerieProvider(widget.petId));
+    final isSaving = vaccinationState.isLoading;
+
+    final hasNoActiveSeries =
+        !seriesState.isLoading &&
+        seriesState.hasValue &&
+        _activeSeries(seriesState.value!).isEmpty;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-
-      // ========================================================
-      // APP BAR
-      // ========================================================
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-
-        leading: UnconstrainedBox(
-          child: AppCloseButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-
-        title: const Text(
-          'Add Vaccination',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-
-        centerTitle: true,
-
-        actions: [
-          TextButton(
-            onPressed: vaccinationState.isLoading ? null : _addVaccination,
-            child: Text(
-              'Save',
-              style: TextStyle(
-                color: vaccinationState.isLoading
-                    ? Colors.grey
-                    : context.colors.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
-      ),
-
-      // ========================================================
-      // BODY
-      // ========================================================
+      appBar: _buildAppBar(isSaving),
       body: Stack(
         children: [
           SafeArea(
@@ -256,383 +188,41 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ==================================================
-                    // VACCINATION SERIES
-                    // ==================================================
                     const FieldLabel(label: 'VACCINATION SERIES'),
-
                     const SizedBox(height: 8),
 
-                    // ==================================================
-                    // NEW SERIES CARD
-                    // ==================================================
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: _isNewSeries
-                            ? Colors.white
-                            : Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: _isNewSeries
-                              ? context.colors.primary.withOpacity(0.35)
-                              : Colors.grey.shade200,
-                        ),
-                        boxShadow: _isNewSeries
-                            ? [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.06),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ]
-                            : [],
-                      ),
-                      child: Column(
-                        children: [
-                          // Header
-                          InkWell(
-                            borderRadius: BorderRadius.circular(14),
-                            onTap: () {
-                              setState(() {
-                                _isNewSeries = true;
-                                _selectedSeries = null;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 14,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    _isNewSeries
-                                        ? Icons.radio_button_checked
-                                        : Icons.radio_button_unchecked,
-                                    size: 21,
-                                    color: _isNewSeries
-                                        ? context.colors.primary
-                                        : Colors.grey.shade500,
-                                  ),
-
-                                  const SizedBox(width: 10),
-
-                                  const Expanded(
-                                    child: Text(
-                                      'Create new series',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Icon(
-                                    _isNewSeries
-                                        ? Icons.keyboard_arrow_up_rounded
-                                        : Icons.add_circle_outline,
-                                    size: 21,
-                                    color: _isNewSeries
-                                        ? context.colors.primary
-                                        : Colors.grey.shade600,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                          // New series fields
-                          if (_isNewSeries) ...[
-                            Divider(height: 1, color: Colors.grey.shade200),
-
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                14,
-                                14,
-                                14,
-                                16,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const FieldLabel(label: 'VACCINE NAME'),
-
-                                  const SizedBox(height: 6),
-
-                                  CustomeTextField(
-                                    controller: _vaccineNameController,
-                                    hintText: 'e.g. Rabies',
-                                    validator: (value) {
-                                      if (value == null ||
-                                          value.trim().isEmpty) {
-                                        return 'Vaccine name is required';
-                                      }
-
-                                      return null;
-                                    },
-                                  ),
-
-                                  const SizedBox(height: 14),
-
-                                  const FieldLabel(label: 'NUMBER OF DOSES'),
-
-                                  const SizedBox(height: 6),
-
-                                  CustomeTextField(
-                                    controller: _requiredDosesController,
-                                    hintText: 'e.g. 3',
-                                    keyboardType: TextInputType.number,
-                                    validator: (value) {
-                                      final doses = int.tryParse(
-                                        value?.trim() ?? '',
-                                      );
-
-                                      if (doses == null || doses <= 0) {
-                                        return 'Enter a valid number of doses';
-                                      }
-
-                                      return null;
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ],
+                    SeriesOptionCard(
+                      title: 'Create new series',
+                      selected: _isNewSeries,
+                      collapsedIcon: Icons.add_circle_outline,
+                      onTap: () => setState(() {
+                        _isNewSeries = true;
+                        _selectedSeries = null;
+                      }),
+                      child: NewSeriesForm(
+                        vaccineNameController: _vaccineNameController,
+                        requiredDosesController: _requiredDosesController,
                       ),
                     ),
 
                     const SizedBox(height: 10),
 
-                    // ==================================================
-                    // EXISTING SERIES CARD
-                    // ==================================================
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: !_isNewSeries
-                            ? Colors.white
-                            : Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: !_isNewSeries
-                              ? context.colors.primary.withOpacity(0.35)
-                              : Colors.grey.shade200,
-                        ),
-                        boxShadow: !_isNewSeries
-                            ? [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.06),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ]
-                            : [],
-                      ),
-                      child: Column(
-                        children: [
-                          // Header
-                          InkWell(
-                            borderRadius: BorderRadius.circular(14),
-                            onTap: () {
-                              setState(() {
-                                _isNewSeries = false;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 14,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    !_isNewSeries
-                                        ? Icons.radio_button_checked
-                                        : Icons.radio_button_unchecked,
-                                    size: 21,
-                                    color: !_isNewSeries
-                                        ? context.colors.primary
-                                        : Colors.grey.shade500,
-                                  ),
-
-                                  const SizedBox(width: 10),
-
-                                  const Expanded(
-                                    child: Text(
-                                      'Use existing series',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Icon(
-                                    !_isNewSeries
-                                        ? Icons.keyboard_arrow_up_rounded
-                                        : Icons.keyboard_arrow_right_rounded,
-                                    size: 21,
-                                    color: !_isNewSeries
-                                        ? context.colors.primary
-                                        : Colors.grey.shade600,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                          // Existing series selector
-                          if (!_isNewSeries) ...[
-                            Divider(height: 1, color: Colors.grey.shade200),
-
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                14,
-                                14,
-                                14,
-                                16,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const FieldLabel(label: 'SELECT SERIES'),
-
-                                  const SizedBox(height: 6),
-
-                                  InkWell(
-                                    borderRadius: BorderRadius.circular(12),
-                                    onTap: seriesState.isLoading
-                                        ? null
-                                        : _selectExistingSeries,
-                                    child: Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 14,
-                                        vertical: 14,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade50,
-                                        border: Border.all(
-                                          color: Colors.grey.shade200,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.vaccines_outlined,
-                                            size: 20,
-                                            color: Colors.grey.shade600,
-                                          ),
-
-                                          const SizedBox(width: 10),
-
-                                          Expanded(
-                                            child: seriesState.isLoading
-                                                ? const Text(
-                                                    'Loading series...',
-                                                  )
-                                                : _selectedSeries == null
-                                                ? Text(
-                                                    'Select a series',
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade600,
-                                                    ),
-                                                  )
-                                                : Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        _selectedSeries!
-                                                            .vaccineName,
-                                                        style: const TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-
-                                                      const SizedBox(height: 3),
-
-                                                      Text(
-                                                        '${_selectedSeries!.completedDoses}/${_selectedSeries!.requiredDoses} doses completed',
-                                                        style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors
-                                                              .grey
-                                                              .shade600,
-                                                        ),
-                                                      ),
-
-                                                      const SizedBox(height: 3),
-
-                                                      Text(
-                                                        'Next dose: ${_selectedSeries!.completedDoses + 1}',
-                                                        style: TextStyle(
-                                                          fontSize: 12,
-                                                          color:
-                                                              AppColors.primary,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                          ),
-
-                                          Icon(
-                                            Icons.keyboard_arrow_down_rounded,
-                                            color: Colors.grey.shade600,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-
-                                  if (!seriesState.isLoading &&
-                                      seriesState.hasValue &&
-                                      seriesState.value!
-                                          .where(
-                                            (serie) =>
-                                                serie.completedDoses <
-                                                serie.requiredDoses,
-                                          )
-                                          .isEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8),
-                                      child: Text(
-                                        'No active vaccination series found. '
-                                        'Create a new series instead.',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade600,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ],
+                    SeriesOptionCard(
+                      title: 'Use existing series',
+                      selected: !_isNewSeries,
+                      collapsedIcon: Icons.keyboard_arrow_right_rounded,
+                      onTap: () => setState(() => _isNewSeries = false),
+                      child: ExistingSeriesSelector(
+                        selectedSeries: _selectedSeries,
+                        isLoading: seriesState.isLoading,
+                        hasNoActiveSeries: hasNoActiveSeries,
+                        onTap: _selectExistingSeries,
                       ),
                     ),
 
-                    // ==================================================
-                    // VACCINATION DATE
-                    // ==================================================
                     const SizedBox(height: 20),
-
                     const FieldLabel(label: 'VACCINATION DATE'),
-
                     const SizedBox(height: 6),
-
                     CustomeTextField(
                       controller: _vaccinationDateController,
                       hintText: 'mm/dd/yyyy',
@@ -642,25 +232,18 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Vaccination date is required';
                         }
-
                         return null;
                       },
-                      suffixIcon: const Icon(
+                      suffixIcon: Icon(
                         Icons.calendar_today_outlined,
                         size: 18,
-                        color: Color(0xFF7A869A),
+                        color: context.colors.onSurfaceVariant,
                       ),
                     ),
 
-                    // ==================================================
-                    // NOTES
-                    // ==================================================
                     const SizedBox(height: 18),
-
                     const FieldLabel(label: 'NOTES'),
-
                     const SizedBox(height: 6),
-
                     CustomeTextField(
                       controller: _notesController,
                       hintText: 'Optional notes about this vaccination...',
@@ -668,70 +251,52 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                     ),
 
                     const SizedBox(height: 28),
-
-                    // ==================================================
-                    // ADD BUTTON
-                    // ==================================================
                     AppPrimaryButton(
-                      onPressed: vaccinationState.isLoading
-                          ? null
-                          : _addVaccination,
+                      onPressed: isSaving ? null : _addVaccination,
                       text: 'Add Vaccination',
                       height: 52,
                     ),
-
                     const SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
           ),
-
-          // ========================================================
-          // LOADING OVERLAY
-          // ========================================================
-          if (vaccinationState.isLoading)
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.3),
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CircularProgressIndicator(
-                          color: context.colors.primary,
-                        ),
-
-                        SizedBox(height: 16),
-
-                        Text(
-                          'Saving vaccination…',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          if (isSaving) const SavingOverlay(message: 'Saving vaccination…'),
         ],
       ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(bool isSaving) {
+    return AppBar(
+      leading: UnconstrainedBox(
+        child: AppCloseButton(onPressed: () => Navigator.of(context).pop()),
+      ),
+      title: Text(
+        'Add Vaccination',
+        style: TextStyle(
+          color: context.colors.onSurface,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+      centerTitle: true,
+      actions: [
+        TextButton(
+          onPressed: isSaving ? null : _addVaccination,
+          child: Text(
+            'Save',
+            style: TextStyle(
+              color: isSaving
+                  ? context.colors.onSurfaceVariant
+                  : context.colors.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

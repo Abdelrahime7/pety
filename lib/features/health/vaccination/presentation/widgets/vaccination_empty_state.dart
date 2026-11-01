@@ -15,8 +15,8 @@ class OwnerVaccinationEmptyState extends StatelessWidget {
           Container(
             width: 64.w,
             height: 64.w,
-            decoration: const BoxDecoration(
-              color: Color(0xFFEAFBF8),
+            decoration:  BoxDecoration(
+              color: context.colors.primary.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
             child: const Icon(

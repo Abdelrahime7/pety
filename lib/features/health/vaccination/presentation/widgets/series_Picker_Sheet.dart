@@ -1,6 +1,5 @@
-import 'package:pet_care/core/constant/theme/context_x.dart';
-
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 
 class SeriesPickerSheet extends StatefulWidget {
@@ -28,6 +27,13 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
     super.dispose();
   }
 
+  OutlineInputBorder _border() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: context.colors.outlineVariant),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final filteredSeries = widget.series
@@ -52,12 +58,13 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       'Select Vaccination Series',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: context.colors.onSurface,
                       ),
                     ),
                   ),
@@ -65,7 +72,10 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: context.colors.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -74,6 +84,7 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
 
               TextField(
                 controller: _searchController,
+                style: TextStyle(color: context.colors.onSurface),
                 onChanged: (value) {
                   setState(() {
                     _query = value;
@@ -81,16 +92,18 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                 },
                 decoration: InputDecoration(
                   hintText: 'Search vaccine...',
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.grey.shade50,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
+                  hintStyle: TextStyle(color: context.colors.onSurfaceVariant),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: context.colors.onSurfaceVariant,
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  filled: true,
+                  fillColor: context.colors.surfaceContainerHighest,
+                  border: _border(),
+                  enabledBorder: _border(),
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey.shade200),
+                    borderSide: BorderSide(color: context.colors.primary),
                   ),
                 ),
               ),
@@ -102,13 +115,17 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                     ? Center(
                         child: Text(
                           'No series found.',
-                          style: TextStyle(color: Colors.grey.shade600),
+                          style: TextStyle(
+                            color: context.colors.onSurfaceVariant,
+                          ),
                         ),
                       )
                     : ListView.separated(
                         itemCount: filteredSeries.length,
-                        separatorBuilder: (_, _) =>
-                            Divider(height: 1, color: Colors.grey.shade200),
+                        separatorBuilder: (_, __) => Divider(
+                          height: 1,
+                          color: context.colors.outlineVariant,
+                        ),
                         itemBuilder: (context, index) {
                           final serie = filteredSeries[index];
 
@@ -126,15 +143,21 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                                   : Icons.radio_button_unchecked,
                               color: isSelected
                                   ? context.colors.primary
-                                  : Colors.grey.shade500,
+                                  : context.colors.onSurfaceVariant,
                             ),
                             title: Text(
                               serie.vaccineName,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w600,
+                                color: context.colors.onSurface,
                               ),
                             ),
-                            subtitle: Text('${serie.requiredDoses} doses'),
+                            subtitle: Text(
+                              '${serie.requiredDoses} doses',
+                              style: TextStyle(
+                                color: context.colors.onSurfaceVariant,
+                              ),
+                            ),
                             onTap: () {
                               Navigator.of(context).pop(serie);
                             },

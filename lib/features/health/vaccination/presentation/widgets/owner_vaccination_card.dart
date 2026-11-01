@@ -33,7 +33,7 @@ class OwnerVaccinationCard extends StatelessWidget {
             width: 44.w,
             height: 44.w,
             decoration: BoxDecoration(
-              color: context.colors.primary.withOpacity(.14),
+              color: context.colors.primary.withValues(alpha: .14),
               borderRadius: BorderRadius.circular(13.r),
             ),
             child: const Icon(

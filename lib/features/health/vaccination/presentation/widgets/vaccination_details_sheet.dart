@@ -71,7 +71,7 @@ class _Header extends StatelessWidget {
           width: 48.w,
           height: 48.w,
           decoration: BoxDecoration(
-            color: const Color(0xFFE6FFFA),
+            color: context.colors.primary.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(14.r),
           ),
           child: Icon(
@@ -119,7 +119,7 @@ class _DetailsSheetContainer extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 24.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
       child: SafeArea(top: false, child: SingleChildScrollView(child: child)),
@@ -143,7 +143,7 @@ class _DetailLabel extends StatelessWidget {
           style: TextStyle(
             fontSize: 11.sp,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF94A3B8),
+            color: context.colors.onSurfaceVariant,
           ),
         ),
         SizedBox(height: 4.h),

@@ -39,7 +39,7 @@ class OwnerVaccinationSummary extends StatelessWidget {
                 Text(
                   '$total records across $petCount pets',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(.9),
+                    color: Colors.white.withValues(alpha: .9),
                     fontSize: 12.sp,
                   ),
                 ),
@@ -49,7 +49,7 @@ class OwnerVaccinationSummary extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.18),
+              color: Colors.white.withValues(alpha: .18),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Text(

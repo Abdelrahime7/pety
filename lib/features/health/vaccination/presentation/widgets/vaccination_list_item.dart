@@ -71,7 +71,7 @@ class VaccinationListItem extends StatelessWidget {
                       ' $completedDoses/$requiredDoses ${completedDoses == 1 ? 'dose' : 'doses'} compelted',
                       style: context.style.regular12.copyWith(
                         fontSize: 12,
-                        color: Colors.grey.shade600,
+                        color: context.colors.outlineVariant,
                       ),
                     ),
                   ],

@@ -22,9 +22,9 @@ class VaccinationRecordCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
         ),
         child: Row(
           children: [
@@ -32,7 +32,7 @@ class VaccinationRecordCard extends StatelessWidget {
               width: 44.w,
               height: 44.w,
               decoration: BoxDecoration(
-                color: const Color(0xFFE6FFFA),
+                color: context.colors.primary.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
@@ -73,14 +73,14 @@ class VaccinationRecordCard extends StatelessWidget {
                     DateFormat('MMM dd, yyyy').format(record.date),
                     style: TextStyle(
                       fontSize: 11.sp,
-                      color: const Color(0xFF94A3B8),
+                      color: context.colors.onSurfaceVariant,
                     ),
                   ),
                 ],
               ),
             ),
 
-            const Icon(Icons.chevron_right, color: Color(0xFFCBD5E1)),
+            Icon(Icons.chevron_right, color: context.colors.outlineVariant),
           ],
         ),
       ),
