@@ -81,7 +81,9 @@ class _DayChip extends StatelessWidget {
               _weekdayLabels[day.weekday - 1],
               style: TextStyle(
                 fontSize: 11,
-                color: isSelected ? accentColor : Colors.grey,
+                color: isSelected
+                    ? accentColor
+                    : context.colors.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -91,7 +93,7 @@ class _DayChip extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: isSelected ? accentColor : Colors.black87,
+                color: isSelected ? accentColor : context.colors.onSurface,
               ),
             ),
           ],

@@ -26,11 +26,11 @@ class AppointmentDetailsTopBar extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(color: context.colors.outlineVariant),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_rounded,
-              color: Color(0xFF475569),
+              color: context.colors.onSurfaceVariant,
               size: 20,
             ),
           ),
@@ -51,7 +51,7 @@ class AppointmentDetailsTopBar extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(color: context.colors.outlineVariant),
             ),
             child: Icon(
               Icons.edit_outlined,
@@ -88,7 +88,7 @@ class AppointmentPetCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -106,7 +106,7 @@ class AppointmentPetCard extends StatelessWidget {
                 width: 4.w,
                 decoration: BoxDecoration(
                   color: isPast
-                      ? const Color(0xFFCBD5E1)
+                      ? context.colors.outlineVariant
                       : context.colors.primary,
                   borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(4.r),
@@ -132,8 +132,10 @@ class AppointmentPetCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: isPast
-                                ? const Color(0xFFF1F5F9)
-                                : const Color(0xFFE6FFFA),
+                                ? context.colors.outlineVariant
+                                : context.colors.primary.withValues(
+                                    alpha: 0.12,
+                                  ),
                             borderRadius: BorderRadius.circular(20.r),
                           ),
                           child: Text(
@@ -143,7 +145,7 @@ class AppointmentPetCard extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               color: isPast
                                   ? context.colors.onSurfaceVariant
-                                  : const Color(0xFF0D9488),
+                                  : context.colors.primary,
                             ),
                           ),
                         ),
@@ -161,7 +163,7 @@ class AppointmentPetCard extends StatelessWidget {
                           petDetails,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: const Color(0xFF94A3B8),
+                            color: context.colors.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -208,7 +210,7 @@ class AppointmentInfoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(22.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -287,7 +289,7 @@ class AppointmentDetailRow extends StatelessWidget {
             width: 40.w,
             height: 40.w,
             decoration: BoxDecoration(
-              color: const Color(0xFFE6FFFA),
+              color: context.colors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(icon, size: 20, color: context.colors.primary),
@@ -303,7 +305,7 @@ class AppointmentDetailRow extends StatelessWidget {
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.5,
-                    color: const Color(0xFF94A3B8),
+                    color: context.colors.onSurfaceVariant,
                   ),
                 ),
                 SizedBox(height: 4.h),
@@ -314,7 +316,7 @@ class AppointmentDetailRow extends StatelessWidget {
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.45,
-                          color: const Color(0xFF64748B),
+                          color: context.colors.onSurfaceVariant,
                         )
                       : TextStyle(
                           fontSize: 14.sp,
@@ -367,7 +369,7 @@ class AppointmentActionButton extends StatelessWidget {
           boxShadow: hasShadow
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
+                    color: Colors.black.withValues(alpha: 0.02),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -398,10 +400,10 @@ class _DetailDivider extends StatelessWidget {
   const _DetailDivider();
 
   @override
-  Widget build(BuildContext context) => const Divider(
+  Widget build(BuildContext context) => Divider(
     height: 1,
     thickness: 1,
-    color: Color(0xFFF1F5F9),
+    color: context.colors.outlineVariant,
     indent: 16,
     endIndent: 16,
   );
@@ -420,7 +422,7 @@ class _AppointmentPetImage extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        color: const Color(0xFFF1F5F9),
+        color: context.colors.outlineVariant,
         child: url.isEmpty
             ? Icon(Icons.pets, color: context.colors.onSurfaceVariant, size: 24)
             : Image.network(

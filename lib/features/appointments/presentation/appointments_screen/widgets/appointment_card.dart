@@ -52,11 +52,15 @@ class AppointmentCard extends ConsumerWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          color: isPast ? const Color(0xFFF9FAFB) : Colors.white,
+          color: isPast
+              ? context.colors.surfaceContainerLow
+              : context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(14.r),
           border: Border(
             left: BorderSide(
-              color: isPast ? const Color(0xFFD1D5DB) : context.colors.primary,
+              color: isPast
+                  ? context.colors.outlineVariant
+                  : context.colors.primary,
               width: 4.w,
             ),
           ),
@@ -64,7 +68,7 @@ class AppointmentCard extends ConsumerWidget {
               ? []
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -148,9 +152,9 @@ class AppointmentCard extends ConsumerWidget {
             if (isPast)
               Container(
                 padding: EdgeInsets.all(4.w),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFE5E7EB),
+                  color: context.colors.outlineVariant,
                 ),
                 child: Icon(
                   Icons.check,
@@ -184,7 +188,7 @@ class _PetAvatar extends StatelessWidget {
         width: 44.w,
         height: 44.w,
         decoration: BoxDecoration(
-          color: const Color(0xFFF1F5F9),
+          color: context.colors.outlineVariant,
           borderRadius: BorderRadius.circular(12.r),
         ),
         clipBehavior: Clip.antiAlias,

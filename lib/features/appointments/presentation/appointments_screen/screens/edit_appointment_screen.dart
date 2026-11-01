@@ -116,7 +116,7 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
     final selectedPet = ref.watch(petByIdProvider(_selectedPetId));
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: context.colors.surface,
       body: SafeArea(
         child: Form(
           key: _formKey,

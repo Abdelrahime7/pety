@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 
 /// Small uppercase section label, e.g. "UPCOMING" or "PAST".
@@ -16,7 +17,7 @@ class SectionHeader extends StatelessWidget {
           fontSize: 12,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
-          color: Colors.grey.shade500,
+          color: context.colors.outlineVariant,
         ),
       ),
     );

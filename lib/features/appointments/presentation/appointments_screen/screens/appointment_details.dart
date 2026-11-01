@@ -47,7 +47,7 @@ class _AppointmentDetailsScreenState
     final isPast = _appointment.status == AppointmentStatus.past;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: context.colors.surface,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
@@ -68,9 +68,9 @@ class _AppointmentDetailsScreenState
                       iconColor: context.colors.primary,
                       textColor: context.colors.onSurface,
                       text: 'Edit',
-                      backgroundColor: Colors.white,
+                      backgroundColor: context.colors.surfaceContainer,
                       border: Border.all(
-                        color: const Color(0xFFE2E8F0),
+                        color: context.colors.outlineVariant,
                         width: 1.2,
                       ),
                       hasShadow: true,
@@ -81,10 +81,12 @@ class _AppointmentDetailsScreenState
                     child: AppointmentActionButton(
                       onTap: () => _delete(context),
                       icon: Icons.delete_outline_rounded,
-                      iconColor: const Color(0xFFEF4444),
-                      textColor: const Color(0xFFEF4444),
+                      iconColor: context.colors.error,
+                      textColor: context.colors.error,
                       text: 'Cancel',
-                      backgroundColor: const Color(0xFFFEE2E2),
+                      backgroundColor: context.colors.error.withValues(
+                        alpha: 0.12,
+                      ),
                     ),
                   ),
                 ],
@@ -119,7 +121,7 @@ class _AppointmentDetailsScreenState
           FilledButton(
             onPressed: () => dialogContext.pop(true),
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFEF4444),
+              backgroundColor: context.colors.error,
             ),
             child: const Text('Cancel Visit'),
           ),

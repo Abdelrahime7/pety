@@ -14,7 +14,7 @@ class EditingPetHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(18),
         border: Border(
           left: BorderSide(color: context.colors.primary, width: 4),
@@ -30,7 +30,7 @@ class EditingPetHeader extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE4FBF7),
+                  color: context.colors.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
@@ -142,7 +142,7 @@ class EditPetImage extends StatelessWidget {
       height: 54,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: context.colors.outlineVariant,
         borderRadius: BorderRadius.circular(14),
       ),
       child: url.isEmpty

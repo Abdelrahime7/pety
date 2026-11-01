@@ -27,14 +27,14 @@ Widget buildAppointmentTypeSelector(
 
     decoration: InputDecoration(
       filled: true,
-      fillColor: Colors.white,
+      fillColor: context.colors.surfaceContainer,
 
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
 
       prefixIcon: Container(
         margin: EdgeInsets.only(left: 8.w, right: 8.w, top: 8.h, bottom: 8.h),
         decoration: BoxDecoration(
-          color: context.colors.primary.withOpacity(0.10),
+          color: context.colors.primary.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(10.r),
         ),
         child: Icon(
@@ -52,7 +52,7 @@ Widget buildAppointmentTypeSelector(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16.r),
         borderSide: BorderSide(
-          color: context.colors.outlineVariant.withOpacity(0.5),
+          color: context.colors.outlineVariant.withValues(alpha: 0.5),
           width: 1,
         ),
       ),
@@ -88,7 +88,7 @@ Widget buildAppointmentTypeSelector(
           padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
           decoration: BoxDecoration(
             color: isSelected
-                ? context.colors.primary.withOpacity(0.08)
+                ? context.colors.primary.withValues(alpha: 0.08)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12.r),
           ),
@@ -99,8 +99,8 @@ Widget buildAppointmentTypeSelector(
                 height: 38.w,
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? context.colors.primary.withOpacity(0.12)
-                      : Colors.grey.withOpacity(0.07),
+                      ? context.colors.primary.withValues(alpha: 0.12)
+                      : context.colors.onSurfaceVariant.withValues(alpha: 0.07),
                   borderRadius: BorderRadius.circular(11.r),
                 ),
                 child: Icon(
