@@ -81,15 +81,12 @@ class CustomeTextField extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
             filled: true,
-            fillColor: fillColor ?? context.colors.surfaceContainerHighest,
+            fillColor: fillColor ?? context.colors.surfaceContainer,
             hintText: hintText ?? '',
             hintStyle: context.style.regular14,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon != null
-                ? IconButton(
-                    onPressed: onSuffixIconPressed,
-                    icon: suffixIcon!,
-                  )
+                ? IconButton(onPressed: onSuffixIconPressed, icon: suffixIcon!)
                 : null,
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
@@ -124,30 +121,21 @@ class CustomeTextField extends StatelessWidget {
   OutlineInputBorder _inputBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: context.colors.outlineVariant,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: context.colors.outlineVariant, width: 1.w),
     );
   }
 
   OutlineInputBorder _focusedBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: context.colors.primary,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: context.colors.primary, width: 1.w),
     );
   }
 
   OutlineInputBorder _errorBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: context.colors.error,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: context.colors.error, width: 1.w),
     );
   }
 }

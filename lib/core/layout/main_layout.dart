@@ -61,14 +61,14 @@ class _MainLayoutState extends State<MainLayout> {
         _handleBackPressed();
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFF9FAFB),
+        backgroundColor: context.colors.surface,
         body: widget.navigationShell,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: _onItemTapped,
-          backgroundColor: Colors.white,
+          backgroundColor: context.colors.surfaceContainer,
           selectedItemColor: context.colors.primary,
-          unselectedItemColor: const Color(0xFF94A3B8),
+          unselectedItemColor: context.colors.onSurfaceVariant,
           selectedFontSize: 11,
           unselectedFontSize: 11,
           selectedLabelStyle: const TextStyle(

@@ -31,7 +31,7 @@ class AppSaveButton extends StatelessWidget {
               style: TextStyle(
                 color: onPressed != null
                     ? context.colors.primary
-                    : context.colors.primary.withOpacity(0.5),
+                    : context.colors.primary.withValues(alpha: 0.5),
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),

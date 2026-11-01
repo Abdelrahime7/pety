@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 
 class AppBackButton extends StatelessWidget {
@@ -15,11 +16,11 @@ class AppBackButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFFE2E8F0)),
+          border: Border.all(color: context.colors.outlineVariant),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.chevron_left,
-          color: Color(0xFF64748B),
+          color: context.colors.onSurfaceVariant,
           size: 20,
         ),
       ),
