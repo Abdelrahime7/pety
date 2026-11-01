@@ -62,7 +62,7 @@ Widget _socialButton(
         ),
       ),
       style: OutlinedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: context.colors.surfaceContainer,
         padding: EdgeInsets.zero,
         side: BorderSide(color: context.colors.outlineVariant),
         shape: RoundedRectangleBorder(

@@ -23,14 +23,14 @@ void listenToAuthState(WidgetRef ref, BuildContext context) {
   });
 }
 
-Widget buildFieldLabel(String text,BuildContext context) {
+Widget buildFieldLabel(String text, BuildContext context) {
   return Text(
     text,
     style: context.style.tileTitle.copyWith(
       fontSize: 11.sp,
       fontWeight: FontWeight.w700,
       letterSpacing: 0.8,
-      color: const Color(0xFF8A94A6),
+      color: context.colors.onSurfaceVariant,
     ),
   );
 }
@@ -46,7 +46,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showNotification(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: context.colors.onSurface,
       duration: const Duration(seconds: 3),
       content: Row(
         children: [

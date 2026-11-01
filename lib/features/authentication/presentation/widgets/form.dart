@@ -57,7 +57,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
           children: [
             // 1. FULL NAME (Register only)
             if (!widget.isLogin && widget.nameController != null) ...[
-              buildFieldLabel('FULL NAME',context),
+              buildFieldLabel('FULL NAME', context),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.nameController!,
@@ -93,7 +93,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             if (!widget.isLogin &&
                 widget.confirmPasswordController != null) ...[
               HeightSpace(height: 14.h),
-              buildFieldLabel('CONFIRM PASSWORD',context),
+              buildFieldLabel('CONFIRM PASSWORD', context),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.confirmPasswordController!,

@@ -17,7 +17,7 @@ Widget buildEmailField(
           fontSize: 11.sp,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
-          color: const Color(0xFF8A94A6),
+          color: context.colors.onSurfaceVariant,
         ),
       ),
       SizedBox(height: 6.82.h),

@@ -11,7 +11,7 @@ Widget buildRegisterFooter(
   return RichText(
     text: TextSpan(
       text: isLogin ? "Don't have an account? " : "Already have an account? ",
-      style: TextStyle(fontSize: 13.sp, color: const Color(0xFF64748B)),
+      style: TextStyle(fontSize: 13.sp, color: context.colors.onSurfaceVariant),
       children: [
         TextSpan(
           text: isLogin ? 'Sign Up' : 'Sign In',

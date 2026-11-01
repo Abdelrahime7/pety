@@ -56,7 +56,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // 1. Toggle Tab (Login / Register)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: buildAuthToggleTab(
+                  child: buildAuthToggleTab(context,
                     isLogin: _isLogin,
                     onToggle: (val) {
                       setState(() {
