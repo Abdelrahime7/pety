@@ -45,7 +45,7 @@ class HealthFilterList extends StatelessWidget {
                   border: Border.all(
                     color: isSelected
                         ? context.colors.primary
-                        : const Color(0xFFE2E8F0),
+                        : context.colors.outlineVariant,
                   ),
                 ),
                 child: Text(
@@ -53,7 +53,9 @@ class HealthFilterList extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.5.sp,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? Colors.white : const Color(0xFF64748B),
+                    color: isSelected
+                        ? Colors.white
+                        : context.colors.onSurfaceVariant,
                   ),
                 ),
               ),

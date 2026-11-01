@@ -19,9 +19,9 @@ class HealthRecordCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: const [
             BoxShadow(
               color: Color(0x060F172A),
@@ -71,7 +71,7 @@ class HealthRecordCard extends StatelessWidget {
                         DateFormat('MMM dd, yyyy').format(record.date),
                         style: TextStyle(
                           fontSize: 11.sp,
-                          color: const Color(0xFF94A3B8),
+                          color: context.colors.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -104,7 +104,7 @@ class HealthRecordCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 11.5.sp,
-                        color: const Color(0xFF64748B),
+                        color: context.colors.onSurfaceVariant,
                         height: 1.35,
                       ),
                     ),

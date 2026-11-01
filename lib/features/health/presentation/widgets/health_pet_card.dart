@@ -19,9 +19,9 @@ class HealthPetCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: const [
             BoxShadow(
               color: Color(0x060F172A),
@@ -61,7 +61,7 @@ class HealthPetCard extends StatelessWidget {
                       vertical: 3.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE6FFFA),
+                      color: context.colors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(999.r),
                     ),
                     child: Row(
@@ -70,14 +70,14 @@ class HealthPetCard extends StatelessWidget {
                         Icon(
                           Icons.monitor_heart_outlined,
                           size: 12.sp,
-                          color: const Color(0xFF0D9488),
+                          color: context.colors.primary,
                         ),
                         SizedBox(width: 4.w),
                         Text(
                           'View records',
                           style: TextStyle(
                             fontSize: 10.sp,
-                            color: const Color(0xFF0D9488),
+                            color: context.colors.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -89,7 +89,7 @@ class HealthPetCard extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right_rounded,
-              color: const Color(0xFFCBD5E1),
+              color: context.colors.outlineVariant,
               size: 20.sp,
             ),
           ],
@@ -118,7 +118,7 @@ class _Image extends StatelessWidget {
       height: 58.w,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: context.colors.outlineVariant,
         borderRadius: BorderRadius.circular(14.r),
       ),
       child: url.isEmpty

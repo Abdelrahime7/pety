@@ -32,7 +32,7 @@ class HealthRecordSelectorField extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.colors.surfaceContainer,
             borderRadius: BorderRadius.circular(14.r),
             border: Border.all(
               color: context.colors.outlineVariant.withValues(alpha: 0.6),

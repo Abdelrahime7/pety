@@ -125,7 +125,7 @@ class HealthEmptyState extends StatelessWidget {
               width: 72.w,
               height: 72.w,
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: context.colors.outlineVariant,
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Icon(
@@ -186,13 +186,13 @@ class HealthErrorState extends StatelessWidget {
               width: 72.w,
               height: 72.w,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFF1F2),
+                color: context.colors.error.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Icon(
                 Icons.error_outline,
                 size: 34.sp,
-                color: const Color(0xFFE11D48),
+                color: context.colors.error,
               ),
             ),
 

@@ -51,7 +51,7 @@ class OwnerHealthRecordCard extends StatelessWidget {
             width: 44.w,
             height: 44.w,
             decoration: BoxDecoration(
-              color: context.colors.primary.withOpacity(.14),
+              color: context.colors.primary.withValues(alpha: .14),
               borderRadius: BorderRadius.circular(13.r),
             ),
             child: Icon(_iconForType(typeName), color: AppColors.tealDark),
@@ -81,7 +81,7 @@ class OwnerHealthRecordCard extends StatelessWidget {
                         vertical: 5.h,
                       ),
                       decoration: BoxDecoration(
-                        color: context.colors.primary.withOpacity(.12),
+                        color: context.colors.primary.withValues(alpha: .12),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(

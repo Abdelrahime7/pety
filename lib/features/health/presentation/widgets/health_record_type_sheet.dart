@@ -17,7 +17,7 @@ class HealthRecordTypeSheet extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 24.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
       child: SafeArea(
@@ -32,7 +32,7 @@ class HealthRecordTypeSheet extends StatelessWidget {
                   width: 40.w,
                   height: 4.h,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE2E8F0),
+                    color: context.colors.outlineVariant,
                     borderRadius: BorderRadius.circular(999.r),
                   ),
                 ),
@@ -71,12 +71,12 @@ class HealthRecordTypeSheet extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? type.backgroundColor
-                              : const Color(0xFFF8FAFC),
+                              : context.colors.surface,
                           borderRadius: BorderRadius.circular(14.r),
                           border: Border.all(
                             color: isSelected
                                 ? type.color.withValues(alpha: 0.3)
-                                : const Color(0xFFE2E8F0),
+                                : context.colors.outlineVariant,
                           ),
                         ),
                         child: Row(

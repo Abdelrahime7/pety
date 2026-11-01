@@ -65,8 +65,8 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   Container(
                     width: 42.w,
                     height: 42.w,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFE6FFFA),
+                    decoration:  BoxDecoration(
+                      color: context.colors.primary.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -104,7 +104,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                       color: context.colors.onSurfaceVariant,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: context.colors.surfaceContainer,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide.none,
