@@ -16,18 +16,19 @@ class FirebaseHealthDataSource {
 
     return snapshot.docs;
   }
-Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-    getAllRecords(String ownerId) async {
-  final snapshot = await _firestore
-      .collection('healthRecords')
-      .where('ownerId', isEqualTo: ownerId)
-      .get();
 
-  return snapshot.docs;
-}
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getAllRecords(
+    String ownerId,
+  ) async {
+    final snapshot = await _firestore
+        .collection('healthRecords')
+        .where('ownerId', isEqualTo: ownerId)
+        .get();
+
+    return snapshot.docs;
+  }
+
   Future<void> createRecord(HealthRecord record) async {
-  await _firestore
-      .collection('healthRecords')
-      .add(record.toMap());
-}
+    await _firestore.collection('healthRecords').add(record.toMap());
+  }
 }

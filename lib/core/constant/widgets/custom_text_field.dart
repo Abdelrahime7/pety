@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class CustomeTextField extends StatelessWidget {
   final bool? enabled;
@@ -21,7 +20,7 @@ class CustomeTextField extends StatelessWidget {
   final String? suffixText;
   final String? label;
   final Color? fillColor;
-  final TextInputAction? textInputAction ;
+  final TextInputAction? textInputAction;
 
   const CustomeTextField({
     super.key,
@@ -42,7 +41,7 @@ class CustomeTextField extends StatelessWidget {
     this.label,
     this.enabled,
     this.fillColor,
-    this.textInputAction
+    this.textInputAction,
   });
 
   @override
@@ -53,76 +52,65 @@ class CustomeTextField extends StatelessWidget {
         if (label != null && label!.isNotEmpty) ...[
           Text(
             label!,
-            style: AppStyle.regular13.copyWith(
-              color: AppColors.text,
+            style: context.style.regular13.copyWith(
+              color: context.colors.onSurface,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 7),
         ],
-
         TextFormField(
           enabled: enabled,
           controller: controller,
           keyboardType: keyboardType,
           validator: validator,
           obscureText: isPassword,
-          cursorColor: AppColors.primary,
+          cursorColor: context.colors.primary,
           autofocus: false,
           maxLines: maxLines,
           readOnly: readOnly,
           onTap: onTap,
-          style: AppStyle.regular14,
+          style: context.style.regular14.copyWith(
+            color: context.colors.onSurface,
+          ),
           textInputAction: textInputAction,
-
           decoration: InputDecoration(
             suffixText: suffixText,
-            suffixStyle: AppStyle.regular13.copyWith(
-              color: AppColors.textSecondary,
+            suffixStyle: context.style.regular13.copyWith(
+              color: context.colors.onSurfaceVariant,
               fontWeight: FontWeight.w600,
             ),
             filled: true,
-            fillColor: fillColor ?? Colors.white,
+            fillColor: fillColor ?? context.colors.surfaceContainer,
             hintText: hintText ?? '',
-            hintStyle: AppStyle.regular14,
+            hintStyle: context.style.regular14,
             prefixIcon: prefixIcon,
-
             suffixIcon: suffixIcon != null
-                ? IconButton(
-                    onPressed: onSuffixIconPressed,
-                    icon: suffixIcon!,
-                  )
+                ? IconButton(onPressed: onSuffixIconPressed, icon: suffixIcon!)
                 : null,
-
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
-              vertical: maxLines != null && maxLines! > 1
-                  ? 12.h
-                  : 0,
+              vertical: maxLines != null && maxLines! > 1 ? 12.h : 0,
             ),
-
             prefixIconConstraints: BoxConstraints(
               minWidth: 48.w,
               maxWidth: 48.w,
               minHeight: 48.h,
               maxHeight: 48.h,
             ),
-
             suffixIconConstraints: BoxConstraints(
               minWidth: 48.w,
               maxWidth: 48.w,
               minHeight: 48.h,
               maxHeight: 48.h,
             ),
-
-            border: _inputBorder(),
-            enabledBorder: _inputBorder(),
-            focusedBorder: _focusedBorder(),
-            errorBorder: _errorBorder(),
-            focusedErrorBorder: _errorBorder(),
-
-            errorStyle: AppStyle.regular12.copyWith(
-              height: 1.2,
+            border: _inputBorder(context),
+            enabledBorder: _inputBorder(context),
+            focusedBorder: _focusedBorder(context),
+            errorBorder: _errorBorder(context),
+            focusedErrorBorder: _errorBorder(context),
+            errorStyle: context.style.regular12.copyWith(
+              color: context.colors.error,
             ),
           ),
         ),
@@ -130,33 +118,24 @@ class CustomeTextField extends StatelessWidget {
     );
   }
 
-  OutlineInputBorder _inputBorder() {
+  OutlineInputBorder _inputBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: AppColors.border,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: context.colors.outlineVariant, width: 1.w),
     );
   }
 
-  OutlineInputBorder _focusedBorder() {
+  OutlineInputBorder _focusedBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: AppColors.primary,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: context.colors.primary, width: 1.w),
     );
   }
 
-  OutlineInputBorder _errorBorder() {
+  OutlineInputBorder _errorBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12.r),
-      borderSide: BorderSide(
-        color: Colors.red,
-        width: 1.w,
-      ),
+      borderSide: BorderSide(color: context.colors.error, width: 1.w),
     );
   }
 }

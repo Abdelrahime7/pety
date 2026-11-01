@@ -13,8 +13,6 @@ class CloudinaryService {
     required String folder,
     required String publicId,
   }) async {
-   
-
     final url = CloudinaryConfig.url;
 
     final formData = FormData.fromMap({
@@ -27,10 +25,7 @@ class CloudinaryService {
       ),
     });
 
-    final response = await _dio.post(
-      url,
-      data: formData,
-    );
+    final response = await _dio.post(url, data: formData);
 
     if (response.statusCode == 200) {
       final secureUrl = response.data['secure_url'];
@@ -38,12 +33,8 @@ class CloudinaryService {
       if (secureUrl is String) {
         return secureUrl;
       }
-
     }
 
-    throw Exception(
-
-     'Cloudinary upload failed: ${response.statusCode}',
-    );
+    throw Exception('Cloudinary upload failed: ${response.statusCode}');
   }
 }

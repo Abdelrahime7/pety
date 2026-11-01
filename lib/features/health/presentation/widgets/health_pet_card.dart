@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HealthPetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback onTap;
 
-  const HealthPetCard({
-    super.key,
-    required this.pet,
-    required this.onTap,
-  });
+  const HealthPetCard({super.key, required this.pet, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +19,9 @@ class HealthPetCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: const [
             BoxShadow(
               color: Color(0x060F172A),
@@ -47,7 +43,7 @@ class HealthPetCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15.5.sp,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.text,
+                      color: context.colors.onSurface,
                     ),
                   ),
                   SizedBox(height: 3.h),
@@ -55,14 +51,17 @@ class HealthPetCard extends StatelessWidget {
                     meta,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: AppColors.secondaryText,
+                      color: context.colors.onSurfaceVariant,
                     ),
                   ),
                   SizedBox(height: 7.h),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 3.h,
+                    ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE6FFFA),
+                      color: context.colors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(999.r),
                     ),
                     child: Row(
@@ -71,14 +70,14 @@ class HealthPetCard extends StatelessWidget {
                         Icon(
                           Icons.monitor_heart_outlined,
                           size: 12.sp,
-                          color: const Color(0xFF0D9488),
+                          color: context.colors.primary,
                         ),
                         SizedBox(width: 4.w),
                         Text(
                           'View records',
                           style: TextStyle(
                             fontSize: 10.sp,
-                            color: const Color(0xFF0D9488),
+                            color: context.colors.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -90,7 +89,7 @@ class HealthPetCard extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right_rounded,
-              color: const Color(0xFFCBD5E1),
+              color: context.colors.outlineVariant,
               size: 20.sp,
             ),
           ],
@@ -102,7 +101,8 @@ class HealthPetCard extends StatelessWidget {
   String _age(DateTime birthDate) {
     final now = DateTime.now();
     var years = now.year - birthDate.year;
-    if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now)) years--;
+    if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now))
+      years--;
     return years > 0 ? '$years years' : 'Less than a year';
   }
 }
@@ -118,28 +118,36 @@ class _Image extends StatelessWidget {
       height: 58.w,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: context.colors.outlineVariant,
         borderRadius: BorderRadius.circular(14.r),
       ),
       child: url.isEmpty
-          ? const Center(
-              child: Icon(Icons.pets, color: AppColors.icon, size: 24),
+          ? Center(
+              child: Icon(
+                Icons.pets,
+                color: context.colors.onSurfaceVariant,
+                size: 24,
+              ),
             )
           : Image.network(
               url,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => const Center(
-                child: Icon(Icons.pets, color: AppColors.icon, size: 24),
+              errorBuilder: (context, error, stackTrace) => Center(
+                child: Icon(
+                  Icons.pets,
+                  color: context.colors.onSurfaceVariant,
+                  size: 24,
+                ),
               ),
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return const Center(
+                return Center(
                   child: SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                 );

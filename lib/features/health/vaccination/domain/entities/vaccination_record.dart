@@ -3,7 +3,7 @@ import 'package:pet_care/features/health/domain/entity/health_item_entity.dart';
 import 'package:pet_care/features/health/domain/enums/health_item.dart';
 
 class VaccinationRecord extends HealthItem {
-  final String ?ownerId;
+  final String? ownerId;
   final String? id;
 
   final String petId;
@@ -15,7 +15,6 @@ class VaccinationRecord extends HealthItem {
 
   /// Current dose number in the series.
   final int doseNumber;
-
 
   /// Date this dose was actually administered.
   final DateTime vaccinationDate;
@@ -35,21 +34,20 @@ class VaccinationRecord extends HealthItem {
 
   factory VaccinationRecord.fromMap(Map<String, dynamic> data) {
     return VaccinationRecord(
-      ownerId:data['ownerId'] as String ? ??"",
+      ownerId: data['ownerId'] as String? ?? "",
       id: data['id'] as String?,
       petId: data['petId'] as String,
       seriesId: data['seriesId'] as String?,
       vaccineName: data['vaccineName'] as String,
       doseNumber: data['doseNumber'] as int,
-      vaccinationDate:
-          (data['vaccinationDate'] as Timestamp).toDate(),
+      vaccinationDate: (data['vaccinationDate'] as Timestamp).toDate(),
       notes: data['notes'] as String?,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'ownerId':ownerId,
+      'ownerId': ownerId,
       'id': id,
       'petId': petId,
       'seriesId': seriesId,
@@ -61,10 +59,8 @@ class VaccinationRecord extends HealthItem {
   }
 
   @override
-  DateTime get date => vaccinationDate ;
+  DateTime get date => vaccinationDate;
 
   @override
-
   HealthItemType get type => HealthItemType.vaccination;
-
 }

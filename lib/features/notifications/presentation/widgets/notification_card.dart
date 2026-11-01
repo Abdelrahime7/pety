@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
@@ -50,8 +51,7 @@ class NotificationCard extends StatelessWidget {
     final theme = Theme.of(context);
     final isRead = notification.isRead;
 
-    final appointmentType =
-        notification.data?['appointmentType'] as String?;
+    final appointmentType = notification.data?['appointmentType'] as String?;
 
     return Material(
       color: Colors.transparent,
@@ -62,7 +62,7 @@ class NotificationCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: isRead
-                ? AppColors.surface.withValues(alpha: 0.55)
+                ? context.colors.surface.withValues(alpha: 0.55)
                 : theme.colorScheme.primary.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
@@ -80,7 +80,7 @@ class NotificationCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isRead
                       ? theme.dividerColor.withValues(alpha: 0.06)
-                      : AppColors.primary.withValues(alpha: 0.1),
+                      : context.colors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
@@ -109,7 +109,7 @@ class NotificationCard extends StatelessWidget {
                                   : FontWeight.w700,
                               color: isRead
                                   ? theme.textTheme.titleSmall?.color
-                                      ?.withValues(alpha: 0.55)
+                                        ?.withValues(alpha: 0.55)
                                   : null,
                             ),
                           ),
@@ -120,7 +120,7 @@ class NotificationCard extends StatelessWidget {
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
-                              color: AppColors.primary,
+                              color: context.colors.primary,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -150,7 +150,7 @@ class NotificationCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(
+                          color: context.colors.primary.withValues(
                             alpha: isRead ? 0.04 : 0.08,
                           ),
                           borderRadius: BorderRadius.circular(8),

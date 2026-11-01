@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 import 'package:pet_care/core/services/vaccination_service.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/add_vaccination_request.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
@@ -11,9 +11,7 @@ import 'package:pet_care/features/health/vaccination/presentation/riverpod/healt
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_providers.dart';
 import 'package:uuid/uuid.dart';
 
-class VaccinationNotifier
-    extends FamilyAsyncNotifier<void, String> {
-
+class VaccinationNotifier extends FamilyAsyncNotifier<void, String> {
   VaccinationService<VaccinationRecord> get _recordService =>
       ref.read(vaccinationRecordServiceProvider);
 
@@ -23,9 +21,7 @@ class VaccinationNotifier
   @override
   FutureOr<void> build(String petId) {}
 
-  Future<Result<void>> addVaccination(
-    AddVaccinationRequest request,
-  ) async {
+  Future<Result<void>> addVaccination(AddVaccinationRequest request) async {
     try {
       late VaccinationSerie serie;
       late int doseNumber;
@@ -41,16 +37,11 @@ class VaccinationNotifier
 
         if (request.vaccineName == null ||
             request.vaccineName!.trim().isEmpty) {
-          return const Failure(
-            'Vaccine name is required.',
-          );
+          return const Failure('Vaccine name is required.');
         }
 
-        if (request.requiredDoses == null ||
-            request.requiredDoses! <= 0) {
-          return const Failure(
-            'Number of doses must be greater than 0.',
-          );
+        if (request.requiredDoses == null || request.requiredDoses! <= 0) {
+          return const Failure('Number of doses must be greater than 0.');
         }
 
         // -----------------------------
@@ -79,22 +70,17 @@ class VaccinationNotifier
         // New series always starts with dose 1.
         doseNumber = 1;
       }
-
       // ==========================================================
       // EXISTING SERIES
       // ==========================================================
-
       else {
-        final seriesResult = await _serieService.getById(
-          request.seriesId!,
-        );
+        final seriesResult = await _serieService.getById(request.seriesId!);
 
         if (seriesResult is Failure<VaccinationSerie>) {
           return Failure(seriesResult.message);
         }
 
-        final success =
-            seriesResult as Success<VaccinationSerie>;
+        final success = seriesResult as Success<VaccinationSerie>;
 
         serie = success.data;
 
@@ -102,11 +88,8 @@ class VaccinationNotifier
         // Prevent completed series
         // -----------------------------
 
-        if (serie.isCompleted ||
-            serie.completedDoses >= serie.requiredDoses) {
-          return const Failure(
-            'This vaccination series is already complete.',
-          );
+        if (serie.isCompleted || serie.completedDoses >= serie.requiredDoses) {
+          return const Failure('This vaccination series is already complete.');
         }
 
         // -----------------------------
@@ -121,7 +104,7 @@ class VaccinationNotifier
       // ==========================================================
 
       final vaccination = VaccinationRecord(
-        ownerId:request.ownerId ,
+        ownerId: request.ownerId,
         id: const Uuid().v4(),
         petId: request.petId,
         seriesId: serie.id,
@@ -144,8 +127,7 @@ class VaccinationNotifier
       // UPDATE SERIES PROGRESS
       // ==========================================================
 
-      final isCompleted =
-          doseNumber >= serie.requiredDoses;
+      final isCompleted = doseNumber >= serie.requiredDoses;
 
       final updatedSerie = serie.copyWith(
         completedDoses: doseNumber,
@@ -165,17 +147,11 @@ class VaccinationNotifier
       // REFRESH RELATED PROVIDERS
       // ==========================================================
 
-      ref.invalidate(
-        healthCardProvider(request.petId),
-      );
+      ref.invalidate(healthCardProvider(request.petId));
 
-      ref.invalidate(
-        vaccinationRecordProvider(request.petId),
-      );
+      ref.invalidate(vaccinationRecordProvider(request.petId));
 
-      ref.invalidate(
-        vaccinationSerieProvider(request.petId),
-      );
+      ref.invalidate(vaccinationSerieProvider(request.petId));
 
       return const Success(null);
     } catch (e) {

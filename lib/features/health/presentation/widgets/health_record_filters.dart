@@ -1,17 +1,24 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
 class OwnerHealthRecordFilterChips extends StatelessWidget {
-  const OwnerHealthRecordFilterChips({super.key, required this.selected, required this.onSelected});
+  const OwnerHealthRecordFilterChips({
+    super.key,
+    required this.selected,
+    required this.onSelected,
+  });
 
   final String selected;
   final ValueChanged<String> onSelected;
 
   @override
   Widget build(BuildContext context) {
-    final filters = ['All', ...HealthRecordType.values.map((type) => type.name)];
+    final filters = [
+      'All',
+      ...HealthRecordType.values.map((type) => type.name),
+    ];
     return SizedBox(
       height: 38.h,
       child: ListView.separated(
@@ -26,15 +33,21 @@ class OwnerHealthRecordFilterChips extends StatelessWidget {
             selected: active,
             onSelected: (_) => onSelected(filter),
             showCheckmark: false,
-            backgroundColor: AppColors.surface,
-            selectedColor: AppColors.primary,
-            side: BorderSide(color: active ? AppColors.primary : AppColors.border),
+            backgroundColor: context.colors.surface,
+            selectedColor: context.colors.primary,
+            side: BorderSide(
+              color: active
+                  ? context.colors.primary
+                  : context.colors.outlineVariant,
+            ),
             labelStyle: TextStyle(
-              color: active ? Colors.white : AppColors.secondaryText,
+              color: active ? Colors.white : context.colors.onSurfaceVariant,
               fontWeight: active ? FontWeight.w700 : FontWeight.w500,
               fontSize: 12.sp,
             ),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
+            ),
           );
         },
       ),

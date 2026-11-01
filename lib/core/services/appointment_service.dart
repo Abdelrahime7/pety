@@ -33,8 +33,9 @@ class AppointmentService {
 
       final docs = await dataSource.getAppointmentsForPets(petIds);
 
-      final appointments =
-          docs.map((doc) => Appointment.fromFirestore(doc)).toList();
+      final appointments = docs
+          .map((doc) => Appointment.fromFirestore(doc))
+          .toList();
 
       // Sort by date ascending (earliest to latest) in-memory
       appointments.sort((a, b) => a.date.compareTo(b.date));
@@ -53,8 +54,9 @@ class AppointmentService {
     try {
       final docs = await dataSource.getAppointments(ownerId);
 
-      final appointments =
-          docs.map((doc) => Appointment.fromFirestore(doc)).toList();
+      final appointments = docs
+          .map((doc) => Appointment.fromFirestore(doc))
+          .toList();
 
       // Sort by date ascending (earliest to latest) in-memory
       appointments.sort((a, b) => a.date.compareTo(b.date));
@@ -73,8 +75,9 @@ class AppointmentService {
     try {
       final docs = await dataSource.getAppointmentsForPet(petId);
 
-      final appointments =
-          docs.map((doc) => Appointment.fromFirestore(doc)).toList();
+      final appointments = docs
+          .map((doc) => Appointment.fromFirestore(doc))
+          .toList();
 
       appointments.sort((a, b) => a.date.compareTo(b.date));
 

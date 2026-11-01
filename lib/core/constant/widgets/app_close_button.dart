@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,8 +19,8 @@ class AppCloseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveSize = size ?? 39.r;
-    final bgColor = backgroundColor ?? const Color(0xFFF1F5F9);
-    final fgColor = iconColor ?? const Color(0xFF64748B);
+    final bgColor = backgroundColor ?? context.colors.onSecondary;
+    final fgColor = iconColor ?? context.colors.onSurfaceVariant;
 
     return Material(
       color: bgColor,

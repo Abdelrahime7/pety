@@ -1,14 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/presentation/widgets/health_pet_card.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
-
 
 class HealthScreen extends ConsumerStatefulWidget {
   const HealthScreen({super.key});
@@ -32,7 +29,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
     final petState = ref.watch(petProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -51,7 +48,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                         style: TextStyle(
                           fontSize: 26.sp,
                           fontWeight: FontWeight.w900,
-                          color: AppColors.text,
+                          color: context.colors.onSurface,
                           letterSpacing: -0.5,
                         ),
                       ),
@@ -60,7 +57,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                         'Select a pet to view their records.',
                         style: TextStyle(
                           fontSize: 13.sp,
-                          color: AppColors.secondaryText,
+                          color: context.colors.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -68,8 +65,8 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   Container(
                     width: 42.w,
                     height: 42.w,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFE6FFFA),
+                    decoration:  BoxDecoration(
+                      color: context.colors.primary.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -77,7 +74,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                         'assets/icons/health.png',
                         width: 28.sp,
                         height: 28.sp,
-                        color: AppColors.primary,
+                        color: context.colors.primary,
                       ),
                     ),
                   ),
@@ -90,7 +87,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(
-                    color: AppColors.border.withValues(alpha: 0.6),
+                    color: context.colors.outlineVariant.withValues(alpha: 0.6),
                   ),
                 ),
                 child: TextField(
@@ -99,12 +96,15 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   decoration: InputDecoration(
                     hintText: 'Search by name or breed...',
                     hintStyle: TextStyle(
-                      color: AppColors.secondaryText,
+                      color: context.colors.onSurfaceVariant,
                       fontSize: 14.sp,
                     ),
-                    prefixIcon: const Icon(Icons.search, color: AppColors.icon),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: context.colors.onSurfaceVariant,
+                    ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: context.colors.surfaceContainer,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide.none,
@@ -124,15 +124,15 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
               SizedBox(height: 18.h),
               Expanded(
                 child: petState.when(
-                  loading: () => const Center(
+                  loading: () => Center(
                     child: CircularProgressIndicator(
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                   error: (error, _) => Center(
                     child: Text(
                       'Failed to load pets.',
-                      style: TextStyle(color: AppColors.error),
+                      style: TextStyle(color: context.colors.error),
                     ),
                   ),
                   data: (allPets) {
@@ -150,7 +150,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                               ? "You haven't added any pets yet."
                               : 'No matching pets found.',
                           style: TextStyle(
-                            color: AppColors.secondaryText,
+                            color: context.colors.onSurfaceVariant,
                             fontSize: 14.sp,
                           ),
                         ),

@@ -1,7 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'dart:io';
-
 
 class ProfilePictureWidget extends StatelessWidget {
   final String? imageUrl;
@@ -26,12 +25,8 @@ class ProfilePictureWidget extends StatelessWidget {
 
     // 1. Show newly selected local image first
     if (imageFile != null) {
-      image = Image.file(
-        imageFile!,
-        fit: BoxFit.cover,
-      );
+      image = Image.file(imageFile!, fit: BoxFit.cover);
     }
-
     // 2. Otherwise show image from server
     else if (imageUrl != null && imageUrl!.isNotEmpty) {
       image = Image.network(
@@ -40,18 +35,17 @@ class ProfilePictureWidget extends StatelessWidget {
         errorBuilder: (context, error, stack) {
           return Icon(
             Icons.person,
-            color: const Color(0xFFCBD5E1),
+            color: context.colors.outlineVariant,
             size: size * 0.55,
           );
         },
       );
     }
-
     // 3. No image
     else {
       image = Icon(
         Icons.person,
-        color: const Color(0xFFCBD5E1),
+        color: context.colors.outlineVariant,
         size: size * 0.55,
       );
     }
@@ -65,10 +59,10 @@ class ProfilePictureWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              color: const Color(0xFFF0FDFA),
+              color: context.colors.primary.withValues(alpha: 0.12),
               width: size > 80 ? 4 : 3,
             ),
-            color: const Color(0xFFF1F5F9),
+            color: context.colors.outlineVariant,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(innerRadius),
@@ -85,7 +79,7 @@ class ProfilePictureWidget extends StatelessWidget {
               width: size > 80 ? 36 : 24,
               height: size > 80 ? 36 : 24,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: context.colors.primary,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Colors.white,

@@ -1,13 +1,17 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 
 class OwnerHealthRecordCard extends StatelessWidget {
-  const OwnerHealthRecordCard({super.key, required this.record, required this.petName});
+  const OwnerHealthRecordCard({
+    super.key,
+    required this.record,
+    required this.petName,
+  });
 
   final HealthRecord record;
   final String petName;
@@ -36,9 +40,9 @@ class OwnerHealthRecordCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.outlineVariant),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +51,7 @@ class OwnerHealthRecordCard extends StatelessWidget {
             width: 44.w,
             height: 44.w,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(.14),
+              color: context.colors.primary.withValues(alpha: .14),
               borderRadius: BorderRadius.circular(13.r),
             ),
             child: Icon(_iconForType(typeName), color: AppColors.tealDark),
@@ -57,29 +61,44 @@ class OwnerHealthRecordCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(record.title, style: AppStyle.tileTitle),
+                Text(record.title, style: context.style.tileTitle),
                 SizedBox(height: 4.h),
-                Text(petName,
-                    style: TextStyle(color: AppColors.secondaryText, fontSize: 12.sp)),
+                Text(
+                  petName,
+                  style: TextStyle(
+                    color: context.colors.onSurfaceVariant,
+                    fontSize: 12.sp,
+                  ),
+                ),
                 SizedBox(height: 8.h),
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 6.h,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 5.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 9.w,
+                        vertical: 5.h,
+                      ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(.12),
+                        color: context.colors.primary.withValues(alpha: .12),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
                         typeName[0].toUpperCase() + typeName.substring(1),
-                        style: TextStyle(color: AppColors.tealDark, fontSize: 11.sp, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          color: AppColors.tealDark,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     Text(
                       DateFormat('MMM d, yyyy').format(record.date),
-                      style: TextStyle(color: AppColors.secondaryText, fontSize: 11.sp),
+                      style: TextStyle(
+                        color: context.colors.onSurfaceVariant,
+                        fontSize: 11.sp,
+                      ),
                     ),
                   ],
                 ),
@@ -89,7 +108,10 @@ class OwnerHealthRecordCard extends StatelessWidget {
                     record.notes,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: AppColors.secondaryText, fontSize: 12.sp),
+                    style: TextStyle(
+                      color: context.colors.onSurfaceVariant,
+                      fontSize: 12.sp,
+                    ),
                   ),
                 ],
               ],

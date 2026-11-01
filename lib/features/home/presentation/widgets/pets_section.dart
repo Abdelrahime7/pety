@@ -1,9 +1,9 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
-import 'package:pet_care/features/home/presentation%20/widgets/pet_card.dart';
+import 'package:pet_care/features/home/presentation/widgets/pet_card.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HomePetsSection extends StatelessWidget {
@@ -48,17 +48,17 @@ class HomePetsSection extends StatelessWidget {
                   children: [
                     Text(
                       'My Companions',
-                      style: AppStyle.sectionHeader.copyWith(
+                      style: context.style.sectionHeader.copyWith(
                         fontSize: 19.sp,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: context.colors.onSurface,
                       ),
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       '${pets.length} ${pets.length == 1 ? 'beloved companion' : 'beloved companions'}',
-                      style: AppStyle.regular12.copyWith(
-                        color: AppColors.textSecondary,
+                      style: context.style.regular12.copyWith(
+                        color: context.colors.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -74,17 +74,15 @@ class HomePetsSection extends StatelessWidget {
                       vertical: 9.h,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: context.colors.surfaceContainer,
                       borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(
-                        color: AppColors.border,
-                      ),
+                      border: Border.all(color: context.colors.outlineVariant),
                     ),
                     child: Row(
                       children: [
                         Text(
                           'See all',
-                          style: AppStyle.regular12.copyWith(
+                          style: context.style.regular12.copyWith(
                             color: AppColors.tealDark,
                             fontWeight: FontWeight.w600,
                           ),
@@ -107,7 +105,7 @@ class HomePetsSection extends StatelessWidget {
 
         // Pets carousel
         if (pets.isEmpty)
-          _buildEmptyState()
+          _buildEmptyState(context)
         else
           SizedBox(
             height: 160.h,
@@ -134,19 +132,19 @@ class HomePetsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(22.w),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(24.r),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: [
             BoxShadow(
-              color: AppColors.tealDark.withOpacity(0.04),
+              color: AppColors.tealDark.withValues(alpha: 0.04),
               blurRadius: 20.r,
               offset: Offset(0, 8.h),
             ),
@@ -161,11 +159,7 @@ class HomePetsSection extends StatelessWidget {
                 gradient: AppColors.premiumCardGradient,
                 borderRadius: BorderRadius.circular(22.r),
               ),
-              child: Icon(
-                Icons.pets_rounded,
-                color: Colors.white,
-                size: 32.sp,
-              ),
+              child: Icon(Icons.pets_rounded, color: Colors.white, size: 32.sp),
             ),
 
             SizedBox(height: 16.h),
@@ -173,9 +167,7 @@ class HomePetsSection extends StatelessWidget {
             Text(
               'Every great story starts here',
               textAlign: TextAlign.center,
-              style: AppStyle.tileTitle.copyWith(
-                fontSize: 16.sp,
-              ),
+              style: context.style.tileTitle.copyWith(fontSize: 16.sp),
             ),
 
             SizedBox(height: 6.h),
@@ -184,8 +176,8 @@ class HomePetsSection extends StatelessWidget {
               'Add your first companion and give them '
               'the care they deserve.',
               textAlign: TextAlign.center,
-              style: AppStyle.regular13.copyWith(
-                color: AppColors.textSecondary,
+              style: context.style.regular13.copyWith(
+                color: context.colors.onSurfaceVariant,
                 height: 1.5,
               ),
             ),
@@ -199,7 +191,7 @@ class HomePetsSection extends StatelessWidget {
                 icon: const Icon(Icons.add_rounded),
                 label: const Text('Add your first pet'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: context.colors.primary,
                   foregroundColor: Colors.white,
                   elevation: 0,
                   padding: EdgeInsets.symmetric(vertical: 13.h),

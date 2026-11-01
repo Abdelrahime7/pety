@@ -1,8 +1,5 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
-
-
 
 class NotificationSettingTile extends StatelessWidget {
   final IconData icon;
@@ -25,7 +22,7 @@ class NotificationSettingTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -34,14 +31,10 @@ class NotificationSettingTile extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: context.colors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              color: AppColors.primary,
-              size: 22,
-            ),
+            child: Icon(icon, color: context.colors.primary, size: 22),
           ),
 
           const SizedBox(width: 14),
@@ -52,16 +45,16 @@ class NotificationSettingTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppStyle.regular14.copyWith(
+                  style: context.style.regular14.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: context.colors.onSurface,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: AppStyle.regular14.copyWith(
-                    color: AppColors.textSecondary,
+                  style: context.style.regular14.copyWith(
+                    color: context.colors.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -75,10 +68,10 @@ class NotificationSettingTile extends StatelessWidget {
             child: Switch(
               value: value,
               onChanged: onChanged,
-              activeTrackColor: AppColors.primary,
-              activeThumbColor: AppColors.background,
-              inactiveTrackColor: AppColors.border,
-              inactiveThumbColor: AppColors.background,
+              activeTrackColor: context.colors.primary,
+              activeThumbColor: context.colors.surface,
+              inactiveTrackColor: context.colors.outlineVariant,
+              inactiveThumbColor: context.colors.surface,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           ),

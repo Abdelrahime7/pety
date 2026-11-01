@@ -1,9 +1,9 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
@@ -92,17 +92,17 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
     });
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: context.colors.surface,
         elevation: 0,
         leading: UnconstrainedBox(
           child: AppCloseButton(onPressed: () => Navigator.of(context).pop()),
         ),
-        title: const Text(
+        title: Text(
           'Add New Pet',
           style: TextStyle(
-            color: Colors.black,
+            color: context.colors.onSurface,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -114,7 +114,9 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
             child: Text(
               'Save',
               style: TextStyle(
-                color: petState.isLoading ? Colors.grey : AppColors.primary,
+                color: petState.isLoading
+                    ? context.colors.onSurfaceVariant
+                    : context.colors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -255,7 +257,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                                 children: [
                                   Switch.adaptive(
                                     value: _isNeutered,
-                                    activeColor: AppColors.primary,
+                                    activeColor: context.colors.primary,
                                     onChanged: (val) =>
                                         setState(() => _isNeutered = val),
                                   ),
@@ -296,7 +298,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
           // ⭐ GREY OUT OVERLAY + LOADING CARD
           if (petState.isLoading) ...[
             Positioned.fill(
-              child: Container(color: Colors.black.withOpacity(0.3)),
+              child: Container(color: Colors.black.withValues(alpha: 0.3)),
             ),
             Center(
               child: Container(
@@ -306,7 +308,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                     ),
                   ],
@@ -314,14 +316,14 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(color: AppColors.primary),
+                    CircularProgressIndicator(color: context.colors.primary),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       "Saving your pet…",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: context.colors.onSurface,
                       ),
                     ),
                   ],
@@ -339,18 +341,18 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
       initialValue: _selectedSpecies,
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0xFFF9FAFB),
+        fillColor: context.colors.surfaceContainerLow,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 12,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderSide: BorderSide(color: context.colors.outlineVariant),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderSide: BorderSide(color: context.colors.outlineVariant),
         ),
       ),
       items: ['Dog', 'Cat', 'Bird', 'Other'].map((species) {
@@ -386,10 +388,10 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
         }
         return null;
       },
-      suffixIcon: const Icon(
+      suffixIcon: Icon(
         Icons.calendar_today_outlined,
         size: 18,
-        color: Color(0xFF7A869A),
+        color: context.colors.onSurfaceVariant,
       ),
     );
   }

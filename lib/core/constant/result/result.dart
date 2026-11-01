@@ -1,4 +1,3 @@
-
 sealed class Result<T> {
   const Result();
 }
@@ -13,7 +12,6 @@ class Failure<T> extends Result<T> {
   final String message;
 
   const Failure(this.message);
-
 }
 
-class Cancelled<T> extends Result<T>{}
+class Cancelled<T> extends Result<T> {}

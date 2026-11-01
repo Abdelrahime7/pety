@@ -1,16 +1,13 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 
 class UpcomingAppointmentCard extends StatelessWidget {
   final Appointment? appointment;
 
-  const UpcomingAppointmentCard({
-    super.key,
-    required this.appointment,
-  });
+  const UpcomingAppointmentCard({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +23,9 @@ class UpcomingAppointmentCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.outlineVariant),
       ),
       child: Row(
         children: [
@@ -36,7 +33,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
             width: 58.w,
             height: 62.h,
             decoration: BoxDecoration(
-              color: const Color(0xFFE0F7F3),
+              color: context.colors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(15.r),
             ),
             child: Column(
@@ -44,7 +41,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
               children: [
                 Text(
                   _monthName(date.month),
-                  style: AppStyle.sectionHeader.copyWith(
+                  style: context.style.sectionHeader.copyWith(
                     fontSize: 10.sp,
                     color: AppColors.tealDark,
                     letterSpacing: 0.8,
@@ -53,7 +50,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                 SizedBox(height: 2.h),
                 Text(
                   '${date.day}',
-                  style: AppStyle.title.copyWith(
+                  style: context.style.title.copyWith(
                     fontSize: 22.sp,
                     color: AppColors.tealDark,
                   ),
@@ -70,14 +67,12 @@ class UpcomingAppointmentCard extends StatelessWidget {
                   appointment!.type.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppStyle.tileTitle.copyWith(
-                    fontSize: 14.sp,
-                  ),
+                  style: context.style.tileTitle.copyWith(fontSize: 14.sp),
                 ),
                 SizedBox(height: 5.h),
                 Text(
                   _formatTime(date),
-                  style: AppStyle.regular12.copyWith(
+                  style: context.style.regular12.copyWith(
                     color: AppColors.tealDark,
                     fontWeight: FontWeight.w600,
                   ),
@@ -87,7 +82,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
           ),
           Icon(
             Icons.chevron_right_rounded,
-            color: AppColors.icon,
+            color: context.colors.onSurfaceVariant,
             size: 25.sp,
           ),
         ],
@@ -97,8 +92,18 @@ class UpcomingAppointmentCard extends StatelessWidget {
 
   String _monthName(int month) {
     const months = [
-      'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-      'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ];
 
     return months[month - 1];

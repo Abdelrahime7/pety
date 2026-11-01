@@ -1,10 +1,8 @@
-
-
-
 enum AppointmentType {
-   vaccination,
-   checkup,
-   treatment,
-   surgery, 
-   grooming, 
-   other }
+  vaccination,
+  checkup,
+  treatment,
+  surgery,
+  grooming,
+  other,
+}

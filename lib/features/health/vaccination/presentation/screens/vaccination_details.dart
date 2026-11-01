@@ -1,17 +1,13 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 
 class VaccinationDetailsScreen extends StatelessWidget {
   final VaccinationSerie vaccination;
 
-  const VaccinationDetailsScreen({
-    super.key,
-    required this.vaccination,
-  });
+  const VaccinationDetailsScreen({super.key, required this.vaccination});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +15,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
     final createdDate = dateFormat.format(vaccination.createdAt);
 
-    final isCompleted =
-        vaccination.completedDoses >= vaccination.requiredDoses;
+    final isCompleted = vaccination.completedDoses >= vaccination.requiredDoses;
 
     final status = isCompleted ? 'Completed' : 'In progress';
 
@@ -28,14 +23,11 @@ class VaccinationDetailsScreen extends StatelessWidget {
         '${vaccination.completedDoses} / ${vaccination.requiredDoses} doses';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.colors.surface,
         elevation: 0,
-        title: Text(
-          'Vaccination Details',
-          style: AppStyle.tileTitle,
-        ),
+        title: Text('Vaccination Details', style: context.style.tileTitle),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_rounded),
@@ -54,9 +46,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            const _SectionTitle(
-              title: 'Vaccination',
-            ),
+            const _SectionTitle(title: 'Vaccination'),
 
             const SizedBox(height: 12),
 
@@ -74,7 +64,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
                   icon: Icons.layers_rounded,
                   label: 'Dose progress',
                   value: progress,
-                  valueColor: AppColors.primary,
+                  valueColor: context.colors.primary,
                 ),
 
                 const _InfoDivider(),
@@ -92,8 +82,8 @@ class VaccinationDetailsScreen extends StatelessWidget {
                   label: 'Status',
                   value: status,
                   valueColor: isCompleted
-                      ? AppColors.primary
-                      : AppColors.primary,
+                      ? context.colors.primary
+                      : context.colors.primary,
                 ),
 
                 const _InfoDivider(),
@@ -110,15 +100,11 @@ class VaccinationDetailsScreen extends StatelessWidget {
                 vaccination.description!.trim().isNotEmpty) ...[
               const SizedBox(height: 24),
 
-              const _SectionTitle(
-                title: 'Description',
-              ),
+              const _SectionTitle(title: 'Description'),
 
               const SizedBox(height: 12),
 
-              _NotesCard(
-                notes: vaccination.description!,
-              ),
+              _NotesCard(notes: vaccination.description!),
             ],
           ],
         ),
@@ -144,7 +130,7 @@ class _VaccinationHeader extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
+        color: context.colors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
@@ -153,12 +139,12 @@ class _VaccinationHeader extends StatelessWidget {
             width: 58,
             height: 58,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.14),
+              color: context.colors.primary.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.vaccines_rounded,
-              color: AppColors.primary,
+              color: context.colors.primary,
               size: 30,
             ),
           ),
@@ -173,17 +159,15 @@ class _VaccinationHeader extends StatelessWidget {
                   vaccineName,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppStyle.tileTitle.copyWith(
-                    fontSize: 18,
-                  ),
+                  style: context.style.tileTitle.copyWith(fontSize: 18),
                 ),
 
                 const SizedBox(height: 6),
 
                 Text(
                   status,
-                  style: AppStyle.regular10.copyWith(
-                    color: AppColors.primary,
+                  style: context.style.regular10.copyWith(
+                    color: context.colors.primary,
                   ),
                 ),
               ],
@@ -198,38 +182,26 @@ class _VaccinationHeader extends StatelessWidget {
 class _SectionTitle extends StatelessWidget {
   final String title;
 
-  const _SectionTitle({
-    required this.title,
-  });
+  const _SectionTitle({required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: AppStyle.tileTitle.copyWith(
-        fontSize: 16,
-      ),
-    );
+    return Text(title, style: context.style.tileTitle.copyWith(fontSize: 16));
   }
 }
 
 class _InfoCard extends StatelessWidget {
   final List<Widget> children;
 
-  const _InfoCard({
-    required this.children,
-  });
+  const _InfoCard({required this.children});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 4,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -239,9 +211,7 @@ class _InfoCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: children,
-      ),
+      child: Column(children: children),
     );
   }
 }
@@ -269,14 +239,10 @@ class _InfoRow extends StatelessWidget {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.08),
+              color: context.colors.primary.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              size: 19,
-              color: AppColors.primary,
-            ),
+            child: Icon(icon, size: 19, color: context.colors.primary),
           ),
 
           const SizedBox(width: 12),
@@ -285,16 +251,13 @@ class _InfoRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: AppStyle.regular10,
-                ),
+                Text(label, style: context.style.regular10),
 
                 const SizedBox(height: 4),
 
                 Text(
                   value,
-                  style: AppStyle.tileTitle.copyWith(
+                  style: context.style.tileTitle.copyWith(
                     fontSize: 14,
                     color: valueColor,
                   ),
@@ -313,19 +276,14 @@ class _InfoDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      height: 1,
-      color: Colors.black.withValues(alpha: 0.06),
-    );
+    return Divider(height: 1, color: Colors.black.withValues(alpha: 0.06));
   }
 }
 
 class _NotesCard extends StatelessWidget {
   final String notes;
 
-  const _NotesCard({
-    required this.notes,
-  });
+  const _NotesCard({required this.notes});
 
   @override
   Widget build(BuildContext context) {
@@ -333,7 +291,7 @@ class _NotesCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -343,11 +301,7 @@ class _NotesCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(
-        notes,
-        style: AppStyle.regular10,
-      ),
+      child: Text(notes, style: context.style.regular10),
     );
   }
 }
-

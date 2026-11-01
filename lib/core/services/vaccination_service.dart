@@ -17,102 +17,66 @@ class VaccinationService<T> {
     required this.fromMap,
   });
 
-   // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Count
   // --------------------------------------------------------------------------
 
-Future<Result<int>> count(
-    String petid,
-  ) async {
+  Future<Result<int>> count(String petid) async {
     try {
       if (petid.isEmpty) {
-        return const Failure(
-          'ID is required.',
-        );
+        return const Failure('ID is required.');
       }
-      
-     final result= await dataSource.getCount(
-        collectionName,
-        petid,
-      
-      );
-    
-      return  Success(result);
+
+      final result = await dataSource.getCount(collectionName, petid);
+
+      return Success(result);
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
- 
 
-   // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Count
   // --------------------------------------------------------------------------
-  
-Future<Result<int>> countActivSeries(
-    String petid,
-  ) async {
+
+  Future<Result<int>> countActivSeries(String petid) async {
     try {
       if (petid.isEmpty) {
-        return const Failure(
-          'ID is required.',
-        );
+        return const Failure('ID is required.');
       }
-      
-     final result= await dataSource.getActiveSerieCount(
+
+      final result = await dataSource.getActiveSerieCount(
         collectionName,
         petid,
-      
       );
-    
-      return  Success(result);
+
+      return Success(result);
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
- 
 
   // ---------------------------------------------------------------------------
   // CREATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> create(
-    String id,
-    Map<String, dynamic> data,
-  ) async {
+  Future<Result<void>> create(String id, Map<String, dynamic> data) async {
     try {
       if (id.isEmpty) {
-        return const Failure(
-          'ID is required.',
-        );
+        return const Failure('ID is required.');
       }
-      
-      await dataSource.create(
-        collectionName,
-        id,
-        data,
-      );
-    
-      return  Success(null);
+
+      await dataSource.create(collectionName, id, data);
+
+      return Success(null);
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
 
@@ -120,34 +84,21 @@ Future<Result<int>> countActivSeries(
   // READ ALL
   // ---------------------------------------------------------------------------
 
-  Future<Result<List<T>>> getAll(
-    String petId,
-  ) async {
+  Future<Result<List<T>>> getAll(String petId) async {
     try {
       if (petId.isEmpty) {
-        return const Failure(
-          'Pet ID is required.',
-        );
+        return const Failure('Pet ID is required.');
       }
 
-      final data = await dataSource.getAll(
-        collectionName,
-        petId,
-      );
+      final data = await dataSource.getAll(collectionName, petId);
 
-      final entities = data
-          .map(fromMap)
-          .toList();
+      final entities = data.map(fromMap).toList();
 
       return Success(entities);
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
 
@@ -155,38 +106,23 @@ Future<Result<int>> countActivSeries(
   // READ ONE
   // ---------------------------------------------------------------------------
 
-  Future<Result<T>> getById(
-    String id,
-  ) async {
+  Future<Result<T>> getById(String id) async {
     try {
       if (id.isEmpty) {
-        return const Failure(
-          'ID is required.',
-        );
+        return const Failure('ID is required.');
       }
 
-      final data = await dataSource.getById(
-        collectionName,
-        id,
-      );
+      final data = await dataSource.getById(collectionName, id);
 
       if (data == null) {
-        return const Failure(
-          'Record not found.',
-        );
+        return const Failure('Record not found.');
       }
 
-      return Success(
-        fromMap(data),
-      );
+      return Success(fromMap(data));
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
 
@@ -194,32 +130,19 @@ Future<Result<int>> countActivSeries(
   // UPDATE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> update(
-    String id,
-    Map<String, dynamic> data,
-  ) async {
+  Future<Result<void>> update(String id, Map<String, dynamic> data) async {
     try {
       if (id.isEmpty) {
-        return const Failure(
-          'ID is required.',
-        );
+        return const Failure('ID is required.');
       }
 
-      await dataSource.update(
-        collectionName,
-        id,
-        data,
-      );
+      await dataSource.update(collectionName, id, data);
 
       return const Success(null);
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
 
@@ -227,30 +150,19 @@ Future<Result<int>> countActivSeries(
   // DELETE
   // ---------------------------------------------------------------------------
 
-  Future<Result<void>> delete(
-    String id,
-  ) async {
+  Future<Result<void>> delete(String id) async {
     try {
       if (id.isEmpty) {
-        return const Failure(
-          'ID is required.',
-        );
+        return const Failure('ID is required.');
       }
 
-      await dataSource.delete(
-        collectionName,
-        id,
-      );
+      await dataSource.delete(collectionName, id);
 
       return const Success(null);
     } on FirebaseException catch (e) {
-      return Failure(
-        mapFirestoreExceptionToFailure(e).message,
-      );
+      return Failure(mapFirestoreExceptionToFailure(e).message);
     } catch (e) {
-      return Failure(
-        e.toString(),
-      );
+      return Failure(e.toString());
     }
   }
 }

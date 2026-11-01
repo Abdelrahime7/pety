@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class SecurityActionCard extends StatelessWidget {
   final VoidCallback onTap;
@@ -7,18 +8,22 @@ class SecurityActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color ink = Color(0xFF0F172A);
-    const Color inkSoft = Color(0xFF94A3B8);
+    final colors = context.colors;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.surfaceContainer,
           borderRadius: BorderRadius.circular(32),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4)],
+          border: Border.all(color: colors.outlineVariant),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 4,
+            ),
+          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,15 +31,27 @@ class SecurityActionCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 40, height: 40,
-                  decoration: BoxDecoration(color: const Color(0xFFFFF1F2), borderRadius: BorderRadius.circular(16)),
-                  child: const Icon(Icons.key, color: Color(0xFFF43F5E), size: 16),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    // Tinted background works in both modes
+                    color: colors.error.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(Icons.key, color: colors.error, size: 16),
                 ),
                 const SizedBox(width: 16),
-                const Text('Change Password', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ink)),
+                Text(
+                  'Change Password',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: colors.onSurface,
+                  ),
+                ),
               ],
             ),
-            const Icon(Icons.chevron_right, color: inkSoft, size: 16),
+            Icon(Icons.chevron_right, color: colors.onSurfaceVariant, size: 16),
           ],
         ),
       ),

@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -11,30 +9,23 @@ class ImageService {
   final CloudinaryService _cloudinaryService;
 
   ImageService(this._cloudinaryService);
-Future<Result<String>> uploadImage({
-  required File image,
-  required String folder,
-  required String publicId,
-}) async {
-  try {
-    final secureUrl = await _cloudinaryService.uploadImage(
-      image: image,
-      folder: folder,
-      publicId: publicId,
-    );
+  Future<Result<String>> uploadImage({
+    required File image,
+    required String folder,
+    required String publicId,
+  }) async {
+    try {
+      final secureUrl = await _cloudinaryService.uploadImage(
+        image: image,
+        folder: folder,
+        publicId: publicId,
+      );
 
-    return Success(secureUrl);
-  } on DioException catch (e) {
-    return Failure(
-      mapDioExceptionToFailure(e).message
-
-    );
-  } catch (e) {
-    return Failure(
-      e.toString(),
-    );
+      return Success(secureUrl);
+    } on DioException catch (e) {
+      return Failure(mapDioExceptionToFailure(e).message);
+    } catch (e) {
+      return Failure(e.toString());
+    }
   }
 }
-}
-
-

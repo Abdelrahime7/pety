@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
-
+import 'package:pet_care/core/dependencies_injection/di.dart';
 
 class NotificationSettingsNotifier extends AsyncNotifier<bool> {
   @override
@@ -28,10 +27,7 @@ class NotificationSettingsNotifier extends AsyncNotifier<bool> {
     if (result is Success<void>) {
       state = AsyncData(enabled);
     } else if (result is Failure<void>) {
-      state = AsyncError(
-        result.message,
-        StackTrace.current,
-      );
+      state = AsyncError(result.message, StackTrace.current);
     } else if (result is Cancelled<void>) {
       state = AsyncData(state.value ?? false);
     }

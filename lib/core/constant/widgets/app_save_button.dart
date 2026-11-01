@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class AppSaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -18,15 +18,20 @@ class AppSaveButton extends StatelessWidget {
     return TextButton(
       onPressed: isLoading ? null : onPressed,
       child: isLoading
-          ? const SizedBox(
+          ? SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: context.colors.primary,
+              ),
             )
           : Text(
               text,
               style: TextStyle(
-                color: onPressed != null ? AppColors.primary : AppColors.primary.withOpacity(0.5),
+                color: onPressed != null
+                    ? context.colors.primary
+                    : context.colors.primary.withValues(alpha: 0.5),
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),

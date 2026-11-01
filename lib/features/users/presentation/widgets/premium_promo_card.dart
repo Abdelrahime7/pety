@@ -1,11 +1,9 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/core/constant/widgets/outlined_button.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
-
 
 class PremiumPromoCard extends StatelessWidget {
   const PremiumPromoCard({super.key});
@@ -20,7 +18,7 @@ class PremiumPromoCard extends StatelessWidget {
         gradient: AppColors.premiumCardGradient,
         boxShadow: [
           BoxShadow(
-            color: AppColors.tealLight.withOpacity(0.35),
+            color: AppColors.tealLight.withValues(alpha: 0.35),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -40,10 +38,13 @@ class PremiumPromoCard extends StatelessWidget {
                   vertical: 6.0,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Text('PETCARE+ PREMIUM', style: AppStyle.badgeCapsule),
+                child: Text(
+                  'PETCARE+ PREMIUM',
+                  style: context.style.badgeCapsule,
+                ),
               ),
               Image.asset(
                 'assets/icons/premium.png',
@@ -56,13 +57,13 @@ class PremiumPromoCard extends StatelessWidget {
           const SizedBox(height: 20.0),
 
           // Main Headline
-          Text('Get Unlimited Care', style: AppStyle.titleWhite),
+          Text('Get Unlimited Care', style: context.style.titleWhite),
           const SizedBox(height: 10.0),
 
           // Subtitle / Description
           Text(
             'Unlock multi-pet support, cloud backup,\nand health export features.',
-            style: AppStyle.promoSubtitle,
+            style: context.style.promoSubtitle,
           ),
           const SizedBox(height: 24.0),
 
@@ -72,12 +73,11 @@ class PremiumPromoCard extends StatelessWidget {
             height: 52.0,
             child: PrimaryOutlinedButton(
               text: 'Upgrade Now — \$4.99/mo',
-              color:AppColors.background,
+              color: context.colors.surface,
               radius: 20.0,
               onPressed: () {
-                 appRouter.go(upgradeToPremium);
-            
-              }            
+                appRouter.go(upgradeToPremium);
+              },
             ),
           ),
         ],

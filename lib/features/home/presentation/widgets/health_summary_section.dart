@@ -1,8 +1,8 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class HealthSummarySection extends StatelessWidget {
   const HealthSummarySection({super.key});
@@ -12,18 +12,16 @@ class HealthSummarySection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: AppColors.border,
-        ),
+        border: Border.all(color: context.colors.outlineVariant),
       ),
       child: Column(
         children: [
           _HealthSummaryRow(
             icon: Icons.vaccines_outlined,
-            iconColor: const Color(0xFF0D9488),
-            iconBackground: const Color(0xFFE0F7F3),
+            iconColor: context.colors.primary,
+            iconBackground: context.colors.primary.withValues(alpha: 0.12),
             title: 'Vaccinations',
             subtitle: 'Keep track of vaccine doses',
             status: 'View',
@@ -34,10 +32,7 @@ class HealthSummarySection extends StatelessWidget {
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 14.h),
-            child: Divider(
-              height: 1,
-              color: AppColors.border,
-            ),
+            child: Divider(height: 1, color: context.colors.outlineVariant),
           ),
 
           _HealthSummaryRow(
@@ -90,11 +85,7 @@ class _HealthSummaryRow extends StatelessWidget {
               color: iconBackground,
               borderRadius: BorderRadius.circular(13.r),
             ),
-            child: Icon(
-              icon,
-              size: 22.sp,
-              color: iconColor,
-            ),
+            child: Icon(icon, size: 22.sp, color: iconColor),
           ),
 
           SizedBox(width: 12.w),
@@ -105,24 +96,19 @@ class _HealthSummaryRow extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppStyle.tileTitle.copyWith(
-                    fontSize: 13.sp,
-                  ),
+                  style: context.style.tileTitle.copyWith(fontSize: 13.sp),
                 ),
 
                 SizedBox(height: 4.h),
 
-                Text(
-                  subtitle,
-                  style: AppStyle.regular10,
-                ),
+                Text(subtitle, style: context.style.regular10),
               ],
             ),
           ),
 
           Text(
             status,
-            style: AppStyle.buttonText.copyWith(
+            style: context.style.buttonText.copyWith(
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               color: AppColors.tealDark,
@@ -134,7 +120,7 @@ class _HealthSummaryRow extends StatelessWidget {
           Icon(
             Icons.arrow_forward_ios_rounded,
             size: 13.sp,
-            color: AppColors.icon,
+            color: context.colors.onSurfaceVariant,
           ),
         ],
       ),

@@ -1,4 +1,3 @@
-
 // ignore: non_constant_identifier_names
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,146 +9,95 @@ import 'package:pet_care/features/authentication/data/user_data.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
 import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_mapper.dart';
 
-
-
 class AuthenticationService {
-  final  FirebaseAuthDataSource _dataSource ;
+  final FirebaseAuthDataSource _dataSource;
 
-  AuthenticationService( {required FirebaseAuthDataSource dataSource}) : _dataSource = dataSource;
+  AuthenticationService({required FirebaseAuthDataSource dataSource})
+    : _dataSource = dataSource;
 
+  Future<Result<String>> resetPassword(String email) async {
+    if (email.trim().isEmpty) {
+      return const Failure('Please enter your email address.');
+    }
+    try {
+      await _dataSource.sendPasswordResetEmail(email: email);
+      return const Success(
+        'We’ve sent a password reset link to your email. Please check your inbox.',
+      );
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
 
-
-Future<Result<String>> resetPassword(String email) async {
-
-   if (email.trim().isEmpty) {
-    return const Failure(
-      'Please enter your email address.',
-    );
+      return Failure(mapFirebaseExceptionToFailure(e).message);
+    } catch (_) {
+      return const Failure('Something went wrong.');
+    }
   }
-  try {
-    await _dataSource.sendPasswordResetEmail(
-      email: email,
-    );
-    return const Success(
-  'We’ve sent a password reset link to your email. Please check your inbox.',
-);
-
-  }
-  
-   on FirebaseAuthException catch (e) {
-          debugPrint(e.message);
-
-    return Failure(
-      mapFirebaseExceptionToFailure(e).message,
-    );
-  }
-   
-   catch (_) {
-    return const Failure(
-      'Something went wrong.',
-    );
-  }
-}
-
-
-
 
   UserResponse? getCurrentUser() {
-
     return _dataSource.getCurrentUser();
   }
 
- Future<Result<UserResponse>> login(AutUserRequest request) async {
-  try {
-    final credential = await _dataSource.login(request);
+  Future<Result<UserResponse>> login(AutUserRequest request) async {
+    try {
+      final credential = await _dataSource.login(request);
 
-    
+      final firebaseUser = credential.user;
 
-        
-    
-    final firebaseUser = credential.user;
+      if (firebaseUser == null) {
+        return const Failure('Unable to get authenticated user');
+      }
 
-if (firebaseUser == null) {
-  return const Failure('Unable to get authenticated user');
-}
+      final userResponse = (uid: firebaseUser.uid, email: firebaseUser.email!);
 
-
-    final userResponse = (
-      uid: firebaseUser.uid,
-      email: firebaseUser.email!,
-    ); 
-    
-    return Success(userResponse);
-  } on FirebaseAuthException catch (e) {
-    return Failure(
-      mapFirebaseExceptionToFailure(e).message,
-    );
-  }
-}
-
- Future<Result> logout() async {
-  try {
-      await _dataSource.logout();
-  
-    return Success(null);
-  } on FirebaseAuthException catch (e) {
-    return Failure(
-      mapFirebaseExceptionToFailure(e).message,
-    );
-  }
-}
-
-
-
-
-Future<Result<UserResponse>> register(AutUserRequest request) async {
-  try {
-    final credential = await _dataSource.register(request);
-
-    final firebaseUser = credential.user!;
-
-    final userResponse = (
-      uid: firebaseUser.uid,
-      email: firebaseUser.email!,
-    );
-
-    return Success(userResponse);
-  } on FirebaseAuthException catch (e) {
-    return Failure(
-      mapFirebaseExceptionToFailure(e).message,
-    );
-  }
-}
-
-Future<Result<UserResponse>> loginWithGoogle() async {
-  try {
-    final credential = await _dataSource.loginWithGoogle();
-
-    final firebaseUser = credential.user;
-
-    if (firebaseUser == null || firebaseUser.email == null) {
-      return Failure('Unable to get authenticated user');
+      return Success(userResponse);
+    } on FirebaseAuthException catch (e) {
+      return Failure(mapFirebaseExceptionToFailure(e).message);
     }
-
-
-    return Success((
-      uid: firebaseUser.uid,
-      email: firebaseUser.email!,
-    ));
-  } on GoogleSignInException catch (e) {
- 
-
-  if (e.code == GoogleSignInExceptionCode.canceled) {
-    return Cancelled();
   }
 
-  return Failure('Google sign-in failed');
+  Future<Result> logout() async {
+    try {
+      await _dataSource.logout();
 
-  } catch (e) {
-   
-    return Failure('Google sign-in failed: $e');
+      return Success(null);
+    } on FirebaseAuthException catch (e) {
+      return Failure(mapFirebaseExceptionToFailure(e).message);
+    }
   }
-}
 
+  Future<Result<UserResponse>> register(AutUserRequest request) async {
+    try {
+      final credential = await _dataSource.register(request);
 
+      final firebaseUser = credential.user!;
+
+      final userResponse = (uid: firebaseUser.uid, email: firebaseUser.email!);
+
+      return Success(userResponse);
+    } on FirebaseAuthException catch (e) {
+      return Failure(mapFirebaseExceptionToFailure(e).message);
+    }
+  }
+
+  Future<Result<UserResponse>> loginWithGoogle() async {
+    try {
+      final credential = await _dataSource.loginWithGoogle();
+
+      final firebaseUser = credential.user;
+
+      if (firebaseUser == null || firebaseUser.email == null) {
+        return Failure('Unable to get authenticated user');
+      }
+
+      return Success((uid: firebaseUser.uid, email: firebaseUser.email!));
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) {
+        return Cancelled();
+      }
+
+      return Failure('Google sign-in failed');
+    } catch (e) {
+      return Failure('Google sign-in failed: $e');
+    }
+  }
 }

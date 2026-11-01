@@ -1,21 +1,14 @@
- 
-
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-
-
 
 class PetHeader extends StatelessWidget {
   final Pet pet;
 
-  const PetHeader({super.key, 
-    required this.pet,
-  });
+  const PetHeader({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +18,7 @@ class PetHeader extends StatelessWidget {
           width: 130,
           height: 130,
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: context.colors.surface,
             borderRadius: BorderRadius.circular(40),
           ),
           clipBehavior: Clip.antiAlias,
@@ -34,33 +27,27 @@ class PetHeader extends StatelessWidget {
                   pet.photoUrl,
                   fit: BoxFit.cover,
                   errorBuilder: (_, _, _) {
-                    return const Icon(
+                    return Icon(
                       Icons.pets_rounded,
                       size: 48,
-                      color: AppColors.icon,
+                      color: context.colors.onSurfaceVariant,
                     );
                   },
                 )
-              : const Icon(
+              : Icon(
                   Icons.pets_rounded,
                   size: 48,
-                  color: AppColors.icon,
+                  color: context.colors.onSurfaceVariant,
                 ),
         ),
 
         const SizedBox(height: 16),
 
-        Text(
-          pet.name,
-          style: AppStyle.title,
-        ),
+        Text(pet.name, style: context.style.title),
 
         const SizedBox(height: 5),
 
-        Text(
-          pet.breed,
-          style: AppStyle.regular14,
-        ),
+        Text(pet.breed, style: context.style.regular14),
 
         const SizedBox(height: 18),
 
@@ -68,23 +55,17 @@ class PetHeader extends StatelessWidget {
           height: 42,
           child: OutlinedButton.icon(
             onPressed: () {
-              appRouter.push(petEdit,extra: pet);
+              appRouter.push(petEdit, extra: pet);
             },
-            icon: const Icon(
-              Icons.edit_rounded,
-              size: 16,
-            ),
+            icon: const Icon(Icons.edit_rounded, size: 16),
             label: Text(
               'Edit Pet',
-              style: AppStyle.buttonText.copyWith(
-                color: AppColors.text,
+              style: context.style.buttonText.copyWith(
+                color: context.colors.onSurface,
               ),
             ),
             style: OutlinedButton.styleFrom(
-              foregroundColor: AppColors.text,
-              side: const BorderSide(
-                color: AppColors.border,
-              ),
+              foregroundColor: context.colors.onSurface,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),

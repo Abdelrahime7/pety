@@ -16,14 +16,16 @@ class AppointmentFirestoreDataSource {
   /// Fetches appointments for a list of pet IDs.
   /// Automatically chunks queries into batches of 30 to comply with Firestore whereIn limits.
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-      getAppointmentsForPets(List<String> petIds) async {
+  getAppointmentsForPets(List<String> petIds) async {
     if (petIds.isEmpty) return [];
 
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> allDocs = [];
     const chunkSize = 30;
 
     for (var i = 0; i < petIds.length; i += chunkSize) {
-      final end = (i + chunkSize < petIds.length) ? i + chunkSize : petIds.length;
+      final end = (i + chunkSize < petIds.length)
+          ? i + chunkSize
+          : petIds.length;
       final chunk = petIds.sublist(i, end);
 
       final snapshot = await _firestore
@@ -38,7 +40,7 @@ class AppointmentFirestoreDataSource {
   }
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-      getAppointmentsForPet(String petId) async {
+  getAppointmentsForPet(String petId) async {
     final snapshot = await _firestore
         .collection('appointments')
         .where('petId', isEqualTo: petId)
@@ -63,26 +65,17 @@ class AppointmentFirestoreDataSource {
   Future<DocumentSnapshot<Map<String, dynamic>>> getAppointment(
     String appointmentId,
   ) async {
-    return await _firestore
-        .collection('appointments')
-        .doc(appointmentId)
-        .get();
+    return await _firestore.collection('appointments').doc(appointmentId).get();
   }
 
   Future<void> updateAppointment(
     String appointmentId,
     Map<String, dynamic> data,
   ) async {
-    await _firestore
-        .collection('appointments')
-        .doc(appointmentId)
-        .update(data);
+    await _firestore.collection('appointments').doc(appointmentId).update(data);
   }
 
   Future<void> deleteAppointment(String appointmentId) async {
-    await _firestore
-        .collection('appointments')
-        .doc(appointmentId)
-        .delete();
+    await _firestore.collection('appointments').doc(appointmentId).delete();
   }
 }

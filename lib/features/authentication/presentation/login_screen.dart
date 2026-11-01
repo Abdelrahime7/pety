@@ -1,7 +1,7 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/height_widget.dart';
 import 'package:pet_care/features/authentication/presentation/riverpod/auth_provider.dart';
 import 'package:pet_care/features/authentication/presentation/widgets/auth_toggle_tab.dart';
@@ -40,7 +40,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -49,14 +49,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             padding: EdgeInsets.only(bottom: 16.h),
             child: Column(
               children: [
-                buildHeader(),
+                buildHeader(context),
 
                 HeightSpace(height: 16.h),
 
                 // 1. Toggle Tab (Login / Register)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: buildAuthToggleTab(
+                  child: buildAuthToggleTab(context,
                     isLogin: _isLogin,
                     onToggle: (val) {
                       setState(() {
@@ -91,11 +91,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 HeightSpace(height: 16.h),
 
-                buildSeparator(),
+                buildSeparator(context),
 
                 HeightSpace(height: 16.h),
 
                 buildSocialButtons(
+                  context,
                   onGooglePressed: () {
                     ref.read(authProvider.notifier).loginWithGoogle();
                   },
@@ -105,6 +106,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // 3. Footer toggles tab mode when tapped
                 buildRegisterFooter(
+                  context,
                   isLogin: _isLogin,
                   onTap: () {
                     setState(() {

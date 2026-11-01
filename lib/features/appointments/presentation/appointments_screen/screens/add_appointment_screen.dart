@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/app_save_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
@@ -25,11 +25,9 @@ class AddAppointmentScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<AddAppointmentScreen> createState() =>
       _AddAppointmentScreenState();
-      
 }
 
-class _AddAppointmentScreenState
-    extends ConsumerState<AddAppointmentScreen> {
+class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
   final _formKey = GlobalKey<FormState>();
 
   String? _selectedPetId;
@@ -92,46 +90,41 @@ class _AddAppointmentScreenState
 
   Future<void> _submit() async {
     if (_selectedPetId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a pet'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select a pet')));
       return;
     }
 
-    if (!( _formKey.currentState?.validate() ?? false)) {
+    if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
 
     if (_selectedDateTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select date and time'),
-        ),
+        const SnackBar(content: Text('Please select date and time')),
       );
       return;
     }
 
-    final result =
-        await ref.read(appointmentProvider.notifier).addAppointment(
-              petId: _selectedPetId!,
-              date: _selectedDateTime!,
-              veterinarian: _vetController.text.trim(),
-              notes: _notesController.text.trim(),
-              type: _selectedType,
-            );
+    final result = await ref
+        .read(appointmentProvider.notifier)
+        .addAppointment(
+          petId: _selectedPetId!,
+          date: _selectedDateTime!,
+          veterinarian: _vetController.text.trim(),
+          notes: _notesController.text.trim(),
+          type: _selectedType,
+        );
 
     if (!mounted) return;
 
     if (result is Success<void>) {
       context.pop(true);
     } else if (result is Failure<void>) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.message),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.message)));
     }
   }
 
@@ -148,7 +141,7 @@ class _AddAppointmentScreenState
     final isSubmitting = appointmentState.isLoading;
 
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.colors.surface,
       body: Stack(
         children: [
           SafeArea(
@@ -165,15 +158,13 @@ class _AddAppointmentScreenState
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AppCloseButton(
-                          onPressed: () => context.pop(),
-                        ),
+                        AppCloseButton(onPressed: () => context.pop()),
                         Text(
                           'New Appointment',
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
+                            color: context.colors.onSurface,
                           ),
                         ),
                         AppSaveButton(
@@ -195,10 +186,7 @@ class _AddAppointmentScreenState
                         const FieldLabel(label: 'SELECT PET'),
                         SizedBox(height: 8.h),
 
-                        _buildPetSelector(
-                          pets,
-                          petAsync.isLoading,
-                        ),
+                        _buildPetSelector(pets, petAsync.isLoading),
 
                         SizedBox(height: 20.h),
 
@@ -207,14 +195,15 @@ class _AddAppointmentScreenState
                         SizedBox(height: 8.h),
 
                         buildAppointmentTypeSelector(
+                          context,
                           selectedType: _selectedType,
-                     onChanged: (value) {
-                       setState(() {
-                           _selectedType = value!;
-                                });
-                           },                        
-                         ),
-            
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedType = value!;
+                            });
+                          },
+                        ),
+
                         SizedBox(height: 20.h),
 
                         // DATE
@@ -225,15 +214,14 @@ class _AddAppointmentScreenState
                           hintText: 'mm / dd / yyyy , --:-- --',
                           readOnly: true,
                           onTap: _pickDateTime,
-                          suffixIcon: const Icon(
+                          suffixIcon: Icon(
                             Icons.calendar_today_outlined,
                             size: 20,
-                            color: AppColors.icon,
+                            color: context.colors.onSurfaceVariant,
                           ),
-                          validator: (value) =>
-                              value == null || value.isEmpty
-                                  ? 'Date is required'
-                                  : null,
+                          validator: (value) => value == null || value.isEmpty
+                              ? 'Date is required'
+                              : null,
                         ),
 
                         SizedBox(height: 16.h),
@@ -244,15 +232,15 @@ class _AddAppointmentScreenState
                         CustomeTextField(
                           controller: _vetController,
                           hintText: 'e.g. Dr. Sarah Mitchell',
-                          prefixIcon: const Icon(
+                          prefixIcon: Icon(
                             Icons.person_outline,
                             size: 20,
-                            color: AppColors.icon,
+                            color: context.colors.onSurfaceVariant,
                           ),
                           validator: (value) =>
                               value == null || value.trim().isEmpty
-                                  ? 'Veterinarian name is required'
-                                  : null,
+                              ? 'Veterinarian name is required'
+                              : null,
                         ),
 
                         SizedBox(height: 16.h),
@@ -286,9 +274,7 @@ class _AddAppointmentScreenState
           // Loading overlay
           if (isSubmitting) ...[
             Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.2),
-              ),
+              child: Container(color: Colors.black.withValues(alpha: 0.2)),
             ),
             Center(
               child: Container(
@@ -298,24 +284,22 @@ class _AddAppointmentScreenState
                   borderRadius: BorderRadius.circular(16.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                     ),
                   ],
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(
-                      color: AppColors.primary,
-                    ),
-                    SizedBox(height: 16),
+                    CircularProgressIndicator(color: context.colors.primary),
+                    const SizedBox(height: 16),
                     Text(
                       'Scheduling appointment…',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: context.colors.onSurface,
                       ),
                     ),
                   ],
@@ -328,21 +312,14 @@ class _AddAppointmentScreenState
     );
   }
 
-
-
-
-
-  Widget _buildPetSelector(
-    List<Pet> pets,
-    bool isLoading,
-  ) {
+  Widget _buildPetSelector(List<Pet> pets, bool isLoading) {
     if (isLoading && pets.isEmpty) {
       return SizedBox(
         height: 90.h,
-        child: const Center(
+        child: Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: AppColors.primary,
+            color: context.colors.primary,
           ),
         ),
       );
@@ -376,27 +353,24 @@ class _AddAppointmentScreenState
                   height: 58.w,
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.colors.surface,
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
                       color: isSelected
-                          ? AppColors.primary
-                          : AppColors.border,
+                          ? context.colors.primary
+                          : context.colors.outlineVariant,
                       width: isSelected ? 2 : 1,
                     ),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: pet.photoUrl.isNotEmpty
-                        ? Image.network(
-                            pet.photoUrl,
-                            fit: BoxFit.cover,
-                          )
+                        ? Image.network(pet.photoUrl, fit: BoxFit.cover)
                         : Container(
-                            color: const Color(0xFFF1F5F9),
-                            child: const Icon(
+                            color: context.colors.outlineVariant,
+                            child: Icon(
                               Icons.pets,
-                              color: AppColors.icon,
+                              color: context.colors.onSurfaceVariant,
                             ),
                           ),
                   ),
@@ -406,12 +380,10 @@ class _AddAppointmentScreenState
                   pet.name,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    fontWeight: isSelected
-                        ? FontWeight.bold
-                        : FontWeight.w500,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                     color: isSelected
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
+                        ? context.colors.primary
+                        : context.colors.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -435,16 +407,16 @@ class _AddAppointmentScreenState
             width: 58.w,
             height: 58.w,
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: context.colors.surface,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: AppColors.border,
+                color: context.colors.outlineVariant,
                 width: 1.2,
               ),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.add,
-              color: AppColors.icon,
+              color: context.colors.onSurfaceVariant,
               size: 22,
             ),
           ),
@@ -453,7 +425,7 @@ class _AddAppointmentScreenState
             'Add',
             style: TextStyle(
               fontSize: 12.sp,
-              color: AppColors.textMuted,
+              color: context.colors.onSurfaceVariant,
               fontWeight: FontWeight.w500,
             ),
           ),

@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '721972208500',
     projectId: 'petcare-a7-plus-2026-d7623',
     storageBucket: 'petcare-a7-plus-2026-d7623.firebasestorage.app',
-    iosClientId: '721972208500-5d7lklhtrgpp7t8s2ara30160i30o8v7.apps.googleusercontent.com',
+    iosClientId:
+        '721972208500-5d7lklhtrgpp7t8s2ara30160i30o8v7.apps.googleusercontent.com',
     iosBundleId: 'com.example.petCare',
   );
 
@@ -74,7 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '721972208500',
     projectId: 'petcare-a7-plus-2026-d7623',
     storageBucket: 'petcare-a7-plus-2026-d7623.firebasestorage.app',
-    iosClientId: '721972208500-5d7lklhtrgpp7t8s2ara30160i30o8v7.apps.googleusercontent.com',
+    iosClientId:
+        '721972208500-5d7lklhtrgpp7t8s2ara30160i30o8v7.apps.googleusercontent.com',
     iosBundleId: 'com.example.petCare',
   );
 

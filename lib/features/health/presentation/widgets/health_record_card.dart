@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
@@ -9,11 +9,7 @@ class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
   final VoidCallback? onTap;
 
-  const HealthRecordCard({
-    super.key,
-    required this.record,
-    this.onTap,
-  });
+  const HealthRecordCard({super.key, required this.record, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +19,9 @@ class HealthRecordCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: const [
             BoxShadow(
               color: Color(0x060F172A),
@@ -66,7 +62,7 @@ class HealthRecordCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.5.sp,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.text,
+                            color: context.colors.onSurface,
                           ),
                         ),
                       ),
@@ -75,7 +71,7 @@ class HealthRecordCard extends StatelessWidget {
                         DateFormat('MMM dd, yyyy').format(record.date),
                         style: TextStyle(
                           fontSize: 11.sp,
-                          color: const Color(0xFF94A3B8),
+                          color: context.colors.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -83,7 +79,10 @@ class HealthRecordCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5.h),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 3.h,
+                    ),
                     decoration: BoxDecoration(
                       color: record.recordType.backgroundColor,
                       borderRadius: BorderRadius.circular(999.r),
@@ -105,7 +104,7 @@ class HealthRecordCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 11.5.sp,
-                        color: const Color(0xFF64748B),
+                        color: context.colors.onSurfaceVariant,
                         height: 1.35,
                       ),
                     ),
@@ -119,4 +118,3 @@ class HealthRecordCard extends StatelessWidget {
     );
   }
 }
-

@@ -1,14 +1,11 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 import 'package:pet_care/core/services/notification/notification_service.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
 
-class NotificationNotifier
-    extends AsyncNotifier<List<Notification>> {
-  NotificationService get _service =>
-      ref.read(notificationServiceProvider);
+class NotificationNotifier extends AsyncNotifier<List<Notification>> {
+  NotificationService get _service => ref.read(notificationServiceProvider);
 
   String? get _userId =>
       ref.read(authenticationServiceProvider).getCurrentUser()?.uid;

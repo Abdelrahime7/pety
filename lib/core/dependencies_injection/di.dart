@@ -1,0 +1,115 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pet_care/core/services/appointment_service.dart';
+import 'package:pet_care/core/services/authetication/auth_service.dart';
+import 'package:pet_care/core/services/image_storage_service.dart';
+import 'package:pet_care/core/services/health_service.dart';
+import 'package:pet_care/core/services/notification/notification_service.dart';
+import 'package:pet_care/core/services/users_service.dart';
+import 'package:pet_care/core/services/vaccination_service.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
+import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
+import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
+import 'package:pet_care/infrastructure/firebase/appointment/firebase_appointment_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/auth/firebase_auth_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/notification/firebase_notification_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
+import 'package:pet_care/core/services/pet_service.dart';
+import 'package:pet_care/infrastructure/firebase/health/firebase_health_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
+import 'package:pet_care/infrastructure/networks/dio/dio_provider.dart';
+
+final notificationDataSourceProvider = Provider<NotificationDataSource>((ref) {
+  return NotificationDataSource(FirebaseFirestore.instance);
+});
+
+final notificationServiceProvider = Provider<NotificationService>((ref) {
+  return NotificationService(ref.read(notificationDataSourceProvider));
+});
+
+final userFirestoreDataSourcePrvider = Provider<UserFirestoreDataSource>((ref) {
+  return UserFirestoreDataSource(FirebaseFirestore.instance);
+});
+
+final userServiceProvider = Provider<UserService>((ref) {
+  return UserService(ref.read(userFirestoreDataSourcePrvider));
+});
+
+final firbasedatasourceProvider = Provider<FirebaseAuthDataSource>((ref) {
+  return FirebaseAuthDataSource(
+    FirebaseAuth.instance,
+    userdataSource: ref.read(userFirestoreDataSourcePrvider),
+  );
+});
+
+final authenticationServiceProvider = Provider<AuthenticationService>((ref) {
+  return AuthenticationService(dataSource: ref.read(firbasedatasourceProvider));
+});
+
+// ---------------- PETS DI ---------------- //
+
+final petFirestoreDataSourceProvider = Provider<PetFirestoreDataSource>((ref) {
+  return PetFirestoreDataSource(FirebaseFirestore.instance);
+});
+
+final petServiceProvider = Provider<PetService>((ref) {
+  return PetService(
+    // We pass the data source into the service exactly as your friend did for Auth/User
+    dataSource: ref.read(petFirestoreDataSourceProvider),
+  );
+});
+
+//  cloudinary and dio
+final cloudinaryServiceProvider = Provider<CloudinaryService>((ref) {
+  return CloudinaryService(ref.read(dioProvider));
+});
+
+// image service
+
+final imageServiceProvider = Provider<ImageService>((ref) {
+  return ImageService(ref.read(cloudinaryServiceProvider));
+});
+
+final vaccinationDataSourceProvider = Provider<VaccinationDataSource>(
+  (ref) => VaccinationDataSource(firestore: FirebaseFirestore.instance),
+);
+
+final vaccinationRecordServiceProvider =
+    Provider<VaccinationService<VaccinationRecord>>((ref) {
+      return VaccinationService<VaccinationRecord>(
+        dataSource: ref.read(vaccinationDataSourceProvider),
+        collectionName: 'vaccinationRecords',
+        fromMap: VaccinationRecord.fromMap,
+      );
+    });
+
+final vaccinationSerieServiceProvider =
+    Provider<VaccinationService<VaccinationSerie>>((ref) {
+      return VaccinationService<VaccinationSerie>(
+        dataSource: ref.read(vaccinationDataSourceProvider),
+        collectionName: 'vaccinationSeries',
+        fromMap: VaccinationSerie.fromMap,
+      );
+    });
+// ---------------- APPOINTMENTS DI ---------------- //
+
+final appointmentFirestoreDataSourceProvider =
+    Provider<AppointmentFirestoreDataSource>((ref) {
+      return AppointmentFirestoreDataSource(FirebaseFirestore.instance);
+    });
+
+final appointmentServiceProvider = Provider<AppointmentService>((ref) {
+  return AppointmentService(
+    dataSource: ref.read(appointmentFirestoreDataSourceProvider),
+  );
+});
+
+final healthDataSourceProvider = Provider<FirebaseHealthDataSource>(
+  (ref) => FirebaseHealthDataSource(FirebaseFirestore.instance),
+);
+
+final healthServiceProvider = Provider<HealthService>(
+  (ref) => HealthService(dataSource: ref.read(healthDataSourceProvider)),
+);

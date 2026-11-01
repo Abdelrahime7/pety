@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 import 'package:pet_care/core/services/appointment_service.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
@@ -74,7 +74,7 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
     required DateTime date,
     required String veterinarian,
     String notes = '',
-    required AppointmentType type
+    required AppointmentType type,
   }) async {
     state = state.copyWith(isLoading: true, error: () => null);
 
@@ -86,12 +86,12 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
 
       final appointment = Appointment(
         appointmentId: const Uuid().v4(),
-        userId:_ownerId! ,
+        userId: _ownerId!,
         petId: petId,
         date: date,
         veterinarian: veterinarian,
         notes: notes,
-        type: type
+        type: type,
       );
 
       final result = await _service.addAppointment(appointment);

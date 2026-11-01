@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/app_back_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
@@ -18,18 +18,14 @@ import '../widgets/health_record_type_sheet.dart';
 class AddHealthRecordScreen extends ConsumerStatefulWidget {
   final Pet pet;
 
-  const AddHealthRecordScreen({
-    super.key,
-    required this.pet,
-  });
+  const AddHealthRecordScreen({super.key, required this.pet});
 
   @override
   ConsumerState<AddHealthRecordScreen> createState() =>
       _AddHealthRecordScreenState();
 }
 
-class _AddHealthRecordScreenState
-    extends ConsumerState<AddHealthRecordScreen> {
+class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
@@ -68,9 +64,7 @@ class _AddHealthRecordScreenState
     final selectedType = await showModalBottomSheet<HealthRecordType>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) => HealthRecordTypeSheet(
-        selectedType: _selectedType,
-      ),
+      builder: (_) => HealthRecordTypeSheet(selectedType: _selectedType),
     );
 
     if (selectedType == null) return;
@@ -93,7 +87,7 @@ class _AddHealthRecordScreenState
         .read(healthRecordsProvider(widget.pet.id).notifier)
         .createRecord(
           HealthRecord(
-            ownerId:widget.pet.ownerId,
+            ownerId: widget.pet.ownerId,
             recordId: '',
             petId: widget.pet.id,
             recordType: _selectedType,
@@ -108,9 +102,7 @@ class _AddHealthRecordScreenState
 
     if (result is Success<void>) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Health record added successfully'),
-        ),
+        const SnackBar(content: Text('Health record added successfully')),
       );
 
       Navigator.of(context).pop();
@@ -118,11 +110,9 @@ class _AddHealthRecordScreenState
     }
 
     if (result is Failure<void>) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.message),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(result.message)));
     }
 
     setState(() {
@@ -133,19 +123,17 @@ class _AddHealthRecordScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.colors.surface,
         elevation: 0,
-        leading: AppBackButton(
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: AppBackButton(onPressed: () => Navigator.of(context).pop()),
         title: Text(
           'Add Health Record',
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.text,
+            color: context.colors.onSurface,
           ),
         ),
         centerTitle: true,
@@ -153,18 +141,11 @@ class _AddHealthRecordScreenState
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            20.w,
-            16.h,
-            20.w,
-            120.h,
-          ),
+          padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 120.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HealthRecordPetHeader(
-                pet: widget.pet,
-              ),
+              HealthRecordPetHeader(pet: widget.pet),
 
               SizedBox(height: 28.h),
 
@@ -173,7 +154,7 @@ class _AddHealthRecordScreenState
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.text,
+                  color: context.colors.onSurface,
                 ),
               ),
 
@@ -185,7 +166,7 @@ class _AddHealthRecordScreenState
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.text,
+                  color: context.colors.onSurface,
                 ),
               ),
 
@@ -210,7 +191,7 @@ class _AddHealthRecordScreenState
                 prefixIcon: Icon(
                   Icons.title_rounded,
                   size: 21.sp,
-                  color: AppColors.textSecondary,
+                  color: context.colors.onSurfaceVariant,
                 ),
                 textInputAction: TextInputAction.next,
                 validator: (value) {
@@ -230,7 +211,7 @@ class _AddHealthRecordScreenState
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.text,
+                  color: context.colors.onSurface,
                 ),
               ),
 
@@ -238,13 +219,9 @@ class _AddHealthRecordScreenState
 
               HealthRecordSelectorField(
                 icon: Icons.calendar_today_rounded,
-                iconColor: AppColors.primary,
-                iconBackground: AppColors.primary.withValues(
-                  alpha: 0.1,
-                ),
-                title: DateFormat(
-                  'MMM dd, yyyy',
-                ).format(_selectedDate),
+                iconColor: context.colors.primary,
+                iconBackground: context.colors.primary.withValues(alpha: 0.1),
+                title: DateFormat('MMM dd, yyyy').format(_selectedDate),
                 subtitle: 'When did this happen?',
                 onTap: _selectDate,
               ),
@@ -259,7 +236,7 @@ class _AddHealthRecordScreenState
                 prefixIcon: Icon(
                   Icons.medical_services_rounded,
                   size: 21.sp,
-                  color: AppColors.textSecondary,
+                  color: context.colors.onSurfaceVariant,
                 ),
                 textInputAction: TextInputAction.next,
               ),
@@ -272,14 +249,11 @@ class _AddHealthRecordScreenState
                 label: 'Notes',
                 hintText: 'Add any additional information...',
                 prefixIcon: Padding(
-                  padding: EdgeInsets.only(
-                    left: 14.w,
-                    right: 8.w,
-                  ),
+                  padding: EdgeInsets.only(left: 14.w, right: 8.w),
                   child: Icon(
                     Icons.notes_rounded,
                     size: 21.sp,
-                    color: AppColors.textSecondary,
+                    color: context.colors.onSurfaceVariant,
                   ),
                 ),
                 maxLines: 5,
@@ -292,9 +266,7 @@ class _AddHealthRecordScreenState
                 width: double.infinity,
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(
-                    alpha: 0.07,
-                  ),
+                  color: context.colors.primary.withValues(alpha: 0.07),
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Row(
@@ -303,7 +275,7 @@ class _AddHealthRecordScreenState
                     Icon(
                       Icons.info_outline_rounded,
                       size: 20.sp,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
@@ -313,7 +285,7 @@ class _AddHealthRecordScreenState
                         style: TextStyle(
                           fontSize: 13.sp,
                           height: 1.45,
-                          color: AppColors.textSecondary,
+                          color: context.colors.onSurfaceVariant,
                         ),
                       ),
                     ),
@@ -328,23 +300,19 @@ class _AddHealthRecordScreenState
       // Submit button
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            20.w,
-            12.h,
-            20.w,
-            16.h,
-          ),
+          padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 16.h),
           child: SizedBox(
             height: 54.h,
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _isSubmitting ? null : _submit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: context.colors.primary,
                 foregroundColor: Colors.white,
                 elevation: 0,
-                disabledBackgroundColor:
-                    AppColors.primary.withValues(alpha: 0.5),
+                disabledBackgroundColor: context.colors.primary.withValues(
+                  alpha: 0.5,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.r),
                 ),

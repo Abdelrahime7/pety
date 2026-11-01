@@ -1,6 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
 import 'package:pet_care/core/constant/widgets/primary_button.dart';
 
@@ -41,7 +41,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.surfaceContainer,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -61,12 +61,12 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 width: 64.r,
                 height: 64.r,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.12),
+                  color: context.colors.primary.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.workspace_premium_rounded,
-                  color: AppColors.primary,
+                  color: context.colors.primary,
                   size: 32.sp,
                 ),
               ),
@@ -78,7 +78,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
+                  color: context.colors.onSurface,
                 ),
               ),
               SizedBox(height: 8.h),
@@ -88,7 +88,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 style: TextStyle(
                   fontSize: 14.sp,
                   height: 1.4,
-                  color: AppColors.textSecondary,
+                  color: context.colors.onSurfaceVariant,
                 ),
               ),
               SizedBox(height: 28.h),
@@ -117,7 +117,8 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 badgeText: 'BEST VALUE',
                 discountTag: 'Save 33%',
                 isSelected: _selectedPlan == SubscriptionPlan.annual,
-                onTap: () => setState(() => _selectedPlan = SubscriptionPlan.annual),
+                onTap: () =>
+                    setState(() => _selectedPlan = SubscriptionPlan.annual),
               ),
               SizedBox(height: 16.h),
 
@@ -127,7 +128,8 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 subtitle: 'Flexible billing',
                 price: '\$4.99',
                 isSelected: _selectedPlan == SubscriptionPlan.monthly,
-                onTap: () => setState(() => _selectedPlan = SubscriptionPlan.monthly),
+                onTap: () =>
+                    setState(() => _selectedPlan = SubscriptionPlan.monthly),
               ),
               SizedBox(height: 24.h),
 
@@ -147,7 +149,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
                 style: TextStyle(
                   fontSize: 11.sp,
                   height: 1.4,
-                  color: AppColors.textMuted,
+                  color: context.colors.onSurfaceVariant,
                 ),
               ),
               SizedBox(height: 20.h),

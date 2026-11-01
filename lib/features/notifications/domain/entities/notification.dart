@@ -20,6 +20,4 @@ class Notification {
     required this.createdAt,
     this.data,
   });
-
-  
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/validators/password_validator.dart';
 
 Widget buildPasswordField(
   BuildContext context,
-  void Function () ? resetPassword, 
+  void Function()? resetPassword,
   TextEditingController passwordController,
   void Function() onSuffixIconPressed,
   bool obscurePassword, {
@@ -18,11 +17,11 @@ Widget buildPasswordField(
     children: [
       Text(
         'PASSWORD',
-        style: AppStyle.tileTitle.copyWith(
+        style: context.style.tileTitle.copyWith(
           fontSize: 11.sp,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
-          color: const Color(0xFF8A94A6),
+          color: context.colors.onSurfaceVariant,
         ),
       ),
       SizedBox(height: 6.82.h),
@@ -33,14 +32,14 @@ Widget buildPasswordField(
         prefixIcon: Icon(
           Icons.lock_rounded,
           size: 18.sp,
-          color: AppColors.icon,
+          color: context.colors.onSurfaceVariant,
         ),
         suffixIcon: Icon(
           obscurePassword
               ? Icons.visibility_off_outlined
               : Icons.visibility_outlined,
           size: 18.sp,
-          color: AppColors.secondaryText,
+          color: context.colors.onSurfaceVariant,
         ),
         onSuffixIconPressed: onSuffixIconPressed,
         validator: validatePassword,
@@ -50,16 +49,11 @@ Widget buildPasswordField(
         Align(
           alignment: Alignment.centerRight,
           child: GestureDetector(
-            onTap:resetPassword,
-
+            onTap: resetPassword,
 
             child: Text(
               'Forgot Password?',
-              style: AppStyle.buttonText.copyWith(
-              fontSize: 13.sp
-              ),
-                
-              
+              style: context.style.buttonText.copyWith(fontSize: 13.sp),
             ),
           ),
         ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppColors {
+  static const Color backgroundDark = Color(0xFF1A1A1A);
   static const background = Color(0xFFF8FAF8);
   static const surface = Colors.white;
 
   static const textPrimary = Color(0xFF1B1B1B);
   static const textSecondary = Color(0xFF6B7280);
-  static const textMuted = Color(0xFF94A3B8); // Muted / placeholder / caption text color
+  static const textMuted = Color(
+    0xFF94A3B8,
+  ); // Muted / placeholder / caption text color
 
   static const error = Color(0xFFD32F2F);
 

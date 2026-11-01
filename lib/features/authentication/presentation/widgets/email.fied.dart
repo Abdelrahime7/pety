@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/validators/email_validator.dart';
 
-Widget buildEmailField(TextEditingController emailController) {
+Widget buildEmailField(
+  TextEditingController emailController,
+  BuildContext context,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
         'EMAIL ADDRESS',
-        style: AppStyle.tileTitle.copyWith(
+        style: context.style.tileTitle.copyWith(
           fontSize: 11.sp,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
-          color: const Color(0xFF8A94A6),
+          color: context.colors.onSurfaceVariant,
         ),
       ),
       SizedBox(height: 6.82.h),
@@ -26,7 +28,7 @@ Widget buildEmailField(TextEditingController emailController) {
         prefixIcon: Icon(
           Icons.mail_outline_rounded,
           size: 18.sp,
-          color: AppColors.icon,
+          color: context.colors.onSurfaceVariant,
         ),
         validator: validateEmail,
       ),

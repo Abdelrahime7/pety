@@ -1,17 +1,14 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HealthRecordPetHeader extends StatelessWidget {
   final Pet pet;
 
-  const HealthRecordPetHeader({
-    super.key,
-    required this.pet,
-  });
+  const HealthRecordPetHeader({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +16,9 @@ class HealthRecordPetHeader extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: const Color(0xFFF1F5F9),
-        ),
+        border: Border.all(color: context.colors.outlineVariant),
         boxShadow: const [
           BoxShadow(
             color: Color(0x060F172A),
@@ -39,13 +34,13 @@ class HealthRecordPetHeader extends StatelessWidget {
             height: 48.w,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
+              color: context.colors.outlineVariant,
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: pet.photoUrl.isEmpty
                 ? Icon(
                     Icons.pets,
-                    color: AppColors.icon,
+                    color: context.colors.onSurfaceVariant,
                     size: 23.sp,
                   )
                 : Image.network(
@@ -54,7 +49,7 @@ class HealthRecordPetHeader extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) {
                       return Icon(
                         Icons.pets,
-                        color: AppColors.icon,
+                        color: context.colors.onSurfaceVariant,
                         size: 23.sp,
                       );
                     },
@@ -70,7 +65,7 @@ class HealthRecordPetHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 9.5.sp,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xFF94A3B8),
+                    color: context.colors.onSurfaceVariant,
                     letterSpacing: 0.6,
                   ),
                 ),
@@ -80,7 +75,7 @@ class HealthRecordPetHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.text,
+                    color: context.colors.onSurface,
                   ),
                 ),
               ],

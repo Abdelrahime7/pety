@@ -3,14 +3,12 @@ import 'package:pet_care/features/notifications/domain/entities/notification.dar
 import 'package:pet_care/features/notifications/presentation/riverpod/notification_settings_notifier.dart';
 import 'package:pet_care/features/notifications/presentation/riverpod/notificaton_notifier.dart';
 
-
-
 final notificationProvider =
     AsyncNotifierProvider<NotificationNotifier, List<Notification>>(
-  NotificationNotifier.new,
-);
+      NotificationNotifier.new,
+    );
 
 final notificationSettingsProvider =
     AsyncNotifierProvider<NotificationSettingsNotifier, bool>(
-  NotificationSettingsNotifier.new,
-);
+      NotificationSettingsNotifier.new,
+    );

@@ -1,7 +1,6 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class AppointmentItem extends StatelessWidget {
   final IconData icon;
@@ -27,7 +26,7 @@ class AppointmentItem extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.background,
+            color: context.colors.surface,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -47,27 +46,23 @@ class AppointmentItem extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.10),
+                      color: context.colors.primary.withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(13),
                     ),
-                    child: Icon(
-                      icon,
-                      size: 21,
-                      color: AppColors.primary,
-                    ),
+                    child: Icon(icon, size: 21, color: context.colors.primary),
                   ),
 
                   Container(
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
+                      color: context.colors.primary.withValues(alpha: 0.08),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.chevron_right_rounded,
                       size: 21,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                 ],
@@ -75,18 +70,13 @@ class AppointmentItem extends StatelessWidget {
 
               const SizedBox(height: 14),
 
-              Text(
-                title,
-                style: AppStyle.regular10,
-              ),
+              Text(title, style: context.style.regular10),
 
               const SizedBox(height: 5),
 
               Text(
                 nextDueDate,
-                style: AppStyle.tileTitle.copyWith(
-                  fontSize: 13,
-                ),
+                style: context.style.tileTitle.copyWith(fontSize: 13),
               ),
             ],
           ),
@@ -106,7 +96,8 @@ class VaccinationItem extends StatelessWidget {
     super.key,
     required this.icon,
     required this.vaccinationsCount,
-    this.onTap, required this.activeSeriesCount,
+    this.onTap,
+    required this.activeSeriesCount,
   });
 
   @override
@@ -119,7 +110,7 @@ class VaccinationItem extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.background,
+            color: context.colors.surface,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -139,27 +130,23 @@ class VaccinationItem extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.10),
+                      color: context.colors.primary.withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(13),
                     ),
-                    child: Icon(
-                      icon,
-                      size: 21,
-                      color: AppColors.primary,
-                    ),
+                    child: Icon(icon, size: 21, color: context.colors.primary),
                   ),
 
                   Container(
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
+                      color: context.colors.primary.withValues(alpha: 0.08),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.chevron_right_rounded,
                       size: 21,
-                      color: AppColors.primary,
+                      color: context.colors.primary,
                     ),
                   ),
                 ],
@@ -169,26 +156,21 @@ class VaccinationItem extends StatelessWidget {
 
               Text(
                 '$vaccinationsCount ${vaccinationsCount <= 1 ? 'dose' : 'doses'}',
-                style: AppStyle.regular12,
+                style: context.style.regular12,
               ),
 
               const SizedBox(height: 5),
 
-              
               const SizedBox(height: 8),
 
-          
-
               Text(
-                 "Active Series: $activeSeriesCount",
-                style: AppStyle.regular12)
-              
-              
+                "Active Series: $activeSeriesCount",
+                style: context.style.regular12,
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
 }

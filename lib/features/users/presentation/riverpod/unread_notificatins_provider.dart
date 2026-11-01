@@ -1,11 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 
-final unreadNotificationCountProvider =
-    FutureProvider<int>((ref) async {
-  final userId =
-      ref.read(authenticationServiceProvider).getCurrentUser()?.uid;
+final unreadNotificationCountProvider = FutureProvider<int>((ref) async {
+  final userId = ref.read(authenticationServiceProvider).getCurrentUser()?.uid;
 
   if (userId == null) {
     return 0;

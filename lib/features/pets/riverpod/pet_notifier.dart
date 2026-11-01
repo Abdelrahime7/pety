@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/core/dependencies%20inection/di.dart';
+import 'package:pet_care/core/dependencies_injection/di.dart';
 import 'package:pet_care/core/services/image_storage_service.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
@@ -13,14 +13,12 @@ import 'package:uuid/uuid.dart';
 class PetNotifier extends AsyncNotifier<List<Pet>> {
   PetService get _service => ref.read(petServiceProvider);
 
-ImageService get _imageService => ref.read(imageServiceProvider);
+  ImageService get _imageService => ref.read(imageServiceProvider);
 
   String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
 
   @override
   FutureOr<List<Pet>> build() async {
-   
-
     if (_ownerId == null) {
       return [];
     }

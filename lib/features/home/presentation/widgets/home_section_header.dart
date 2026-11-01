@@ -1,8 +1,8 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
-import 'package:pet_care/core/constant/theme/app_style.dart';
 
 class HomeSectionHeader extends StatelessWidget {
   final String title;
@@ -29,17 +29,12 @@ class HomeSectionHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppStyle.subtitle.copyWith(
-                  fontSize: 16.sp,
-                ),
+                style: context.style.subtitle.copyWith(fontSize: 16.sp),
               ),
 
               if (subtitle != null) ...[
                 SizedBox(height: 4.h),
-                Text(
-                  subtitle!,
-                  style: AppStyle.regular12,
-                ),
+                Text(subtitle!, style: context.style.regular12),
               ],
             ],
           ),
@@ -50,17 +45,14 @@ class HomeSectionHeader extends StatelessWidget {
             onPressed: onActionTap,
             style: TextButton.styleFrom(
               foregroundColor: AppColors.tealDark,
-              padding: EdgeInsets.symmetric(
-                horizontal: 4.w,
-                vertical: 6.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   actionText!,
-                  style: AppStyle.buttonText.copyWith(
+                  style: context.style.buttonText.copyWith(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.tealDark,
@@ -69,10 +61,7 @@ class HomeSectionHeader extends StatelessWidget {
 
                 SizedBox(width: 4.w),
 
-                Icon(
-                  Icons.arrow_forward_rounded,
-                  size: 15.sp,
-                ),
+                Icon(Icons.arrow_forward_rounded, size: 15.sp),
               ],
             ),
           ),
