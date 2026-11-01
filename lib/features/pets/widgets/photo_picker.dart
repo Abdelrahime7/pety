@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,26 +29,29 @@ class PhotoPicker extends StatelessWidget {
             width: 110,
             height: 110,
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F7FA),
+              color: context.colors.surfaceContainerLow,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFCFD9E0), width: 1.2),
+              border: Border.all(
+                color: context.colors.outlineVariant,
+                width: 1.2,
+              ),
             ),
 
             // ⭐ SHOW IMAGE IF AVAILABLE
             child: imageFile == null
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.camera_alt_outlined,
-                        color: Color(0xFF8C9BA8),
+                        color: context.colors.onSurfaceVariant,
                         size: 30,
                       ),
                       SizedBox(height: 6),
                       Text(
                         'UPLOAD PHOTO',
                         style: TextStyle(
-                          color: Color(0xFF8C9BA8),
+                          color: context.colors.onSurfaceVariant,
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
                         ),
@@ -65,8 +69,8 @@ class PhotoPicker extends StatelessWidget {
             right: 0,
             child: Container(
               padding: const EdgeInsets.all(6),
-              decoration: const BoxDecoration(
-                color: Color(0xFF20C997),
+              decoration: BoxDecoration(
+                color: context.colors.primary,
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.add, color: Colors.white, size: 18),

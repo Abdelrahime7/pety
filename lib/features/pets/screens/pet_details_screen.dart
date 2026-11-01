@@ -166,7 +166,7 @@ class _PetDetailsScreenState extends ConsumerState<PetDetailsScreen> {
 
                 style: OutlinedButton.styleFrom(
                   foregroundColor: context.colors.error,
-                  backgroundColor: context.colors.error.withOpacity(0.08),
+                  backgroundColor: context.colors.error.withValues(alpha: 0.08),
                   side: BorderSide.none,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),

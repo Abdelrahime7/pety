@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
@@ -33,15 +34,15 @@ class PetCard extends StatelessWidget {
 
     // Color coding gender playfully
     final tagBgColor = isMale
-        ? const Color(0xFFF0FDFA)
-        : const Color(0xFFFFF1F2);
+        ? context.colors.primary.withValues(alpha: 0.12)
+        : context.colors.error.withValues(alpha: 0.12);
     final tagTextColor = isMale
-        ? const Color(0xFF0F766E)
+        ? context.colors.primary
         : const Color.fromARGB(255, 187, 122, 149);
 
-    final inkMuted = const Color(0xFF64748B);
-    final inkSoft = const Color(0xFF94A3B8);
-    final ink = const Color(0xFF0F172A);
+    final inkMuted = context.colors.onSurfaceVariant;
+    final inkSoft = context.colors.onSurfaceVariant;
+    final ink = context.colors.onSurface;
 
     return GestureDetector(
       onTap: onTap,
@@ -49,12 +50,12 @@ class PetCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(24.r),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 4,
               offset: const Offset(0, 1),
             ),
@@ -74,7 +75,7 @@ class PetCard extends StatelessWidget {
                     height: 80.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.r),
-                      color: const Color(0xFFF1F5F9),
+                      color: context.colors.outlineVariant,
                       image: pet.photoUrl.isNotEmpty
                           ? DecorationImage(
                               image: NetworkImage(pet.photoUrl),
@@ -148,7 +149,7 @@ class PetCard extends StatelessWidget {
                           vertical: 2.h,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1F5F9), // slate-100
+                          color: context.colors.outlineVariant, // slate-100
                           borderRadius: BorderRadius.circular(999.r),
                         ),
                         child: Text(

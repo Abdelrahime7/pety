@@ -109,7 +109,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(
-                    color: context.colors.outlineVariant.withOpacity(0.6),
+                    color: context.colors.outlineVariant.withValues(alpha: 0.6),
                   ),
                 ),
                 child: TextField(
@@ -127,7 +127,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                       color: context.colors.onSurfaceVariant,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: context.colors.surfaceContainer,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide.none,

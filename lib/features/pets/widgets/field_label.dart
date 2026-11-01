@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 
 class FieldLabel extends StatelessWidget {
@@ -9,10 +10,10 @@ class FieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w700,
-        color: Color(0xFF7A869A),
+        color: context.colors.onSurfaceVariant,
         letterSpacing: 0.5,
       ),
     );

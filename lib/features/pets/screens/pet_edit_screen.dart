@@ -372,7 +372,9 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: context.colors.primary,
           foregroundColor: context.colors.surface,
-          disabledBackgroundColor: context.colors.primary.withOpacity(0.5),
+          disabledBackgroundColor: context.colors.primary.withValues(
+            alpha: 0.5,
+          ),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
