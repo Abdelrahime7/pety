@@ -35,7 +35,7 @@ class ProfilePictureWidget extends StatelessWidget {
         errorBuilder: (context, error, stack) {
           return Icon(
             Icons.person,
-            color: const Color(0xFFCBD5E1),
+            color: context.colors.outlineVariant,
             size: size * 0.55,
           );
         },
@@ -45,7 +45,7 @@ class ProfilePictureWidget extends StatelessWidget {
     else {
       image = Icon(
         Icons.person,
-        color: const Color(0xFFCBD5E1),
+        color: context.colors.outlineVariant,
         size: size * 0.55,
       );
     }
@@ -59,10 +59,10 @@ class ProfilePictureWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              color: const Color(0xFFF0FDFA),
+              color: context.colors.primary.withValues(alpha: 0.12),
               width: size > 80 ? 4 : 3,
             ),
-            color: const Color(0xFFF1F5F9),
+            color: context.colors.outlineVariant,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(innerRadius),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class LogoutActionCard extends StatelessWidget {
   final VoidCallback onTap;
@@ -7,21 +8,23 @@ class LogoutActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color ink = Color(0xFF0F172A);
-    const Color inkSoft = Color(0xFF94A3B8);
-    const Color danger = Color(0xFFF43F5E);
-    const Color dangerBackground = Color(0xFFFFF1F2);
+    final Color inkSoft = context.colors.onSurfaceVariant;
+    final Color danger = context.colors.error;
+    final Color dangerBackground = context.colors.error.withValues(alpha: 0.12);
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(32),
-          border: Border.all(color: const Color(0xFFF1F5F9)),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4),
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 4,
+            ),
           ],
         ),
         child: Row(
@@ -36,24 +39,20 @@ class LogoutActionCard extends StatelessWidget {
                     color: dangerBackground,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(
-                    Icons.logout_rounded,
-                    color: danger,
-                    size: 18,
-                  ),
+                  child: Icon(Icons.logout_rounded, color: danger, size: 18),
                 ),
                 const SizedBox(width: 16),
-                const Text(
+                Text(
                   'Log Out',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    color: ink,
+                    color: context.colors.onSurface,
                   ),
                 ),
               ],
             ),
-            const Icon(Icons.chevron_right, color: inkSoft, size: 16),
+            Icon(Icons.chevron_right, color: inkSoft, size: 16),
           ],
         ),
       ),

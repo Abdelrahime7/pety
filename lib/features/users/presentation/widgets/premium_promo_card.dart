@@ -18,7 +18,7 @@ class PremiumPromoCard extends StatelessWidget {
         gradient: AppColors.premiumCardGradient,
         boxShadow: [
           BoxShadow(
-            color: AppColors.tealLight.withOpacity(0.35),
+            color: AppColors.tealLight.withValues(alpha: 0.35),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -38,7 +38,7 @@ class PremiumPromoCard extends StatelessWidget {
                   vertical: 6.0,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Text(

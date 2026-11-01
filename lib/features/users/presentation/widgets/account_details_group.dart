@@ -12,19 +12,19 @@ class AccountDetailsGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color inkSoft = Color(0xFF94A3B8);
-    const Color ink = Color(0xFF0F172A);
-    const Color inkMuted = Color(0xFF64748B);
+    final Color inkSoft = context.colors.onSurfaceVariant;
+    final Color ink = context.colors.onSurface;
+    final Color inkMuted = context.colors.onSurfaceVariant;
 
     final isPremium = user?.subscriptionTier == SubscriptionTier.premium;
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: context.colors.outlineVariant),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 4),
         ],
       ),
       child: Column(
@@ -56,7 +56,7 @@ class AccountDetailsGroup extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'SUBSCRIPTION',
                           style: TextStyle(
                             fontSize: 11,
@@ -68,7 +68,7 @@ class AccountDetailsGroup extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           isPremium ? 'Premium Plan' : 'Free Plan',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: ink,
@@ -88,7 +88,7 @@ class AccountDetailsGroup extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: context.colors.primary.withOpacity(0.1),
+                        color: context.colors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -104,7 +104,7 @@ class AccountDetailsGroup extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(height: 1, color: Color(0xFFF8FAFC)),
+          Divider(height: 1, color: context.colors.surface),
 
           // Member Since
           Padding(
@@ -115,20 +115,16 @@ class AccountDetailsGroup extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F5F9),
+                    color: context.colors.outlineVariant,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(
-                    Icons.calendar_today,
-                    color: inkMuted,
-                    size: 16,
-                  ),
+                  child: Icon(Icons.calendar_today, color: inkMuted, size: 16),
                 ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'MEMBER SINCE',
                       style: TextStyle(
                         fontSize: 11,
@@ -142,7 +138,7 @@ class AccountDetailsGroup extends StatelessWidget {
                       user != null
                           ? "${user!.createdAt.month}/${user!.createdAt.year}"
                           : "October 12, 2023",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: ink,

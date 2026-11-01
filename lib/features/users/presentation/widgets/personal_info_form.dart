@@ -23,9 +23,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
   bool _isEditingName = false;
   final FocusNode _nameFocusNode = FocusNode();
 
-  static const Color ink = Color(0xFF0F172A);
-  static const Color inkSoft = Color(0xFF94A3B8);
-  static const Color inkMuted = Color(0xFF64748B);
+ 
 
   @override
   void initState() {
@@ -60,6 +58,10 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
 
   @override
   Widget build(BuildContext context) {
+      final Color ink = context.colors.onSurface;
+      final Color inkSoft = context.colors.onSurfaceVariant;
+      final Color inkMuted = context.colors.onSurfaceVariant;
+      
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,16 +70,16 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.colors.surfaceContainer,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: _isEditingName
                   ? context.colors.primary
-                  : const Color(0xFFE2E8F0),
+                  : context.colors.outlineVariant,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -105,7 +107,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                           controller: widget.nameController,
                           focusNode: _nameFocusNode,
                           autofocus: true,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: ink,
@@ -122,7 +124,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                         widget.nameController.text.isNotEmpty
                             ? widget.nameController.text
                             : (widget.user?.name ?? 'User name'),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: ink,
@@ -135,7 +137,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                   _isEditingName ? Icons.check : Icons.edit_outlined,
                   color: _isEditingName
                       ? context.colors.primary
-                      : inkMuted.withOpacity(0.6),
+                      : inkMuted.withValues(alpha: 0.6),
                   size: 16,
                 ),
               ),
@@ -148,9 +150,9 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            color: const Color(0xFFF1F5F9).withOpacity(0.7),
+            color: context.colors.outlineVariant.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFF1F5F9)),
+            border: Border.all(color: context.colors.outlineVariant),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,14 +160,18 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
               Expanded(
                 child: Text(
                   widget.user?.email ?? 'sarah.j@example.com',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: inkMuted,
                   ),
                 ),
               ),
-              Icon(Icons.lock, color: inkMuted.withOpacity(0.4), size: 14),
+              Icon(
+                Icons.lock,
+                color: inkMuted.withValues(alpha: 0.4),
+                size: 14,
+              ),
             ],
           ),
         ),
@@ -174,7 +180,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
           padding: const EdgeInsets.only(left: 4, top: 8),
           child: Row(
             children: [
-              const Text(
+              Text(
                 'Email cannot be changed manually. ',
                 style: TextStyle(fontSize: 11, color: inkSoft),
               ),

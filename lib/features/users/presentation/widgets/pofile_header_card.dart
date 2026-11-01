@@ -32,7 +32,7 @@ class ProfileHeaderCard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -101,7 +101,7 @@ class ProfileHeaderCard extends ConsumerWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F4F8),
+                    color: context.colors.surfaceContainerLow,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -153,15 +153,15 @@ class ProfileHeaderCard extends ConsumerWidget {
                           shape: BoxShape.circle,
                           color: Colors.white,
                           border: Border.all(
-                            color: const Color(0xFFE2E8F0),
+                            color: context.colors.outlineVariant,
                             width: 1.2,
                           ),
                         ),
                         child: IconButton(
                           padding: EdgeInsets.zero,
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.notifications_none_rounded,
-                            color: Color(0xFF5B6B82),
+                            color: context.colors.onSurfaceVariant,
                             size: 21,
                           ),
                           onPressed: () async {
@@ -233,7 +233,7 @@ class ProfileHeaderCard extends ConsumerWidget {
               //     shape: BoxShape.circle,
               //     color: Colors.white,
               //     border: Border.all(
-              //       color: const Color(0xFFE2E8F0),
+              //       color: context.colors.outlineVariant,
               //       width: 1.2,
               //     ),
               //   ),
@@ -241,7 +241,7 @@ class ProfileHeaderCard extends ConsumerWidget {
               //     padding: EdgeInsets.zero,
               //     icon: const Icon(
               //       Icons.settings_rounded,
-              //       color: Color(0xFF5B6B82),
+              //       color: context.colors.onSurfaceVariant,
               //       size: 20,
               //     ),
               //     onPressed: () {},

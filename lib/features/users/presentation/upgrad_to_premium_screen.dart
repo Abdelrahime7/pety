@@ -41,7 +41,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.colors.surfaceContainer,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
