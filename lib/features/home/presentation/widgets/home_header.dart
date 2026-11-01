@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/users/presentation/riverpod/unread_notificatins_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
@@ -67,16 +66,16 @@ class _NotificationButton extends StatelessWidget {
           width: 46.w,
           height: 46.w,
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: context.colors.surfaceContainer,
             borderRadius: BorderRadius.circular(15.r),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: context.colors.outlineVariant),
           ),
           child: IconButton(
             onPressed: onPressed,
             icon: Icon(
               Icons.notifications_none_rounded,
               size: 23.sp,
-              color: AppColors.text,
+              color: context.colors.onSurface,
             ),
           ),
         ),
@@ -93,7 +92,10 @@ class _NotificationButton extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.surface, width: 2),
+                  border: Border.all(
+                    color: context.colors.surfaceContainer,
+                    width: 2,
+                  ),
                 ),
                 child: Center(
                   child: Text(

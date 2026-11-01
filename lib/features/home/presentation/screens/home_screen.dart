@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
 import 'package:pet_care/features/home/presentation/widgets/home_header.dart';
@@ -29,7 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final nearestAppointment = _getNearestAppointment(appointments);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.colors.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -37,11 +36,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               HomeHeader(),
+              HomeHeader(),
 
               SizedBox(height: 24.h),
 
-              _buildPetsSection(ref,context),
+              _buildPetsSection(ref, context),
               SizedBox(height: 28.h),
 
               HomeSectionHeader(
@@ -88,7 +87,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-Widget _buildPetsSection(WidgetRef ref,BuildContext context) {
+Widget _buildPetsSection(WidgetRef ref, BuildContext context) {
   final petsAsync = ref.watch(petProvider);
 
   return petsAsync.when(

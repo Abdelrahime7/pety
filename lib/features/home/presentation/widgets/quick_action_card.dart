@@ -2,8 +2,6 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:pet_care/core/constant/theme/app_colors.dart';
-
 class QuickActionCard extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -25,7 +23,7 @@ class QuickActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surface,
+      color: context.colors.surfaceContainer,
       borderRadius: BorderRadius.circular(18.r),
       child: InkWell(
         onTap: onTap,
@@ -34,7 +32,7 @@ class QuickActionCard extends StatelessWidget {
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.r),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: context.colors.outlineVariant),
           ),
           child: Row(
             children: [

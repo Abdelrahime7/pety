@@ -23,9 +23,9 @@ class UpcomingAppointmentCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.outlineVariant),
       ),
       child: Row(
         children: [
@@ -33,7 +33,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
             width: 58.w,
             height: 62.h,
             decoration: BoxDecoration(
-              color: const Color(0xFFE0F7F3),
+              color: context.colors.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(15.r),
             ),
             child: Column(
@@ -80,7 +80,11 @@ class UpcomingAppointmentCard extends StatelessWidget {
               ],
             ),
           ),
-          Icon(Icons.chevron_right_rounded, color: AppColors.icon, size: 25.sp),
+          Icon(
+            Icons.chevron_right_rounded,
+            color: context.colors.onSurfaceVariant,
+            size: 25.sp,
+          ),
         ],
       ),
     );

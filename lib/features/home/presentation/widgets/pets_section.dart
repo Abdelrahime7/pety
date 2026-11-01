@@ -51,14 +51,14 @@ class HomePetsSection extends StatelessWidget {
                       style: context.style.sectionHeader.copyWith(
                         fontSize: 19.sp,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: context.colors.onSurface,
                       ),
                     ),
                     SizedBox(height: 3.h),
                     Text(
                       '${pets.length} ${pets.length == 1 ? 'beloved companion' : 'beloved companions'}',
                       style: context.style.regular12.copyWith(
-                        color: AppColors.textSecondary,
+                        color: context.colors.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -74,9 +74,9 @@ class HomePetsSection extends StatelessWidget {
                       vertical: 9.h,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: context.colors.surfaceContainer,
                       borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: context.colors.outlineVariant),
                     ),
                     child: Row(
                       children: [
@@ -132,19 +132,19 @@ class HomePetsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState( BuildContext context) {
+  Widget _buildEmptyState(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(22.w),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.colors.surfaceContainer,
           borderRadius: BorderRadius.circular(24.r),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: context.colors.outlineVariant),
           boxShadow: [
             BoxShadow(
-              color: AppColors.tealDark.withOpacity(0.04),
+              color: AppColors.tealDark.withValues(alpha: 0.04),
               blurRadius: 20.r,
               offset: Offset(0, 8.h),
             ),
@@ -177,7 +177,7 @@ class HomePetsSection extends StatelessWidget {
               'the care they deserve.',
               textAlign: TextAlign.center,
               style: context.style.regular13.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colors.onSurfaceVariant,
                 height: 1.5,
               ),
             ),
@@ -191,7 +191,7 @@ class HomePetsSection extends StatelessWidget {
                 icon: const Icon(Icons.add_rounded),
                 label: const Text('Add your first pet'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: context.colors.primary,
                   foregroundColor: Colors.white,
                   elevation: 0,
                   padding: EdgeInsets.symmetric(vertical: 13.h),

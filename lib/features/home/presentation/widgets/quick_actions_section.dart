@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
@@ -22,8 +23,8 @@ class QuickActionsSection extends StatelessWidget {
           title: 'Appointments',
           subtitle: 'shedual appointment',
           icon: Icons.calendar_month_rounded,
-          iconColor: const Color(0xFF0D9488),
-          iconBackground: const Color(0xFFE0F7F3),
+          iconColor: context.colors.primary,
+          iconBackground: context.colors.primary.withValues(alpha: 0.12),
           onTap: () {
             appRouter.push(addNewAppointment);
           },
