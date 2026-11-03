@@ -6,10 +6,11 @@ import 'package:pet_care/features/health/presentation/riverpod/all_Health_Record
 import 'package:pet_care/features/health/presentation/widgets/health_record_filters.dart';
 import 'package:pet_care/features/health/presentation/widgets/health_records_empty_state.dart';
 import 'package:pet_care/features/health/presentation/widgets/health_records_summary.dart';
-import 'package:pet_care/features/health/presentation/widgets/wner_health_record_card.dart';
+import 'package:pet_care/features/health/presentation/widgets/owner_health_record_card.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AllHealthRecordsScreen extends ConsumerStatefulWidget {
   const AllHealthRecordsScreen({super.key});
 
@@ -39,7 +40,7 @@ class _AllHealthRecordsScreenState
         centerTitle: true,
         iconTheme: IconThemeData(color: context.colors.onSurface),
         title: Text(
-          'All Health Records',
+          context.l10n.allHealthRecords,
           style: TextStyle(
             color: context.colors.onSurface,
             fontSize: 18,
@@ -63,13 +64,13 @@ class _AllHealthRecordsScreenState
                   color: context.colors.error,
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Unable to load health records.',
+                Text(
+                  context.l10n.unableToLoadHealthRecords,
                   textAlign: TextAlign.center,
                 ),
                 TextButton(
                   onPressed: () => ref.invalidate(allHealthRecordsProvider),
-                  child: const Text('Try again'),
+                  child: Text(context.l10n.tryAgain),
                 ),
               ],
             ),
@@ -113,7 +114,7 @@ class _AllHealthRecordsScreenState
                   ...filtered.map(
                     (record) => OwnerHealthRecordCard(
                       record: record,
-                      petName: petNames[record.petId] ?? 'Pet',
+                      petName: petNames[record.petId] ?? context.l10n.pet,
                     ),
                   ),
               ],

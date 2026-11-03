@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class OwnerHealthRecordsEmptyState extends StatelessWidget {
   const OwnerHealthRecordsEmptyState({super.key});
 
@@ -26,10 +27,10 @@ class OwnerHealthRecordsEmptyState extends StatelessWidget {
             ),
           ),
           SizedBox(height: 14.h),
-          Text('No health records yet', style: context.style.sectionHeader),
+          Text(context.l10n.noHealthRecordsYet, style: context.style.sectionHeader),
           SizedBox(height: 6.h),
           Text(
-            'Health records for all your pets will appear here.',
+            context.l10n.healthRecordsWillAppear,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12.sp,

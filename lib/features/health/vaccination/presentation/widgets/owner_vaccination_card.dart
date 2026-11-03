@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class OwnerVaccinationCard extends StatelessWidget {
   const OwnerVaccinationCard({
     super.key,
@@ -62,13 +63,12 @@ class OwnerVaccinationCard extends StatelessWidget {
                   children: [
                     _InfoPill(
                       icon: Icons.medication_outlined,
-                      label: 'Dose ${record.doseNumber}',
+                      label: context.l10n.doseNumber(record.doseNumber),
                     ),
                     _InfoPill(
                       icon: Icons.calendar_today_outlined,
                       label: DateFormat(
-                        'MMM d, yyyy',
-                      ).format(record.vaccinationDate),
+                        'MMM d, yyyy', context.l10n.localeName).format(record.vaccinationDate),
                     ),
                   ],
                 ),

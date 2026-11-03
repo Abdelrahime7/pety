@@ -17,6 +17,7 @@ import 'package:pet_care/features/health/vaccination/presentation/widgets/series
 import 'package:pet_care/features/health/vaccination/presentation/widgets/series_option_card.dart';
 import 'package:pet_care/features/pets/widgets/field_label.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AddVaccinationScreen extends ConsumerStatefulWidget {
   final String petId;
 
@@ -83,7 +84,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
     if (activeSeries.isEmpty) {
       showNotification(
         context,
-        'No active vaccination series found.',
+        context.l10n.noActiveSeries.trim(),
         success: false,
       );
       return;
@@ -113,7 +114,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
     if (_vaccinationDate == null) {
       showNotification(
         context,
-        'Vaccination date is required.',
+        context.l10n.vaccinationDateRequired,
         success: false,
       );
       return;
@@ -127,7 +128,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
       if (requiredDoses == null || requiredDoses <= 0) {
         showNotification(
           context,
-          'Number of doses must be greater than 0.',
+          context.l10n.enterValidDoses,
           success: false,
         );
         return;
@@ -157,7 +158,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
       return;
     }
 
-    showNotification(context, 'Vaccination added successfully');
+    showNotification(context, context.l10n.vaccinationAdded);
     Navigator.of(context).pop();
   }
 
@@ -188,11 +189,11 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'VACCINATION SERIES'),
+                    FieldLabel(label: context.l10n.vaccinationSeries.toUpperCase()),
                     const SizedBox(height: 8),
 
                     SeriesOptionCard(
-                      title: 'Create new series',
+                      title: context.l10n.createNewSeries,
                       selected: _isNewSeries,
                       collapsedIcon: Icons.add_circle_outline,
                       onTap: () => setState(() {
@@ -208,7 +209,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                     const SizedBox(height: 10),
 
                     SeriesOptionCard(
-                      title: 'Use existing series',
+                      title: context.l10n.useExistingSeries,
                       selected: !_isNewSeries,
                       collapsedIcon: Icons.keyboard_arrow_right_rounded,
                       onTap: () => setState(() => _isNewSeries = false),
@@ -221,16 +222,16 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                     ),
 
                     const SizedBox(height: 20),
-                    const FieldLabel(label: 'VACCINATION DATE'),
+                    FieldLabel(label: context.l10n.vaccinationDate.toUpperCase()),
                     const SizedBox(height: 6),
                     CustomeTextField(
                       controller: _vaccinationDateController,
-                      hintText: 'mm/dd/yyyy',
+                      hintText: context.l10n.hintDateMDY,
                       readOnly: true,
                       onTap: _selectVaccinationDate,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Vaccination date is required';
+                          return context.l10n.vaccinationDateRequired;
                         }
                         return null;
                       },
@@ -242,18 +243,18 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
                     ),
 
                     const SizedBox(height: 18),
-                    const FieldLabel(label: 'NOTES'),
+                    FieldLabel(label: context.l10n.notes.toUpperCase()),
                     const SizedBox(height: 6),
                     CustomeTextField(
                       controller: _notesController,
-                      hintText: 'Optional notes about this vaccination...',
+                      hintText: context.l10n.hintVaccinationNotes,
                       maxLines: 4,
                     ),
 
                     const SizedBox(height: 28),
                     AppPrimaryButton(
                       onPressed: isSaving ? null : _addVaccination,
-                      text: 'Add Vaccination',
+                      text: context.l10n.addVaccination,
                       height: 52,
                     ),
                     const SizedBox(height: 20),
@@ -262,7 +263,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
               ),
             ),
           ),
-          if (isSaving) const SavingOverlay(message: 'Saving vaccination…'),
+          if (isSaving) SavingOverlay(message: context.l10n.savingVaccination),
         ],
       ),
     );
@@ -274,7 +275,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
         child: AppCloseButton(onPressed: () => Navigator.of(context).pop()),
       ),
       title: Text(
-        'Add Vaccination',
+        context.l10n.addVaccination,
         style: TextStyle(
           color: context.colors.onSurface,
           fontWeight: FontWeight.bold,
@@ -286,7 +287,7 @@ class _AddVaccinationScreenState extends ConsumerState<AddVaccinationScreen> {
         TextButton(
           onPressed: isSaving ? null : _addVaccination,
           child: Text(
-            'Save',
+            context.l10n.save,
             style: TextStyle(
               color: isSaving
                   ? context.colors.onSurfaceVariant

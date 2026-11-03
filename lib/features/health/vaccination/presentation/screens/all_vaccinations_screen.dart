@@ -10,6 +10,7 @@ import 'package:pet_care/features/health/vaccination/presentation/widgets/vaccin
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AllVaccinationsScreen extends ConsumerStatefulWidget {
   const AllVaccinationsScreen({super.key});
 
@@ -37,7 +38,7 @@ class _AllVaccinationsScreenState extends ConsumerState<AllVaccinationsScreen> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'All Vaccinations',
+          context.l10n.allVaccinations,
           style: TextStyle(
             color: context.colors.onSurface,
             fontSize: 18,
@@ -96,7 +97,7 @@ class _AllVaccinationsScreenState extends ConsumerState<AllVaccinationsScreen> {
                   ...filtered.map(
                     (record) => OwnerVaccinationCard(
                       record: record,
-                      petName: petNames[record.petId] ?? 'Pet',
+                      petName: petNames[record.petId] ?? context.l10n.pet,
                     ),
                   ),
               ],
@@ -128,12 +129,12 @@ class _OwnerVaccinationError extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Unable to load vaccinations.',
+              context.l10n.unableToLoadVaccinations,
               textAlign: TextAlign.center,
               style: TextStyle(color: context.colors.onSurface, fontSize: 15),
             ),
             const SizedBox(height: 10),
-            TextButton(onPressed: onRetry, child: const Text('Try again')),
+            TextButton(onPressed: onRetry, child: Text(context.l10n.tryAgain)),
           ],
         ),
       ),

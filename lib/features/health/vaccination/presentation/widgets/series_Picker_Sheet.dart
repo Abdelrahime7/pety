@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class SeriesPickerSheet extends StatefulWidget {
   final List<VaccinationSerie> series;
   final VaccinationSerie? selectedSeries;
@@ -45,9 +46,9 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
+        padding: EdgeInsetsDirectional.only(
+          start: 20,
+          end: 20,
           top: 20,
           bottom: MediaQuery.of(context).viewInsets.bottom + 20,
         ),
@@ -60,7 +61,7 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Select Vaccination Series',
+                      context.l10n.selectVaccinationSeries,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -91,7 +92,7 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: 'Search vaccine...',
+                  hintText: context.l10n.searchVaccine,
                   hintStyle: TextStyle(color: context.colors.onSurfaceVariant),
                   prefixIcon: Icon(
                     Icons.search,
@@ -114,7 +115,7 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                 child: filteredSeries.isEmpty
                     ? Center(
                         child: Text(
-                          'No series found.',
+                          context.l10n.noSeriesFound,
                           style: TextStyle(
                             color: context.colors.onSurfaceVariant,
                           ),
@@ -153,7 +154,7 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                               ),
                             ),
                             subtitle: Text(
-                              '${serie.requiredDoses} doses',
+                              context.l10n.dosesCount(serie.requiredDoses),
                               style: TextStyle(
                                 color: context.colors.onSurfaceVariant,
                               ),

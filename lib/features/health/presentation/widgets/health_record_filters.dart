@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
 class OwnerHealthRecordFilterChips extends StatelessWidget {
   const OwnerHealthRecordFilterChips({
     super.key,
@@ -29,7 +31,7 @@ class OwnerHealthRecordFilterChips extends StatelessWidget {
           final filter = filters[index];
           final active = selected.toLowerCase() == filter.toLowerCase();
           return ChoiceChip(
-            label: Text(filter[0].toUpperCase() + filter.substring(1)),
+            label: Text(filterLabel(context.l10n, filter)),
             selected: active,
             onSelected: (_) => onSelected(filter),
             showCheckmark: false,

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 void showHealthRecordDetailsSheet(BuildContext context, HealthRecord record) {
   showModalBottomSheet(
     context: context,
@@ -36,18 +37,18 @@ class HealthRecordDetailsSheet extends StatelessWidget {
           SizedBox(height: 20.h),
 
           _DetailLabel(
-            label: 'Date',
-            value: DateFormat('MMM dd, yyyy').format(record.date),
+            label: context.l10n.date,
+            value: DateFormat('MMM dd, yyyy', context.l10n.localeName).format(record.date),
           ),
 
           if (record.veterinarian.isNotEmpty) ...[
             SizedBox(height: 12.h),
-            _DetailLabel(label: 'Veterinarian', value: record.veterinarian),
+            _DetailLabel(label: context.l10n.veterinarian, value: record.veterinarian),
           ],
 
           if (record.notes.isNotEmpty) ...[
             SizedBox(height: 12.h),
-            _DetailLabel(label: 'Notes', value: record.notes),
+            _DetailLabel(label: context.l10n.notes, value: record.notes),
           ],
 
           SizedBox(height: 20.h),
@@ -186,7 +187,7 @@ class _CloseButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Close',
+          context.l10n.close,
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
         ),
       ),

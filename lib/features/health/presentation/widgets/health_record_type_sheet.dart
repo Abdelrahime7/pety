@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthRecordTypeSheet extends StatelessWidget {
   final HealthRecordType selectedType;
 
@@ -39,7 +40,7 @@ class HealthRecordTypeSheet extends StatelessWidget {
               ),
               SizedBox(height: 18.h),
               Text(
-                'Record Type',
+                context.l10n.recordType,
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w800,
@@ -48,7 +49,7 @@ class HealthRecordTypeSheet extends StatelessWidget {
               ),
               SizedBox(height: 5.h),
               Text(
-                'What kind of health record are you adding?',
+                context.l10n.whatKindOfRecord,
                 style: TextStyle(
                   fontSize: 12.5.sp,
                   color: context.colors.onSurfaceVariant,

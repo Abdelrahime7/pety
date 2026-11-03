@@ -15,6 +15,7 @@ import '../widgets/health_record_pet_header.dart';
 import '../widgets/health_record_selector_field.dart';
 import '../widgets/health_record_type_sheet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AddHealthRecordScreen extends ConsumerStatefulWidget {
   final Pet pet;
 
@@ -102,7 +103,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
 
     if (result is Success<void>) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Health record added successfully')),
+        SnackBar(content: Text(context.l10n.healthRecordAdded)),
       );
 
       Navigator.of(context).pop();
@@ -129,7 +130,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
         elevation: 0,
         leading: AppBackButton(onPressed: () => Navigator.of(context).pop()),
         title: Text(
-          'Add Health Record',
+          context.l10n.addHealthRecord,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -150,7 +151,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
               SizedBox(height: 28.h),
 
               Text(
-                'Record Information',
+                context.l10n.recordInformation,
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
@@ -162,7 +163,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
 
               // Record Type
               Text(
-                'Record Type *',
+                '${context.l10n.recordType} *',
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
@@ -177,7 +178,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
                 iconColor: _selectedType.color,
                 iconBackground: _selectedType.backgroundColor,
                 title: _selectedType.displayName,
-                subtitle: 'Select the type of health record',
+                subtitle: context.l10n.selectRecordTypeSubtitle,
                 onTap: _selectType,
               ),
 
@@ -186,8 +187,8 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
               // Title
               CustomeTextField(
                 controller: _titleController,
-                label: 'Title *',
-                hintText: 'e.g. Annual checkup',
+                label: '${context.l10n.title} *',
+                hintText: context.l10n.hintRecordTitle,
                 prefixIcon: Icon(
                   Icons.title_rounded,
                   size: 21.sp,
@@ -196,7 +197,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a title';
+                    return context.l10n.pleaseEnterTitle;
                   }
 
                   return null;
@@ -207,7 +208,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
 
               // Date
               Text(
-                'Date *',
+                '${context.l10n.date} *',
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
@@ -221,8 +222,8 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
                 icon: Icons.calendar_today_rounded,
                 iconColor: context.colors.primary,
                 iconBackground: context.colors.primary.withValues(alpha: 0.1),
-                title: DateFormat('MMM dd, yyyy').format(_selectedDate),
-                subtitle: 'When did this happen?',
+                title: DateFormat('MMM dd, yyyy', context.l10n.localeName).format(_selectedDate),
+                subtitle: context.l10n.whenDidThisHappen,
                 onTap: _selectDate,
               ),
 
@@ -231,8 +232,8 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
               // Veterinarian
               CustomeTextField(
                 controller: _veterinarianController,
-                label: 'Veterinarian',
-                hintText: 'e.g. Dr. Sarah Smith',
+                label: context.l10n.veterinarian,
+                hintText: context.l10n.hintVetName,
                 prefixIcon: Icon(
                   Icons.medical_services_rounded,
                   size: 21.sp,
@@ -246,10 +247,10 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
               // Notes
               CustomeTextField(
                 controller: _notesController,
-                label: 'Notes',
-                hintText: 'Add any additional information...',
+                label: context.l10n.notes,
+                hintText: context.l10n.hintAdditionalInfo,
                 prefixIcon: Padding(
-                  padding: EdgeInsets.only(left: 14.w, right: 8.w),
+                  padding: EdgeInsetsDirectional.only(start: 14.w, end: 8.w),
                   child: Icon(
                     Icons.notes_rounded,
                     size: 21.sp,
@@ -280,8 +281,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
                     SizedBox(width: 10.w),
                     Expanded(
                       child: Text(
-                        'Keep your pet\'s health records up to date '
-                        'to make it easier to track their health history.',
+                        context.l10n.keepRecordsUpToDate,
                         style: TextStyle(
                           fontSize: 13.sp,
                           height: 1.45,
@@ -327,7 +327,7 @@ class _AddHealthRecordScreenState extends ConsumerState<AddHealthRecordScreen> {
                       ),
                     )
                   : Text(
-                      'Add Health Record',
+                      context.l10n.addHealthRecord,
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,

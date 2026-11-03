@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class OwnerHealthRecordsSummary extends StatelessWidget {
   const OwnerHealthRecordsSummary({
     super.key,
@@ -34,14 +35,17 @@ class OwnerHealthRecordsSummary extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your pets’ health',
+                  context.l10n.yourPetsHealth,
                   style: context.style.sectionHeader.copyWith(
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 5.h),
                 Text(
-                  '$total records across $petCount pets',
+                  context.l10n.recordsAcrossPets(
+                    context.l10n.recordsCount(total),
+                    context.l10n.petsCount(petCount),
+                  ),
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: .9),
                     fontSize: 12.sp,

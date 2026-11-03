@@ -1,3 +1,5 @@
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
+import 'package:pet_care/core/constant/l10n/to_english_digit.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class OwnerHealthRecordCard extends StatelessWidget {
   const OwnerHealthRecordCard({
     super.key,
@@ -35,7 +38,7 @@ class OwnerHealthRecordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final typeName = record.type.name;
+    final typeName = healthRecordTypeLabel(context.l10n,record.recordType);
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(15.w),
@@ -94,7 +97,7 @@ class OwnerHealthRecordCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      DateFormat('MMM d, yyyy').format(record.date),
+                     toEnglishDigits( DateFormat('MMM d, yyyy', context.l10n.localeName).format(record.date)),
                       style: TextStyle(
                         color: context.colors.onSurfaceVariant,
                         fontSize: 11.sp,

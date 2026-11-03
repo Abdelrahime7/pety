@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class VaccinationDetailsScreen extends StatelessWidget {
   final VaccinationSerie vaccination;
 
@@ -11,23 +12,26 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd MMM yyyy');
+    final dateFormat = DateFormat('dd MMM yyyy', context.l10n.localeName);
 
     final createdDate = dateFormat.format(vaccination.createdAt);
 
     final isCompleted = vaccination.completedDoses >= vaccination.requiredDoses;
 
-    final status = isCompleted ? 'Completed' : 'In progress';
+    final status = isCompleted ? context.l10n.completed : context.l10n.inProgress;
 
     final progress =
-        '${vaccination.completedDoses} / ${vaccination.requiredDoses} doses';
+        context.l10n.dosesOfRequired(
+          vaccination.completedDoses,
+          vaccination.requiredDoses,
+        );
 
     return Scaffold(
       backgroundColor: context.colors.surface,
       appBar: AppBar(
         backgroundColor: context.colors.surface,
         elevation: 0,
-        title: Text('Vaccination Details', style: context.style.tileTitle),
+        title: Text(context.l10n.vaccinationDetails, style: context.style.tileTitle),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_rounded),
@@ -46,7 +50,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            const _SectionTitle(title: 'Vaccination'),
+            _SectionTitle(title: context.l10n.vaccination),
 
             const SizedBox(height: 12),
 
@@ -54,7 +58,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
               children: [
                 _InfoRow(
                   icon: Icons.vaccines_rounded,
-                  label: 'Vaccine',
+                  label: context.l10n.vaccine,
                   value: vaccination.vaccineName,
                 ),
 
@@ -62,7 +66,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
                 _InfoRow(
                   icon: Icons.layers_rounded,
-                  label: 'Dose progress',
+                  label: context.l10n.doseProgress,
                   value: progress,
                   valueColor: context.colors.primary,
                 ),
@@ -71,7 +75,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
                 _InfoRow(
                   icon: Icons.numbers_rounded,
-                  label: 'Required doses',
+                  label: context.l10n.requiredDoses,
                   value: vaccination.requiredDoses.toString(),
                 ),
 
@@ -79,7 +83,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
                 _InfoRow(
                   icon: Icons.check_circle_outline_rounded,
-                  label: 'Status',
+                  label: context.l10n.status,
                   value: status,
                   valueColor: isCompleted
                       ? context.colors.primary
@@ -90,7 +94,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
 
                 _InfoRow(
                   icon: Icons.calendar_today_rounded,
-                  label: 'Created',
+                  label: context.l10n.created,
                   value: createdDate,
                 ),
               ],
@@ -100,7 +104,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
                 vaccination.description!.trim().isNotEmpty) ...[
               const SizedBox(height: 24),
 
-              const _SectionTitle(title: 'Description'),
+              _SectionTitle(title: context.l10n.description),
 
               const SizedBox(height: 12),
 

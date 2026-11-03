@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
 class HealthFilterList extends StatelessWidget {
   final String selectedFilter;
   final ValueChanged<String> onFilterSelected;
@@ -33,7 +35,7 @@ class HealthFilterList extends StatelessWidget {
               filter.toLowerCase() == selectedFilter.toLowerCase();
 
           return Padding(
-            padding: EdgeInsets.only(right: 8.w),
+            padding: EdgeInsetsDirectional.only(end: 8.w),
             child: GestureDetector(
               onTap: () => onFilterSelected(filter),
               child: AnimatedContainer(
@@ -49,7 +51,7 @@ class HealthFilterList extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  filter,
+                  filterLabel(context.l10n, filter),
                   style: TextStyle(
                     fontSize: 12.5.sp,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
