@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthPetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback onTap;
@@ -11,7 +12,7 @@ class HealthPetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final meta = '${pet.breed} • ${_age(pet.birthDate)}';
+    final meta = '${pet.breed} • ${_age(context, pet.birthDate)}';
 
     return GestureDetector(
       onTap: onTap,
@@ -74,7 +75,7 @@ class HealthPetCard extends StatelessWidget {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          'View records',
+                          context.l10n.viewRecords,
                           style: TextStyle(
                             fontSize: 10.sp,
                             color: context.colors.primary,
@@ -98,12 +99,14 @@ class HealthPetCard extends StatelessWidget {
     );
   }
 
-  String _age(DateTime birthDate) {
+  String _age(BuildContext context, DateTime birthDate) {
     final now = DateTime.now();
     var years = now.year - birthDate.year;
     if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now))
       years--;
-    return years > 0 ? '$years years' : 'Less than a year';
+    return years > 0
+        ? context.l10n.ageYears(years)
+        : context.l10n.lessThanYear;
   }
 }
 

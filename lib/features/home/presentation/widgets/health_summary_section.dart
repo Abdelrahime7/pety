@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthSummarySection extends StatelessWidget {
   const HealthSummarySection({super.key});
 
@@ -22,9 +23,9 @@ class HealthSummarySection extends StatelessWidget {
             icon: Icons.vaccines_outlined,
             iconColor: context.colors.primary,
             iconBackground: context.colors.primary.withValues(alpha: 0.12),
-            title: 'Vaccinations',
-            subtitle: 'Keep track of vaccine doses',
-            status: 'View',
+            title: context.l10n.vaccinations,
+            subtitle: context.l10n.keepTrackVaccineDoses,
+            status: context.l10n.view,
             onTap: () {
               // TODO: Navigate to vaccination records.
             },
@@ -39,9 +40,9 @@ class HealthSummarySection extends StatelessWidget {
             icon: Icons.medical_services_outlined,
             iconColor: const Color(0xFF6366F1),
             iconBackground: const Color(0xFFEEF2FF),
-            title: 'Medical History',
-            subtitle: 'Check your pet’s health records',
-            status: 'View',
+            title: context.l10n.medicalHistory,
+            subtitle: context.l10n.checkPetHealthRecords,
+            status: context.l10n.view,
             onTap: () {
               // TODO: Navigate to health records.
             },

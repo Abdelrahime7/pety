@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class SecurityActionCard extends StatelessWidget {
   final VoidCallback onTap;
 
@@ -42,7 +43,7 @@ class SecurityActionCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  'Change Password',
+                  context.l10n.changePassword,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,

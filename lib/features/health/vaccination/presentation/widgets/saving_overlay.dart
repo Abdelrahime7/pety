@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class SavingOverlay extends StatelessWidget {
-  final String message;
+  /// Optional custom message. Defaults to the translated "Saving…".
+  final String? message;
 
-  const SavingOverlay({super.key, this.message = 'Saving…'});
+  const SavingOverlay({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class SavingOverlay extends StatelessWidget {
                 CircularProgressIndicator(color: colors.primary),
                 const SizedBox(height: 16),
                 Text(
-                  message,
+                  message ?? context.l10n.saving,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

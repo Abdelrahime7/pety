@@ -6,6 +6,7 @@ import 'package:pet_care/features/health/vaccination/domain/entities/helath_card
 import 'package:pet_care/features/pets/widgets/health_item.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthCard extends StatelessWidget {
   final String petId;
   final HealthCardInfo cardInfo;
@@ -41,7 +42,7 @@ class HealthCard extends StatelessWidget {
 
               const SizedBox(width: 12),
 
-              Text('Health', style: context.style.tileTitle),
+              Text(context.l10n.health, style: context.style.tileTitle),
             ],
           ),
 
@@ -63,8 +64,8 @@ class HealthCard extends StatelessWidget {
               Expanded(
                 child: AppointmentItem(
                   icon: Icons.calendar_month_outlined,
-                  title: 'Appointment',
-                  nextDueDate: 'Not scheduled',
+                  title: context.l10n.appointment,
+                  nextDueDate: context.l10n.notScheduled,
                 ),
               ),
             ],

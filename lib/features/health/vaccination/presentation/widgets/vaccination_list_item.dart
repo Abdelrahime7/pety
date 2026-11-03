@@ -2,6 +2,7 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class VaccinationListItem extends StatelessWidget {
   final String vaccineName;
   final int requiredDoses;
@@ -68,7 +69,7 @@ class VaccinationListItem extends StatelessWidget {
                     const SizedBox(height: 6),
 
                     Text(
-                      ' $completedDoses/$requiredDoses ${completedDoses == 1 ? 'dose' : 'doses'} compelted',
+                      context.l10n.dosesCompleted(completedDoses, requiredDoses),
                       style: context.style.regular12.copyWith(
                         fontSize: 12,
                         color: context.colors.outlineVariant,

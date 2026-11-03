@@ -2,6 +2,7 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AppointmentItem extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -155,7 +156,7 @@ class VaccinationItem extends StatelessWidget {
               const SizedBox(height: 14),
 
               Text(
-                '$vaccinationsCount ${vaccinationsCount <= 1 ? 'dose' : 'doses'}',
+                context.l10n.dosesCount(vaccinationsCount),
                 style: context.style.regular12,
               ),
 
@@ -164,7 +165,7 @@ class VaccinationItem extends StatelessWidget {
               const SizedBox(height: 8),
 
               Text(
-                "Active Series: $activeSeriesCount",
+                context.l10n.activeSeries(activeSeriesCount),
                 style: context.style.regular12,
               ),
             ],

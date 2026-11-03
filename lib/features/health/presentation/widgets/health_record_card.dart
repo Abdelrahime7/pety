@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
+import 'package:pet_care/core/constant/l10n/to_english_digit.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 import 'package:pet_care/features/health/domain/enums/health_record_type.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthRecordCard extends StatelessWidget {
   final HealthRecord record;
   final VoidCallback? onTap;
@@ -68,7 +71,7 @@ class HealthRecordCard extends StatelessWidget {
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        DateFormat('MMM dd, yyyy').format(record.date),
+                       toEnglishDigits( DateFormat('MMM dd, yyyy', context.l10n.localeName).format(record.date)),
                         style: TextStyle(
                           fontSize: 11.sp,
                           color: context.colors.onSurfaceVariant,
@@ -88,7 +91,7 @@ class HealthRecordCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(999.r),
                     ),
                     child: Text(
-                      record.recordType.displayName,
+                     healthRecordTypeLabel(context.l10n, record.recordType),
                       style: TextStyle(
                         fontSize: 10.sp,
                         color: record.recordType.color,

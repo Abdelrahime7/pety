@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,11 +20,11 @@ Widget buildHeader(BuildContext context) {
 
         SizedBox(height: 8.h),
 
-        Text('PetPaw+', style: context.style.title),
+        Text(context.l10n.appName, style: context.style.title),
 
         SizedBox(height: 4.h),
 
-        Text('Caring for your best friends', style: context.style.regular14),
+        Text(context.l10n.tagline, style: context.style.regular14),
       ],
     ),
   );

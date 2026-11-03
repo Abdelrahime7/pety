@@ -1,10 +1,12 @@
-String? validatePassword(String? value) {
+import 'package:pet_care/core/constant/l10n/app_localizations.dart';
+
+String? validatePassword(AppLocalizations l10n, String? value) {
   if (value == null || value.isEmpty) {
-    return 'Password is required';
+    return l10n.passwordRequired;
   }
 
   if (value.length < 8) {
-    return 'Password must be at least 8 characters';
+    return l10n.passwordTooShort;
   }
 
   return null;

@@ -8,6 +8,7 @@ import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/vaccination_providers.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/vaccination_list_item.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class VaccinationListScreen extends ConsumerWidget {
   final String petId;
 
@@ -24,7 +25,7 @@ class VaccinationListScreen extends ConsumerWidget {
         elevation: 0,
         centerTitle: false,
         title: Text(
-          'Vaccinations',
+          context.l10n.vaccinations,
           style: context.style.tileTitle.copyWith(fontSize: 20),
         ),
       ),
@@ -44,7 +45,7 @@ class VaccinationListScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Failed to load vaccinations',
+                  context.l10n.failedToLoadVaccinations,
                   style: context.style.tileTitle.copyWith(fontSize: 15),
                   textAlign: TextAlign.center,
                 ),
@@ -59,7 +60,7 @@ class VaccinationListScreen extends ConsumerWidget {
                   onPressed: () {
                     ref.invalidate(vaccinationSerieProvider(petId));
                   },
-                  child: const Text('Try again'),
+                  child: Text(context.l10n.tryAgain),
                 ),
               ],
             ),
@@ -142,12 +143,12 @@ class _EmptyVaccinationState extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'No vaccinations yet',
+              context.l10n.noVaccinationsYet,
               style: context.style.tileTitle.copyWith(fontSize: 17),
             ),
             const SizedBox(height: 8),
             Text(
-              'Keep your pet healthy by adding their vaccinations.',
+              context.l10n.keepPetHealthyAddVaccinations,
               style: context.style.regular10,
               textAlign: TextAlign.center,
             ),
@@ -155,7 +156,7 @@ class _EmptyVaccinationState extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onAdd,
               icon: const Icon(Icons.add_rounded),
-              label: const Text('Add Vaccination'),
+              label: Text(context.l10n.addVaccination),
               style: ElevatedButton.styleFrom(
                 backgroundColor: context.colors.primary,
                 foregroundColor: Colors.white,

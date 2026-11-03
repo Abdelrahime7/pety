@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class VaccinationRecordCard extends StatelessWidget {
   final VaccinationRecord record;
   final VoidCallback onTap;
@@ -60,7 +61,7 @@ class VaccinationRecordCard extends StatelessWidget {
                   SizedBox(height: 4.h),
 
                   Text(
-                    'Dose ${record.doseNumber}',
+                    context.l10n.doseNumber(record.doseNumber),
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: context.colors.onSurfaceVariant,
@@ -70,7 +71,7 @@ class VaccinationRecordCard extends StatelessWidget {
                   SizedBox(height: 3.h),
 
                   Text(
-                    DateFormat('MMM dd, yyyy').format(record.date),
+                    DateFormat('MMM dd, yyyy', context.l10n.localeName).format(record.date),
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: context.colors.onSurfaceVariant,

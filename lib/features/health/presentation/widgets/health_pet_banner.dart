@@ -6,6 +6,7 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/domain/entity/health_item_entity.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthPetBanner extends StatelessWidget {
   final Pet pet;
   final AsyncValue<List<HealthItem>> recordsAsync;
@@ -43,12 +44,12 @@ class HealthPetBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'SHOWING RECORDS FOR',
+                  context.l10n.showingRecordsFor.toUpperCase(),
                   style: TextStyle(
                     fontSize: 9.5.sp,
                     fontWeight: FontWeight.w700,
                     color: context.colors.onSurfaceVariant,
-                    letterSpacing: 0.6,
+                    letterSpacing: context.tracking(0.6),
                   ),
                 ),
                 SizedBox(height: 2.h),
@@ -88,7 +89,7 @@ class _RecordCount extends StatelessWidget {
         borderRadius: BorderRadius.circular(999.r),
       ),
       child: Text(
-        '$count records',
+        context.l10n.recordsCount(count),
         style: TextStyle(
           fontSize: 11.sp,
           fontWeight: FontWeight.w700,

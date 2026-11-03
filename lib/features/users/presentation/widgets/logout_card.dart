@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class LogoutActionCard extends StatelessWidget {
   final VoidCallback onTap;
 
@@ -43,7 +44,7 @@ class LogoutActionCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  'Log Out',
+                  context.l10n.logOut,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,

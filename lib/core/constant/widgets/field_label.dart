@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class FieldLabel extends StatelessWidget {
@@ -16,7 +17,7 @@ class FieldLabel extends StatelessWidget {
         style: context.style.regular13.copyWith(
           color: context.colors.onSurfaceVariant,
           fontWeight: FontWeight.w700,
-          letterSpacing: 0.8,
+          letterSpacing: context.tracking(0.8),
         ),
       ),
     );

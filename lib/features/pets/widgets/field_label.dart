@@ -1,6 +1,7 @@
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class FieldLabel extends StatelessWidget {
   final String label;
 
@@ -14,7 +15,7 @@ class FieldLabel extends StatelessWidget {
         fontSize: 12,
         fontWeight: FontWeight.w700,
         color: context.colors.onSurfaceVariant,
-        letterSpacing: 0.5,
+        letterSpacing: context.tracking(0.5),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:pet_care/features/pets/widgets/pet_card.dart';
 import 'package:pet_care/features/pets/screens/add_pet_screen.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class PetsListScreen extends ConsumerStatefulWidget {
   const PetsListScreen({super.key});
 
@@ -49,7 +50,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Your Pets',
+                        context.l10n.yourPets,
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.w900,
@@ -58,7 +59,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        'Manage all your furry friends in one place.',
+                        context.l10n.manageFurryFriends,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: context.colors.onSurfaceVariant,
@@ -117,7 +118,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                   onChanged: (_) =>
                       setState(() {}), // 🔥 THIS MAKES SEARCH WORK
                   decoration: InputDecoration(
-                    hintText: 'Search by name or breed...',
+                    hintText: context.l10n.searchByNameOrBreed,
                     hintStyle: TextStyle(
                       color: context.colors.onSurfaceVariant,
                       fontSize: 14.sp,
@@ -154,7 +155,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                     if (pets.isEmpty) {
                       return Center(
                         child: Text(
-                          "You haven't added any pets yet.",
+                          context.l10n.noPetsAdded,
                           style: TextStyle(
                             color: context.colors.onSurfaceVariant,
                           ),
@@ -181,7 +182,7 @@ class _PetsListScreenState extends ConsumerState<PetsListScreen> {
                       color: context.colors.primary,
                     ),
                   ),
-                  error: (err, stack) => Center(child: Text('Error: $err')),
+                  error: (err, stack) => Center(child: Text(context.l10n.errorWithMessage('$err'))),
                 ),
               ),
             ],

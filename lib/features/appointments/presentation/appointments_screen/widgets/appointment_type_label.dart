@@ -1,23 +1,20 @@
+
+import 'package:pet_care/core/constant/l10n/app_localizations.dart';
 import 'package:pet_care/features/appointments/domain/enums/appointment_types.dart';
 
-String appointmentTypeLabel(AppointmentType type) {
+String appointmentTypeLabel(AppLocalizations l10n, AppointmentType type) {
   switch (type) {
     case AppointmentType.vaccination:
-      return 'Vaccination';
-
+      return l10n.vaccination;
     case AppointmentType.checkup:
-      return 'Checkup';
-
+      return l10n.checkup;
     case AppointmentType.treatment:
-      return 'Treatment';
-
+      return l10n.treatment;
     case AppointmentType.surgery:
-      return 'Surgery';
-
+      return l10n.surgery;
     case AppointmentType.grooming:
-      return 'Grooming';
-
+      return l10n.grooming;
     case AppointmentType.other:
-      return 'Other';
+      return l10n.other;
   }
 }

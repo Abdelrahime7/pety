@@ -11,6 +11,7 @@ import 'package:pet_care/features/health/presentation/widgets/health_pet_banner.
 import 'package:pet_care/features/health/presentation/widgets/health_records_list.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthRecordsScreen extends ConsumerWidget {
   final Pet pet;
 
@@ -33,7 +34,7 @@ class HealthRecordsScreen extends ConsumerWidget {
           child: AppBackButton(),
         ),
         title: Text(
-          'Health Records',
+          context.l10n.healthRecords,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w800,

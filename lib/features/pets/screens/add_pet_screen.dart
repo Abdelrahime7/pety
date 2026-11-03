@@ -14,6 +14,8 @@ import '../widgets/field_label.dart';
 import '../widgets/gender_toggle.dart';
 import '../widgets/photo_picker.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
 class AddPetScreen extends ConsumerStatefulWidget {
   const AddPetScreen({super.key});
 
@@ -100,7 +102,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
           child: AppCloseButton(onPressed: () => Navigator.of(context).pop()),
         ),
         title: Text(
-          'Add New Pet',
+          context.l10n.addNewPet,
           style: TextStyle(
             color: context.colors.onSurface,
             fontWeight: FontWeight.bold,
@@ -112,7 +114,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
           TextButton(
             onPressed: petState.isLoading ? null : _submit,
             child: Text(
-              'Save',
+              context.l10n.save,
               style: TextStyle(
                 color: petState.isLoading
                     ? context.colors.onSurfaceVariant
@@ -147,13 +149,13 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                     ),
                     const SizedBox(height: 24),
 
-                    const FieldLabel(label: 'PET NAME'),
+                    FieldLabel(label: context.l10n.petName.toUpperCase()),
                     CustomeTextField(
                       controller: _nameController,
-                      hintText: 'e.g. Luna',
+                      hintText: context.l10n.hintPetName,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Pet name is required';
+                          return context.l10n.petNameRequired;
                         }
                         return null;
                       },
@@ -166,7 +168,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const FieldLabel(label: 'SPECIES'),
+                              FieldLabel(label: context.l10n.species.toUpperCase()),
                               _buildSpeciesDropdown(),
                             ],
                           ),
@@ -176,13 +178,13 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const FieldLabel(label: 'BREED'),
+                              FieldLabel(label: context.l10n.breed.toUpperCase()),
                               CustomeTextField(
                                 controller: _breedController,
-                                hintText: 'e.g. Golden Retriever',
+                                hintText: context.l10n.hintBreed,
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
-                                    return 'Breed is required';
+                                    return context.l10n.breedRequired;
                                   }
                                   return null;
                                 },
@@ -200,7 +202,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const FieldLabel(label: 'GENDER'),
+                              FieldLabel(label: context.l10n.gender.toUpperCase()),
                               GenderToggle(
                                 selectedIndex: _selectedGenderIndex,
                                 onSelected: (index) => setState(
@@ -215,7 +217,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const FieldLabel(label: 'BIRTH DATE'),
+                              FieldLabel(label: context.l10n.birthDate.toUpperCase()),
                               _buildDateField(context),
                             ],
                           ),
@@ -230,15 +232,15 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const FieldLabel(label: 'WEIGHT (LBS)'),
+                              FieldLabel(label: context.l10n.weightLbs.toUpperCase()),
                               CustomeTextField(
                                 controller: _weightController,
-                                hintText: '0.0',
+                                hintText: context.l10n.hintWeight,
                                 keyboardType: TextInputType.number,
                                 validator: (value) {
                                   final numValue = double.tryParse(value ?? '');
                                   if (numValue == null || numValue <= 0) {
-                                    return 'Enter a valid weight';
+                                    return context.l10n.invalidWeight;
                                   }
                                   return null;
                                 },
@@ -251,7 +253,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const FieldLabel(label: 'NEUTERED / SPAYED'),
+                              FieldLabel(label: context.l10n.neuteredSpayed.toUpperCase()),
                               const SizedBox(height: 6),
                               Row(
                                 children: [
@@ -262,7 +264,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                                         setState(() => _isNeutered = val),
                                   ),
                                   Text(
-                                    _isNeutered ? 'Yes' : 'No',
+                                    _isNeutered ? context.l10n.yes : context.l10n.no,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -276,17 +278,17 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    const FieldLabel(label: 'MEDICAL NOTES'),
+                    FieldLabel(label: context.l10n.medicalNotes.toUpperCase()),
                     CustomeTextField(
                       controller: _notesController,
-                      hintText: 'Allergies, chronic conditions, etc.',
+                      hintText: context.l10n.hintAllergies,
                       maxLines: 4,
                     ),
                     const SizedBox(height: 28),
 
                     AppPrimaryButton(
                       onPressed: petState.isLoading ? null : _submit,
-                      text: 'Add Pet',
+                      text: context.l10n.addPet,
                       height: 52,
                     ),
                   ],
@@ -319,7 +321,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                     CircularProgressIndicator(color: context.colors.primary),
                     const SizedBox(height: 16),
                     Text(
-                      "Saving your pet…",
+                      context.l10n.savingYourPet,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -358,7 +360,10 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
       items: ['Dog', 'Cat', 'Bird', 'Other'].map((species) {
         return DropdownMenuItem(
           value: species,
-          child: Text(species, style: const TextStyle(fontSize: 14)),
+          child: Text(
+            speciesLabel(context.l10n, species),
+            style: const TextStyle(fontSize: 14),
+          ),
         );
       }).toList(),
       onChanged: (val) => setState(() => _selectedSpecies = val!),
@@ -381,10 +386,10 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
               "${picked.month.toString().padLeft(2, '0')}/${picked.day.toString().padLeft(2, '0')}/${picked.year}";
         }
       },
-      hintText: 'mm/dd/yyyy',
+      hintText: context.l10n.hintDateMDY,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Birth date is required';
+          return context.l10n.birthDateRequired;
         }
         return null;
       },

@@ -14,6 +14,8 @@ import 'package:pet_care/features/pets/domain/enums/speciesOptions.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/edit_drop_down.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
 class PetEditScreen extends ConsumerStatefulWidget {
   final Pet pet;
 
@@ -103,7 +105,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
       if (!mounted) return;
 
       if (result is Success<void>) {
-        showNotification(context, 'Pet updated successfully');
+        showNotification(context, context.l10n.petUpdated);
         appRouter.pop(context);
       } else if (result is Failure<void>) {
         showNotification(context, result.message);
@@ -136,7 +138,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
           onPressed: _isSaving ? null : () => Navigator.pop(context),
         ),
 
-        title: Text('Edit Pet', style: context.style.tileTitle),
+        title: Text(context.l10n.editPet, style: context.style.tileTitle),
 
         centerTitle: true,
       ),
@@ -152,20 +154,20 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
 
               const SizedBox(height: 28),
 
-              _buildSectionTitle('Basic Information'),
+              _buildSectionTitle(context.l10n.basicInformation),
 
               const SizedBox(height: 12),
 
               CustomeTextField(
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Pet name is required';
+                    return context.l10n.petNameRequired;
                   }
                   return null;
                 },
                 controller: _nameController,
-                label: 'Pet Name',
-                hintText: 'Enter pet name',
+                label: context.l10n.petName,
+                hintText: context.l10n.hintEnterPetName,
                 suffixIcon: Icon(Icons.pets_rounded),
               ),
 
@@ -173,9 +175,10 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
 
               buildDropdown(
                 context,
-                label: 'Species',
+                label: context.l10n.species,
                 value: _species,
                 items: SpeciesOptions.values.map((e) => e.name).toList(),
+                itemLabel: (v) => speciesLabel(context.l10n, v),
 
                 onChanged: (value) {
                   if (value == null) return;
@@ -192,12 +195,12 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 controller: _breedController,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return ' pet breed is required';
+                    return context.l10n.breedRequired;
                   }
                   return null;
                 },
-                label: 'Breed',
-                hintText: 'Enter breed',
+                label: context.l10n.breed,
+                hintText: context.l10n.hintEnterBreed,
                 suffixIcon: Icon(Icons.category_outlined),
               ),
 
@@ -205,9 +208,10 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
 
               buildDropdown(
                 context,
-                label: 'Gender',
+                label: context.l10n.gender,
                 value: _gender,
                 items: _genderOptions,
+                itemLabel: (v) => genderLabel(context.l10n, v),
                 onChanged: (value) {
                   if (value == null) return;
 
@@ -223,27 +227,27 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 controller: _weightController,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Weight is required';
+                    return context.l10n.weightRequired;
                   }
 
                   if (double.tryParse(value.trim()) == null) {
-                    return 'Invalid weight';
+                    return context.l10n.invalidWeight;
                   }
 
                   return null;
                 },
-                label: 'Weight',
-                hintText: 'Enter weight',
+                label: context.l10n.weight,
+                hintText: context.l10n.hintEnterWeight,
                 suffixIcon: Icon(Icons.monitor_weight_outlined),
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
-                suffixText: 'kg',
+                suffixText: context.l10n.unitKg,
               ),
 
               const SizedBox(height: 28),
 
-              _buildSectionTitle('Notes'),
+              _buildSectionTitle(context.l10n.notes),
 
               const SizedBox(height: 12),
 
@@ -295,8 +299,8 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                       ),
               ),
 
-              Positioned(
-                right: 2,
+              PositionedDirectional(
+                end: 2,
                 bottom: 2,
                 child: GestureDetector(
                   onTap: _pickImage,
@@ -324,7 +328,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
 
           const SizedBox(height: 12),
 
-          Text('Change photo', style: context.style.regular13),
+          Text(context.l10n.changePhoto, style: context.style.regular13),
         ],
       ),
     );
@@ -340,7 +344,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
       maxLines: 5,
       style: context.style.regular14.copyWith(color: context.colors.onSurface),
       decoration: InputDecoration(
-        hintText: 'Add notes about your pet...',
+        hintText: context.l10n.hintPetNotes,
         hintStyle: context.style.regular14.copyWith(
           color: context.colors.onSurfaceVariant,
         ),
@@ -390,7 +394,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 ),
               )
             : Text(
-                'Save Changes',
+                context.l10n.saveChanges,
                 style: context.style.buttonText.copyWith(
                   color: context.colors.surface,
                   fontWeight: FontWeight.w600,

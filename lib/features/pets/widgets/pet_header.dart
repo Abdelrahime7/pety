@@ -5,6 +5,7 @@ import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class PetHeader extends StatelessWidget {
   final Pet pet;
 
@@ -59,7 +60,7 @@ class PetHeader extends StatelessWidget {
             },
             icon: const Icon(Icons.edit_rounded, size: 16),
             label: Text(
-              'Edit Pet',
+              context.l10n.editPet,
               style: context.style.buttonText.copyWith(
                 color: context.colors.onSurface,
               ),

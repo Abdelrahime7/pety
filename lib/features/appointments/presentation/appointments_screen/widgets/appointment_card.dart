@@ -1,3 +1,6 @@
+
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/to_english_digit.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,17 +39,26 @@ class AppointmentCard extends ConsumerWidget {
     final pet = ref.watch(petByIdProvider(appointment.petId));
 
     final petPhotoUrl = pet?.photoUrl ?? '';
-    final petName = pet?.name ?? 'Pet';
+    final petName = pet?.name ?? context.l10n.pet;
 
     final doctor = appointment.veterinarian.trim();
-
     final title = doctor.isEmpty
-        ? 'Appointment — $petName'
-        : '$doctor — $petName';
+        ? context.l10n.appointmentWithPet(petName)
+        : context.l10n.doctorWithPet(doctor, petName);
+
+    final date = toEnglishDigits(
+      DateFormat('EEE, MMM d, yyyy', context.l10n.localeName)
+          .format(appointment.date),
+    );
+
+    final time = toEnglishDigits(
+      DateFormat('h:mm a', context.l10n.localeName)
+          .format(appointment.date),
+    );
 
     return InkWell(
-      onTap:
-          onTap ?? () => context.push(appointmentDetails, extra: appointment),
+      onTap: onTap ??
+          () => context.push(appointmentDetails, extra: appointment),
       borderRadius: BorderRadius.circular(14.r),
       child: Container(
         margin: EdgeInsets.only(bottom: 12.h),
@@ -76,7 +88,10 @@ class AppointmentCard extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            _PetAvatar(photoUrl: petPhotoUrl, isPast: isPast),
+            _PetAvatar(
+              photoUrl: petPhotoUrl,
+              isPast: isPast,
+            ),
 
             SizedBox(width: 12.w),
 
@@ -101,45 +116,65 @@ class AppointmentCard extends ConsumerWidget {
 
                   if (isPast)
                     Text(
-                      'Completed ${DateFormat('MMM d, yyyy').format(appointment.date)}',
+                      context.l10n.completedOn(
+                        toEnglishDigits(
+                          DateFormat(
+                            'MMM d, yyyy',
+                            context.l10n.localeName,
+                          ).format(appointment.date),
+                        ),
+                      ),
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: context.colors.onSurfaceVariant,
                       ),
                     )
                   else
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.calendar_today,
-                          size: 12.sp,
-                          color: context.colors.primary,
+                        // Appointment date
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 12.sp,
+                              color: context.colors.primary,
+                            ),
+                            SizedBox(width: 4.w),
+                            Expanded(
+                              child: Text(
+                                date,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: context.colors.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 4.w),
 
-                        Text(
-                          DateFormat('MMM d, yyyy').format(appointment.date),
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: context.colors.onSurfaceVariant,
-                          ),
-                        ),
+                        SizedBox(height: 6.h),
 
-                        SizedBox(width: 12.w),
-
-                        Icon(
-                          Icons.access_time,
-                          size: 12.sp,
-                          color: context.colors.primary,
-                        ),
-                        SizedBox(width: 4.w),
-
-                        Text(
-                          DateFormat('h:mm a').format(appointment.date),
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: context.colors.onSurfaceVariant,
-                          ),
+                        // Appointment time
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.access_time,
+                              size: 12.sp,
+                              color: context.colors.primary,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              time,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: context.colors.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -178,7 +213,10 @@ class _PetAvatar extends StatelessWidget {
   final String photoUrl;
   final bool isPast;
 
-  const _PetAvatar({required this.photoUrl, required this.isPast});
+  const _PetAvatar({
+    required this.photoUrl,
+    required this.isPast,
+  });
 
   @override
   Widget build(BuildContext context) {

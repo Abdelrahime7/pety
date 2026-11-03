@@ -3,6 +3,7 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_serie.dart';
 import 'package:pet_care/features/pets/widgets/field_label.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class ExistingSeriesSelector extends StatelessWidget {
   final VaccinationSerie? selectedSeries;
   final bool isLoading;
@@ -24,7 +25,7 @@ class ExistingSeriesSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FieldLabel(label: 'SELECT SERIES'),
+        FieldLabel(label: context.l10n.selectSeries.toUpperCase()),
         const SizedBox(height: 6),
         InkWell(
           borderRadius: BorderRadius.circular(12),
@@ -58,8 +59,7 @@ class ExistingSeriesSelector extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Text(
-              'No active vaccination series found. '
-              'Create a new series instead.',
+              '${context.l10n.noActiveSeries}\n${context.l10n.createNewSeriesInstead}',
               style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
             ),
           ),
@@ -73,14 +73,14 @@ class ExistingSeriesSelector extends StatelessWidget {
 
     if (isLoading) {
       return Text(
-        'Loading series...',
+        context.l10n.loadingSeries,
         style: TextStyle(color: colors.onSurfaceVariant),
       );
     }
 
     if (series == null) {
       return Text(
-        'Select a series',
+        context.l10n.selectASeries,
         style: TextStyle(color: colors.onSurfaceVariant),
       );
     }
@@ -98,12 +98,15 @@ class ExistingSeriesSelector extends StatelessWidget {
         ),
         const SizedBox(height: 3),
         Text(
-          '${series.completedDoses}/${series.requiredDoses} doses completed',
+          context.l10n.dosesCompleted(
+            series.completedDoses,
+            series.requiredDoses,
+          ),
           style: TextStyle(fontSize: 12, color: colors.onSurfaceVariant),
         ),
         const SizedBox(height: 3),
         Text(
-          'Next dose: ${series.completedDoses + 1}',
+          context.l10n.nextDose(series.completedDoses + 1),
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,

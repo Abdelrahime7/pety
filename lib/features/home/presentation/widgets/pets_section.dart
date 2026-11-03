@@ -6,6 +6,7 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/home/presentation/widgets/pet_card.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HomePetsSection extends StatelessWidget {
   final List<Pet> pets;
   final ValueChanged<Pet>? onPetTap;
@@ -47,7 +48,7 @@ class HomePetsSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'My Companions',
+                      context.l10n.myCompanions,
                       style: context.style.sectionHeader.copyWith(
                         fontSize: 19.sp,
                         fontWeight: FontWeight.w700,
@@ -56,7 +57,7 @@ class HomePetsSection extends StatelessWidget {
                     ),
                     SizedBox(height: 3.h),
                     Text(
-                      '${pets.length} ${pets.length == 1 ? 'beloved companion' : 'beloved companions'}',
+                      context.l10n.companionsCount(pets.length),
                       style: context.style.regular12.copyWith(
                         color: context.colors.onSurfaceVariant,
                       ),
@@ -81,7 +82,7 @@ class HomePetsSection extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          'See all',
+                          context.l10n.seeAll,
                           style: context.style.regular12.copyWith(
                             color: AppColors.tealDark,
                             fontWeight: FontWeight.w600,
@@ -165,7 +166,7 @@ class HomePetsSection extends StatelessWidget {
             SizedBox(height: 16.h),
 
             Text(
-              'Every great story starts here',
+              context.l10n.everyGreatStory,
               textAlign: TextAlign.center,
               style: context.style.tileTitle.copyWith(fontSize: 16.sp),
             ),
@@ -173,8 +174,7 @@ class HomePetsSection extends StatelessWidget {
             SizedBox(height: 6.h),
 
             Text(
-              'Add your first companion and give them '
-              'the care they deserve.',
+              context.l10n.addFirstCompanionDesc,
               textAlign: TextAlign.center,
               style: context.style.regular13.copyWith(
                 color: context.colors.onSurfaceVariant,
@@ -189,7 +189,7 @@ class HomePetsSection extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onAddPet,
                 icon: const Icon(Icons.add_rounded),
-                label: const Text('Add your first pet'),
+                label: Text(context.l10n.addFirstPet),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.colors.primary,
                   foregroundColor: Colors.white,

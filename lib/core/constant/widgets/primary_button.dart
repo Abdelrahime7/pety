@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AppPrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -82,7 +83,7 @@ class AppPrimaryButton extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 0.2,
+                      letterSpacing: context.tracking(0.2),
                     ),
                   ),
                 ],

@@ -2,6 +2,7 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class OwnerVaccinationFilterChips extends StatelessWidget {
   const OwnerVaccinationFilterChips({
     super.key,
@@ -27,7 +28,7 @@ class OwnerVaccinationFilterChips extends StatelessWidget {
           final filter = filters[index];
           final active = selected == filter;
           return ChoiceChip(
-            label: Text(filter),
+            label: Text(filter == 'All' ? context.l10n.all : filter),
             selected: active,
             onSelected: (_) => onSelected(filter),
             showCheckmark: false,

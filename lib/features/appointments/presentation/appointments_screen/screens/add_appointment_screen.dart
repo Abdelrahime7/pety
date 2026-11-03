@@ -19,6 +19,7 @@ import 'package:pet_care/features/appointments/presentation/riverpod/appointment
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AddAppointmentScreen extends ConsumerStatefulWidget {
   const AddAppointmentScreen({super.key});
 
@@ -92,7 +93,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
     if (_selectedPetId == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Please select a pet')));
+      ).showSnackBar(SnackBar(content: Text(context.l10n.pleaseSelectPet)));
       return;
     }
 
@@ -102,7 +103,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
 
     if (_selectedDateTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select date and time')),
+        SnackBar(content: Text(context.l10n.pleaseSelectDateTime)),
       );
       return;
     }
@@ -160,7 +161,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                       children: [
                         AppCloseButton(onPressed: () => context.pop()),
                         Text(
-                          'New Appointment',
+                          context.l10n.newAppointment,
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
@@ -183,7 +184,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                         SizedBox(height: 16.h),
 
                         // SELECT PET
-                        const FieldLabel(label: 'SELECT PET'),
+                        FieldLabel(label: context.l10n.selectPet.toUpperCase()),
                         SizedBox(height: 8.h),
 
                         _buildPetSelector(pets, petAsync.isLoading),
@@ -191,7 +192,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                         SizedBox(height: 20.h),
 
                         // APPOINTMENT TYPE
-                        const FieldLabel(label: 'TYPE'),
+                        FieldLabel(label: context.l10n.type.toUpperCase()),
                         SizedBox(height: 8.h),
 
                         buildAppointmentTypeSelector(
@@ -207,11 +208,11 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                         SizedBox(height: 20.h),
 
                         // DATE
-                        const FieldLabel(label: 'DATE'),
+                        FieldLabel(label: context.l10n.date.toUpperCase()),
 
                         CustomeTextField(
                           controller: _dateController,
-                          hintText: 'mm / dd / yyyy , --:-- --',
+                          hintText: context.l10n.hintDateTime,
                           readOnly: true,
                           onTap: _pickDateTime,
                           suffixIcon: Icon(
@@ -220,18 +221,18 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                             color: context.colors.onSurfaceVariant,
                           ),
                           validator: (value) => value == null || value.isEmpty
-                              ? 'Date is required'
+                              ? context.l10n.dateRequired
                               : null,
                         ),
 
                         SizedBox(height: 16.h),
 
                         // VETERINARIAN
-                        const FieldLabel(label: 'VETERINARIAN'),
+                        FieldLabel(label: context.l10n.veterinarian.toUpperCase()),
 
                         CustomeTextField(
                           controller: _vetController,
-                          hintText: 'e.g. Dr. Sarah Mitchell',
+                          hintText: context.l10n.hintVetName,
                           prefixIcon: Icon(
                             Icons.person_outline,
                             size: 20,
@@ -239,25 +240,25 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                           ),
                           validator: (value) =>
                               value == null || value.trim().isEmpty
-                              ? 'Veterinarian name is required'
+                              ? context.l10n.vetNameRequired
                               : null,
                         ),
 
                         SizedBox(height: 16.h),
 
                         // NOTES
-                        const FieldLabel(label: 'NOTES'),
+                        FieldLabel(label: context.l10n.notes.toUpperCase()),
 
                         CustomeTextField(
                           controller: _notesController,
-                          hintText: 'Anything the vet should know...',
+                          hintText: context.l10n.hintAnythingVetShouldKnow,
                           maxLines: 4,
                         ),
 
                         SizedBox(height: 28.h),
 
                         AppPrimaryButton(
-                          text: 'Schedule Appointment',
+                          text: context.l10n.scheduleAppointment,
                           isLoading: isSubmitting,
                           onPressed: isSubmitting ? null : _submit,
                         ),
@@ -295,7 +296,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                     CircularProgressIndicator(color: context.colors.primary),
                     const SizedBox(height: 16),
                     Text(
-                      'Scheduling appointment…',
+                      context.l10n.schedulingAppointment,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -422,7 +423,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
           ),
           SizedBox(height: 4.h),
           Text(
-            'Add',
+            context.l10n.add,
             style: TextStyle(
               fontSize: 12.sp,
               color: context.colors.onSurfaceVariant,

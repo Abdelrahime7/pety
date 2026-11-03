@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 void showVaccinationDetailsSheet(
   BuildContext context,
   VaccinationRecord record,
@@ -30,22 +31,22 @@ class VaccinationDetailsSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _Header(title: record.vaccineName, subtitle: 'Vaccination'),
+          _Header(title: record.vaccineName, subtitle: context.l10n.vaccination),
 
           SizedBox(height: 20.h),
 
           _DetailLabel(
-            label: 'Vaccination Date',
-            value: DateFormat('MMM dd, yyyy').format(record.date),
+            label: context.l10n.vaccinationDate,
+            value: DateFormat('MMM dd, yyyy', context.l10n.localeName).format(record.date),
           ),
 
           SizedBox(height: 12.h),
 
-          _DetailLabel(label: 'Dose', value: '${record.doseNumber}'),
+          _DetailLabel(label: context.l10n.dose, value: '${record.doseNumber}'),
 
           if (notes?.isNotEmpty == true) ...[
             SizedBox(height: 12.h),
-            _DetailLabel(label: 'Notes', value: notes!),
+            _DetailLabel(label: context.l10n.notes, value: notes!),
           ],
 
           SizedBox(height: 20.h),
@@ -181,7 +182,7 @@ class _CloseButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Close',
+          context.l10n.close,
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
         ),
       ),

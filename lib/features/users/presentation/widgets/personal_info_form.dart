@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/features/users/domain/entity/user.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class PersonalInfoForm extends StatefulWidget {
   final TextEditingController nameController;
   final User? user;
@@ -123,7 +124,7 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                     : Text(
                         widget.nameController.text.isNotEmpty
                             ? widget.nameController.text
-                            : (widget.user?.name ?? 'User name'),
+                            : (widget.user?.name ?? context.l10n.userName),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -177,17 +178,17 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
         ),
 
         Padding(
-          padding: const EdgeInsets.only(left: 4, top: 8),
+          padding: const EdgeInsetsDirectional.only(start: 4, top: 8),
           child: Row(
             children: [
               Text(
-                'Email cannot be changed manually. ',
+                context.l10n.emailCannotBeChanged,
                 style: TextStyle(fontSize: 11, color: inkSoft),
               ),
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  'Contact Support',
+                  context.l10n.contactSupport,
                   style: TextStyle(
                     fontSize: 11,
                     color: context.colors.primary,

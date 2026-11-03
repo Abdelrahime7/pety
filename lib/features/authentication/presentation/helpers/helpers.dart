@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
@@ -29,7 +30,7 @@ Widget buildFieldLabel(String text, BuildContext context) {
     style: context.style.tileTitle.copyWith(
       fontSize: 11.sp,
       fontWeight: FontWeight.w700,
-      letterSpacing: 0.8,
+      letterSpacing: context.tracking(0.8),
       color: context.colors.onSurfaceVariant,
     ),
   );

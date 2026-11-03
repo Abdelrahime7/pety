@@ -5,6 +5,7 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/core/constant/widgets/outlined_button.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class PremiumPromoCard extends StatelessWidget {
   const PremiumPromoCard({super.key});
 
@@ -42,7 +43,7 @@ class PremiumPromoCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Text(
-                  'PETCARE+ PREMIUM',
+                  context.l10n.premiumBrandTitle(context.l10n.appName).toUpperCase(),
                   style: context.style.badgeCapsule,
                 ),
               ),
@@ -57,12 +58,12 @@ class PremiumPromoCard extends StatelessWidget {
           const SizedBox(height: 20.0),
 
           // Main Headline
-          Text('Get Unlimited Care', style: context.style.titleWhite),
+          Text(context.l10n.getUnlimitedCare, style: context.style.titleWhite),
           const SizedBox(height: 10.0),
 
           // Subtitle / Description
           Text(
-            'Unlock multi-pet support, cloud backup,\nand health export features.',
+            context.l10n.unlockPremium,
             style: context.style.promoSubtitle,
           ),
           const SizedBox(height: 24.0),
@@ -72,7 +73,7 @@ class PremiumPromoCard extends StatelessWidget {
             width: double.infinity,
             height: 52.0,
             child: PrimaryOutlinedButton(
-              text: 'Upgrade Now — \$4.99/mo',
+              text: context.l10n.upgradeNowPrice('\$4.99'),
               color: context.colors.surface,
               radius: 20.0,
               onPressed: () {

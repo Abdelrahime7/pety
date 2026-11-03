@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/provider.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,28 +23,34 @@ class _SettingsSectionsState extends ConsumerState<SettingsSections> {
 
   @override
   Widget build(BuildContext context) {
-      final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Text shown on the Language row: the chosen language or "System default".
+    final selectedLocale = ref.watch(localeProvider);
+    final languageLabel = switch (selectedLocale?.languageCode) {
+      'en' => l10n.languageEnglish,
+      'ar' => l10n.languageArabic,
+      _ => l10n.languageSystem,
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 1. ACCOUNT & SECURITY
-        _buildSectionHeader('ACCOUNT & SECURITY'),
+        _buildSectionHeader(l10n.accountAndSecurity),
         const SizedBox(height: 12),
         _buildGroupCard(
           children: [
             _buildNavigationTile(
               icon: Icons.person,
-              title: 'Personal Information',
-              onTap: () {
-                // Navigate to the Personal Information screen
-                context.push(profileInfo);
-              },
+              title: l10n.personalInformation,
+              onTap: () => context.push(profileInfo),
             ),
             _buildDivider(),
             _buildNavigationTile(
               icon: Icons.notifications,
-              title: 'Notification Settings',
+              title: l10n.notificationSettings,
               onTap: () {
                 appRouter.push(notificationSettings, extra: widget.user);
               },
@@ -50,7 +58,7 @@ class _SettingsSectionsState extends ConsumerState<SettingsSections> {
             _buildDivider(),
             _buildNavigationTile(
               icon: Icons.shield,
-              title: 'Privacy & Security',
+              title: l10n.privacyAndSecurity,
               onTap: () {},
             ),
           ],
@@ -59,24 +67,31 @@ class _SettingsSectionsState extends ConsumerState<SettingsSections> {
         const SizedBox(height: 28),
 
         // 2. APP PREFERENCES
-        _buildSectionHeader('APP PREFERENCES'),
+        _buildSectionHeader(l10n.appPreferences),
         const SizedBox(height: 12),
         _buildGroupCard(
           children: [
-              _buildSwitchTile(
-  icon: Icons.nightlight_round,
-  title: 'Dark Mode',
-  value: isDark,
-  onChanged: (val) {
-    ref
-        .read(themeModeProvider.notifier)
-        .setTheme(val ? ThemeMode.dark : ThemeMode.light);
-  },
-),
+            _buildSwitchTile(
+              icon: Icons.nightlight_round,
+              title: l10n.darkMode,
+              value: isDark,
+              onChanged: (val) {
+                ref
+                    .read(themeModeProvider.notifier)
+                    .setTheme(val ? ThemeMode.dark : ThemeMode.light);
+              },
+            ),
+            _buildDivider(),
+            _buildNavigationTile(
+              icon: Icons.language,
+              title: l10n.language,
+              trailingText: languageLabel,
+              onTap: _showLanguageSheet,
+            ),
             _buildDivider(),
             _buildSwitchTile(
               icon: Icons.cloud,
-              title: 'Cloud Backup',
+              title: l10n.cloudBackup,
               value: _cloudBackup,
               onChanged: (val) => setState(() => _cloudBackup = val),
             ),
@@ -86,9 +101,61 @@ class _SettingsSectionsState extends ConsumerState<SettingsSections> {
     );
   }
 
+  // Language picker (System / English / Arabic)
+  void _showLanguageSheet() {
+    final l10n = context.l10n;
+    final current = ref.read(localeProvider)?.languageCode;
+
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        Widget option(String label, Locale? locale, String? code) {
+          return ListTile(
+            title: Text(label),
+            trailing: current == code
+                ? Icon(Icons.check, color: sheetContext.colors.primary)
+                : null,
+            onTap: () {
+              ref.read(localeProvider.notifier).setLocale(locale);
+              Navigator.pop(sheetContext);
+            },
+          );
+        }
+
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: 24,
+                  end: 24,
+                  bottom: 8,
+                ),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    l10n.chooseLanguage,
+                    style: Theme.of(sheetContext).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+              option(l10n.languageSystem, null, null),
+              option(l10n.languageEnglish, const Locale('en'), 'en'),
+              option(l10n.languageArabic, const Locale('ar'), 'ar'),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   // Section Header Label
   Widget _buildSectionHeader(String title) {
-    return Text(title, style: context.style.sectionHeader);
+    // toUpperCase only affects Latin letters; Arabic is unchanged.
+    return Text(title.toUpperCase(), style: context.style.sectionHeader);
   }
 
   // White Rounded Card Container
@@ -118,6 +185,7 @@ class _SettingsSectionsState extends ConsumerState<SettingsSections> {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    String? trailingText,
   }) {
     return InkWell(
       onTap: onTap,
@@ -129,6 +197,17 @@ class _SettingsSectionsState extends ConsumerState<SettingsSections> {
             _buildIconContainer(icon),
             const SizedBox(width: 14),
             Expanded(child: Text(title, style: context.style.tileTitle)),
+            if (trailingText != null) ...[
+              Text(
+                trailingText,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: context.colors.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: 4),
+            ],
+            // chevron_right flips to point left automatically in RTL.
             Icon(
               Icons.chevron_right,
               size: 20,

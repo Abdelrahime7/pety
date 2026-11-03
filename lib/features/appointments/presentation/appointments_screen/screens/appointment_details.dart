@@ -10,6 +10,7 @@ import 'package:pet_care/features/appointments/presentation/appointments_screen/
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AppointmentDetailsScreen extends ConsumerStatefulWidget {
   final Appointment appointment;
 
@@ -67,7 +68,7 @@ class _AppointmentDetailsScreenState
                       icon: Icons.edit_outlined,
                       iconColor: context.colors.primary,
                       textColor: context.colors.onSurface,
-                      text: 'Edit',
+                      text: context.l10n.edit,
                       backgroundColor: context.colors.surfaceContainer,
                       border: Border.all(
                         color: context.colors.outlineVariant,
@@ -83,7 +84,7 @@ class _AppointmentDetailsScreenState
                       icon: Icons.delete_outline_rounded,
                       iconColor: context.colors.error,
                       textColor: context.colors.error,
-                      text: 'Cancel',
+                      text: context.l10n.cancel,
                       backgroundColor: context.colors.error.withValues(
                         alpha: 0.12,
                       ),
@@ -106,24 +107,24 @@ class _AppointmentDetailsScreenState
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.r),
         ),
-        title: const Text(
-          'Cancel Appointment?',
+        title: Text(
+          context.l10n.cancelAppointmentTitle,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          'Are you sure you want to cancel this appointment? This action cannot be undone.',
+        content: Text(
+          context.l10n.cancelAppointmentMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => dialogContext.pop(false),
-            child: const Text('Keep'),
+            child: Text(context.l10n.keep),
           ),
           FilledButton(
             onPressed: () => dialogContext.pop(true),
             style: FilledButton.styleFrom(
               backgroundColor: context.colors.error,
             ),
-            child: const Text('Cancel Visit'),
+            child: Text(context.l10n.cancelVisit),
           ),
         ],
       ),

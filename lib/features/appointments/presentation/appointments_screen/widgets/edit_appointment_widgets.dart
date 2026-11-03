@@ -1,9 +1,9 @@
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class EditingPetHeader extends StatelessWidget {
   final Pet? pet;
 
@@ -16,8 +16,8 @@ class EditingPetHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(18),
-        border: Border(
-          left: BorderSide(color: context.colors.primary, width: 4),
+        border: BorderDirectional(
+          start: BorderSide(color: context.colors.primary, width: 4),
         ),
       ),
       child: Row(
@@ -33,25 +33,25 @@ class EditingPetHeader extends StatelessWidget {
                   color: context.colors.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  'Editing',
+                child: Text(
+                  context.l10n.editing,
                   style: TextStyle(
                     fontSize: 10,
-                    color: AppColors.tealDark,
+                    color:context.colors.primary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
               const SizedBox(height: 5),
               Text(
-                pet?.name ?? 'Pet',
+                pet?.name ?? context.l10n.pet,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               Text(
-                pet == null ? 'Pet details unavailable' : pet!.breed,
+                pet == null ? context.l10n.petDetailsUnavailable : pet!.breed,
                 style: TextStyle(
                   fontSize: 11,
                   color: context.colors.onSurfaceVariant,
@@ -101,7 +101,7 @@ class EditPetSelector extends StatelessWidget {
                     border: Border.all(
                       color: selected
                           ? context.colors.primary
-                          : Colors.transparent,
+                          : context.colors.surface,
                       width: 2,
                     ),
                   ),

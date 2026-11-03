@@ -7,6 +7,7 @@ import 'package:pet_care/core/constant/widgets/primary_button.dart';
 import 'package:pet_care/features/users/presentation/widgets/feature_item.dart';
 import 'package:pet_care/features/users/presentation/widgets/plan_card.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 enum SubscriptionPlan { annual, monthly }
 
 class UpgradeToPremiumScreen extends StatefulWidget {
@@ -19,22 +20,22 @@ class UpgradeToPremiumScreen extends StatefulWidget {
 class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
   SubscriptionPlan _selectedPlan = SubscriptionPlan.annual;
 
-  static const List<Map<String, String>> _features = [
+  List<Map<String, String>> _features(BuildContext context) => [
     {
-      'title': 'Unlimited Pets',
-      'subtitle': 'Track as many pets as you have in one account.',
+      'title': context.l10n.featureUnlimitedPets,
+      'subtitle': context.l10n.featureUnlimitedPetsDesc,
     },
     {
-      'title': 'Cloud Backup & Sync',
-      'subtitle': 'Never lose your pet\'s medical records or data.',
+      'title': context.l10n.featureCloudBackup,
+      'subtitle': context.l10n.featureCloudBackupDesc,
     },
     {
-      'title': 'Family Sharing',
-      'subtitle': 'Add partners or caregivers to manage pets together.',
+      'title': context.l10n.featureFamilySharing,
+      'subtitle': context.l10n.featureFamilySharingDesc,
     },
     {
-      'title': 'PDF Health Reports',
-      'subtitle': 'Export records to share with vets or insurance.',
+      'title': context.l10n.featurePdfReports,
+      'subtitle': context.l10n.featurePdfReportsDesc,
     },
   ];
 
@@ -50,7 +51,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
             children: [
               // Top Bar with Close Button
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: AlignmentDirectional.centerStart,
                 child: Padding(
                   padding: EdgeInsets.only(top: 8.h),
                   child: const AppCloseButton(),
@@ -74,7 +75,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
 
               // Title & Subtitle
               Text(
-                'Upgrade to Premium',
+                context.l10n.upgradeToPremium,
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w800,
@@ -83,7 +84,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
               ),
               SizedBox(height: 8.h),
               Text(
-                'Give your pets the best care with\nadvanced tracking and insights.',
+                context.l10n.premiumSubtitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -97,12 +98,12 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _features.length,
+                itemCount: _features(context).length,
                 separatorBuilder: (_, _) => SizedBox(height: 16.h),
                 itemBuilder: (context, index) {
-                  final feature = _features[index];
+                  final feature = _features(context)[index];
                   return FeatureItem(
-                    title: feature['title']!,
+                    title: feature[context.l10n.title]!,
                     subtitle: feature['subtitle']!,
                   );
                 },
@@ -111,11 +112,11 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
 
               // Annual Plan Card
               PlanCard(
-                title: 'Annual Plan',
-                subtitle: 'Billed yearly',
+                title: context.l10n.annualPlan,
+                subtitle: context.l10n.billedYearly,
                 price: '\$39.99',
-                badgeText: 'BEST VALUE',
-                discountTag: 'Save 33%',
+                badgeText: context.l10n.bestValue.toUpperCase(),
+                discountTag: context.l10n.savePercent(33),
                 isSelected: _selectedPlan == SubscriptionPlan.annual,
                 onTap: () =>
                     setState(() => _selectedPlan = SubscriptionPlan.annual),
@@ -124,8 +125,8 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
 
               // Monthly Plan Card
               PlanCard(
-                title: 'Monthly Plan',
-                subtitle: 'Flexible billing',
+                title: context.l10n.monthlyPlan,
+                subtitle: context.l10n.flexibleBilling,
                 price: '\$4.99',
                 isSelected: _selectedPlan == SubscriptionPlan.monthly,
                 onTap: () =>
@@ -135,7 +136,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
 
               // Primary Action Button
               AppPrimaryButton(
-                text: 'Start 7-Day Free Trial',
+                text: context.l10n.startFreeTrial,
                 onPressed: () {
                   // Handle subscription checkout
                 },
@@ -144,7 +145,7 @@ class _UpgradeToPremiumScreenState extends State<UpgradeToPremiumScreen> {
 
               // Legal / Terms Text
               Text(
-                'By continuing, you agree to our Terms of Service and\nPrivacy Policy. Cancel anytime.',
+                context.l10n.premiumTerms,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 11.sp,

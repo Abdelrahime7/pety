@@ -1,6 +1,7 @@
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class GenderToggle extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
@@ -22,8 +23,8 @@ class GenderToggle extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _buildOption(context,label: 'Male', index: 0),
-          _buildOption(context,label: 'Female', index: 1),
+          _buildOption(context,label: context.l10n.male, index: 0),
+          _buildOption(context,label: context.l10n.female, index: 1),
         ],
       ),
     );

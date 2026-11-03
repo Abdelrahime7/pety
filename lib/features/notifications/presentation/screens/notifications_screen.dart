@@ -4,6 +4,7 @@ import 'package:pet_care/features/notifications/presentation/riverpod/notificati
 import 'package:pet_care/features/notifications/presentation/widgets/notification_card.dart';
 import 'package:pet_care/features/notifications/presentation/widgets/notification_empty_state.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
 
@@ -13,7 +14,7 @@ class NotificationsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(context.l10n.notifications),
         actions: [
           notificationsAsync.when(
             data: (notifications) {
@@ -35,7 +36,7 @@ class NotificationsScreen extends ConsumerWidget {
                     }
                   }
                 },
-                child: const Text('Mark all read'),
+                child: Text(context.l10n.markAllRead),
               );
             },
             loading: () => const SizedBox.shrink(),
@@ -66,7 +67,7 @@ class NotificationsScreen extends ConsumerWidget {
                     onPressed: () {
                       ref.invalidate(notificationProvider);
                     },
-                    child: const Text('Try again'),
+                    child: Text(context.l10n.tryAgain),
                   ),
                 ],
               ),

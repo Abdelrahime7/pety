@@ -13,6 +13,8 @@ import 'package:pet_care/features/health/presentation/widgets/health_record_card
 import 'package:pet_care/features/health/vaccination/domain/entities/vaccination_record.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
 class HealthRecordsList extends StatelessWidget {
   final Pet pet;
   final AsyncValue<List<HealthItem>> recordsAsync;
@@ -139,8 +141,10 @@ class HealthEmptyState extends StatelessWidget {
 
             Text(
               isFiltered
-                  ? 'No $selectedFilter records'
-                  : 'No health records yet',
+                  ? context.l10n.noFilteredRecords(
+                      filterLabel(context.l10n, selectedFilter),
+                    )
+                  : context.l10n.noHealthRecordsYet,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
@@ -153,8 +157,11 @@ class HealthEmptyState extends StatelessWidget {
 
             Text(
               isFiltered
-                  ? 'There are no $selectedFilter records for $petName.'
-                  : 'Health records for $petName will appear here.',
+                  ? context.l10n.noFilteredRecordsForPet(
+                      filterLabel(context.l10n, selectedFilter),
+                      petName,
+                    )
+                  : context.l10n.healthRecordsForPetWillAppear(petName),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 12.sp,
@@ -199,7 +206,7 @@ class HealthErrorState extends StatelessWidget {
             SizedBox(height: 16.h),
 
             Text(
-              'Something went wrong',
+              context.l10n.somethingWentWrong,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
@@ -211,7 +218,7 @@ class HealthErrorState extends StatelessWidget {
             SizedBox(height: 6.h),
 
             Text(
-              'We could not load the health records.',
+              context.l10n.couldNotLoadRecords,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 12.sp,
@@ -233,7 +240,7 @@ class HealthErrorState extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Try Again',
+                context.l10n.tryAgain,
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700),
               ),
             ),

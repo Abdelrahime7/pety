@@ -6,6 +6,7 @@ import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/features/home/presentation/widgets/quick_action_card.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class QuickActionsSection extends StatelessWidget {
   const QuickActionsSection({super.key});
 
@@ -20,8 +21,8 @@ class QuickActionsSection extends StatelessWidget {
       childAspectRatio: 1.65,
       children: [
         QuickActionCard(
-          title: 'Appointments',
-          subtitle: 'shedual appointment',
+          title: context.l10n.appointments,
+          subtitle: context.l10n.scheduleVisits,
           icon: Icons.calendar_month_rounded,
           iconColor: context.colors.primary,
           iconBackground: context.colors.primary.withValues(alpha: 0.12),
@@ -30,8 +31,8 @@ class QuickActionsSection extends StatelessWidget {
           },
         ),
         QuickActionCard(
-          title: 'Health Records',
-          subtitle: 'Track health',
+          title: context.l10n.healthRecords,
+          subtitle: context.l10n.trackHealth,
           icon: Icons.health_and_safety_outlined,
           iconColor: const Color(0xFF6366F1),
           iconBackground: const Color(0xFFEEF2FF),
@@ -40,8 +41,8 @@ class QuickActionsSection extends StatelessWidget {
           },
         ),
         QuickActionCard(
-          title: 'Vaccinations',
-          subtitle: 'vaccines',
+          title: context.l10n.vaccinations,
+          subtitle: context.l10n.vaccines,
           icon: Icons.vaccines_outlined,
           iconColor: Color(0xFFEA580C),
           iconBackground: Color(0xFFFFF1E6),
@@ -50,8 +51,8 @@ class QuickActionsSection extends StatelessWidget {
           },
         ),
         QuickActionCard(
-          title: 'My Pets',
-          subtitle: 'Pet profiles',
+          title: context.l10n.myPets,
+          subtitle: context.l10n.petProfiles,
           icon: Icons.pets_rounded,
           iconColor: Color(0xFFDB2777),
           iconBackground: Color(0xFFFCE7F3),

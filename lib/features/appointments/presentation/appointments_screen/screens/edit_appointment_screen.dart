@@ -17,6 +17,7 @@ import 'package:pet_care/features/appointments/presentation/appointments_screen/
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class EditAppointmentScreen extends ConsumerStatefulWidget {
   final Appointment appointment;
 
@@ -40,11 +41,24 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
     super.initState();
     _selectedPetId = widget.appointment.petId;
     _selectedDate = widget.appointment.date;
-    _dateController = TextEditingController(text: _formatDate(_selectedDate));
+    // The date text needs the app language (context.l10n), which cannot be
+    // read in initState, so it is filled in didChangeDependencies below.
+    _dateController = TextEditingController();
     _vetController = TextEditingController(
       text: widget.appointment.veterinarian,
     );
     _notesController = TextEditingController(text: widget.appointment.notes);
+  }
+
+  bool _dateTextInitialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_dateTextInitialized) {
+      _dateTextInitialized = true;
+      _dateController.text = _formatDate(_selectedDate);
+    }
   }
 
   @override
@@ -55,8 +69,10 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
     super.dispose();
   }
 
-  String _formatDate(DateTime date) =>
-      DateFormat('MM / dd / yyyy , hh : mm a').format(date);
+  String _formatDate(DateTime date) => DateFormat(
+    'MM / dd / yyyy , hh : mm a',
+    context.l10n.localeName,
+  ).format(date);
 
   Future<void> _pickDateTime() async {
     final pickedDate = await showDatePicker(
@@ -129,7 +145,7 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
                   children: [
                     AppCloseButton(onPressed: context.pop),
                     Text(
-                      'Edit Appointment',
+                      context.l10n.editAppointment,
                       style: TextStyle(
                         fontSize: 17.sp,
                         fontWeight: FontWeight.w800,
@@ -139,7 +155,7 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
                     AppSaveButton(
                       onPressed: isSaving ? null : _save,
                       isLoading: isSaving,
-                      text: 'Save',
+                      text: context.l10n.save,
                     ),
                   ],
                 ),
@@ -150,14 +166,14 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
                   children: [
                     EditingPetHeader(pet: selectedPet),
                     SizedBox(height: 18.h),
-                    const FieldLabel(label: 'SELECT PET'),
+                    FieldLabel(label: context.l10n.selectPet.toUpperCase()),
                     EditPetSelector(
                       pets: pets,
                       selectedPetId: _selectedPetId,
                       onSelected: (id) => setState(() => _selectedPetId = id),
                     ),
                     SizedBox(height: 18.h),
-                    const FieldLabel(label: 'DATE & TIME'),
+                    FieldLabel(label: context.l10n.dateAndTime.toUpperCase()),
                     CustomeTextField(
                       controller: _dateController,
                       readOnly: true,
@@ -168,11 +184,11 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
                         color: context.colors.onSurfaceVariant,
                       ),
                       validator: (value) => value == null || value.isEmpty
-                          ? 'Date is required'
+                          ? context.l10n.dateRequired
                           : null,
                     ),
                     SizedBox(height: 16.h),
-                    const FieldLabel(label: 'VETERINARIAN'),
+                    FieldLabel(label: context.l10n.veterinarian.toUpperCase()),
                     CustomeTextField(
                       controller: _vetController,
                       prefixIcon: Icon(
@@ -182,18 +198,18 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
                       ),
                       validator: (value) =>
                           value == null || value.trim().isEmpty
-                          ? 'Veterinarian name is required'
+                          ? context.l10n.vetNameRequired
                           : null,
                     ),
                     SizedBox(height: 16.h),
-                    const FieldLabel(label: 'NOTES'),
+                    FieldLabel(label: context.l10n.notes.toUpperCase()),
                     CustomeTextField(controller: _notesController, maxLines: 4),
                     SizedBox(height: 24.h),
                     Row(
                       children: [
                         Expanded(
                           child: PrimaryOutlinedButton(
-                            text: 'Discard',
+                            text: context.l10n.discard,
                             textColor: context.colors.onSurface,
                             height: 48,
                             radius: 12,
@@ -203,7 +219,7 @@ class _EditAppointmentScreenState extends ConsumerState<EditAppointmentScreen> {
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AppPrimaryButton(
-                            text: 'Save Changes',
+                            text: context.l10n.saveChanges,
                             height: 48,
                             borderRadius: 12,
                             isLoading: isSaving,

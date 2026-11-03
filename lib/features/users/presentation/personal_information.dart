@@ -19,6 +19,7 @@ import 'package:pet_care/features/users/presentation/widgets/personal_info_form.
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
 import 'package:pet_care/features/users/presentation/widgets/security_action_card.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class ProfileInfoScreen extends ConsumerStatefulWidget {
   const ProfileInfoScreen({super.key});
 
@@ -55,7 +56,7 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
       switch (result) {
         case Success<void>():
           if (mounted) {
-            showNotification(context, 'Profile updated successfully');
+            showNotification(context, context.l10n.profileUpdated);
           }
 
         case Failure<void>(:final message):
@@ -65,12 +66,12 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
 
         case Cancelled<void>():
           if (mounted) {
-            showNotification(context, 'Profile update cancelled');
+            showNotification(context, context.l10n.profileUpdateCancelled);
           }
       }
     } catch (e) {
       if (mounted) {
-        showNotification(context, 'Something went wrong');
+        showNotification(context, context.l10n.somethingWentWrong);
       }
     } finally {
       if (mounted) {
@@ -141,7 +142,7 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
           child: AppBackButton(onPressed: () => context.pop()),
         ),
         title: Text(
-          'Personal Information',
+          context.l10n.personalInformation,
           style: TextStyle(
             color: colors.onSurface,
             fontSize: 18,
@@ -158,7 +159,7 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
             Center(child: CircularProgressIndicator(color: colors.primary)),
         error: (e, st) => Center(
           child: Text(
-            'Error loading profile',
+            context.l10n.errorLoadingProfile,
             style: TextStyle(color: colors.onSurfaceVariant),
           ),
         ),
@@ -186,12 +187,12 @@ class _ProfileInfoScreenState extends ConsumerState<ProfileInfoScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'CHANGE PHOTO',
+                      context.l10n.changePhoto.toUpperCase(),
                       style: TextStyle(
                         color: colors.primary,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 1.0,
+                        letterSpacing: context.tracking(1.0),
                       ),
                     ),
 

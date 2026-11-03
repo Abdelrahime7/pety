@@ -1,0 +1,512 @@
+{
+  "@@locale": "en",
+  "appName": "PetPaw+",
+  "tagline": "Caring for your best friends",
+  "save": "Save",
+  "saveChanges": "Save changes",
+  "cancel": "Cancel",
+  "close": "Close",
+  "edit": "Edit",
+  "add": "Add",
+  "keep": "Keep",
+  "discard": "Discard",
+  "all": "All",
+  "seeAll": "See all",
+  "view": "View",
+  "viewRecords": "View records",
+  "tryAgain": "Try again",
+  "loading": "Loading...",
+  "saving": "Saving…",
+  "yes": "Yes",
+  "no": "No",
+  "other": "Other",
+  "pet": "Pet",
+  "notSpecified": "Not specified",
+  "somethingWentWrong": "Something went wrong",
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "pressBackAgainToExit": "Press back again to exit",
+  "unitKg": "kg",
+  "unitLbs": "lbs",
+  "navHome": "Home",
+  "navPets": "Pets",
+  "navHealth": "Health",
+  "navCalendar": "Calendar",
+  "navProfile": "Profile",
+  "login": "Login",
+  "register": "Register",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "orContinueWith": "Or continue with",
+  "fullName": "Full name",
+  "hintFullName": "John Doe",
+  "emailAddress": "Email address",
+  "hintEmail": "name@example.com",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "forgotPassword": "Forgot password?",
+  "noAccountPrompt": "Don’t have an account? ",
+  "haveAccountPrompt": "Already have an account? ",
+  "pleaseEnterName": "Please enter your name",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "emailRequired": "Email is required",
+  "emailInvalid": "Enter a valid email address",
+  "passwordRequired": "Password is required",
+  "passwordTooShort": "Password must be at least 8 characters",
+  "accountAndSecurity": "Account & Security",
+  "personalInformation": "Personal Information",
+  "notificationSettings": "Notification Settings",
+  "privacyAndSecurity": "Privacy & Security",
+  "appPreferences": "App Preferences",
+  "darkMode": "Dark Mode",
+  "language": "Language",
+  "chooseLanguage": "Choose language",
+  "languageSystem": "System default",
+  "languageEnglish": "English",
+  "languageArabic": "العربية",
+  "cloudBackup": "Cloud Backup",
+  "logOut": "Log Out",
+  "changePassword": "Change Password",
+  "errorLoadingProfile": "Error loading profile",
+  "changePhoto": "Change photo",
+  "uploadPhoto": "Upload photo",
+  "userName": "User name",
+  "emailCannotBeChanged": "Email cannot be changed manually. ",
+  "contactSupport": "Contact Support",
+  "profileUpdated": "Profile updated successfully",
+  "profileUpdateCancelled": "Profile update cancelled",
+  "subscription": "Subscription",
+  "memberSince": "Member since",
+  "upgrade": "Upgrade",
+  "premiumPlan": "Premium Plan",
+  "freePlan": "Free Plan",
+  "premium": "Premium",
+  "petCareMember": "Pet Care Member",
+  "anonymousUser": "Anonymous User",
+  "upgradeToPremium": "Upgrade to Premium",
+  "premiumSubtitle": "Give your pets the best care with\nadvanced tracking and insights.",
+  "annualPlan": "Annual Plan",
+  "billedYearly": "Billed yearly",
+  "monthlyPlan": "Monthly Plan",
+  "flexibleBilling": "Flexible billing",
+  "bestValue": "Best value",
+  "savePercent": "Save {percent}%",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "startFreeTrial": "Start 7-Day Free Trial",
+  "premiumTerms": "By continuing, you agree to our Terms of Service and\nPrivacy Policy. Cancel anytime.",
+  "featureUnlimitedPets": "Unlimited Pets",
+  "featureUnlimitedPetsDesc": "Track as many pets as you have in one account.",
+  "featureCloudBackup": "Cloud Backup & Sync",
+  "featureCloudBackupDesc": "Never lose your pet’s medical records or data.",
+  "featureFamilySharing": "Family Sharing",
+  "featureFamilySharingDesc": "Add partners or caregivers to manage pets together.",
+  "featurePdfReports": "PDF Health Reports",
+  "featurePdfReportsDesc": "Export records to share with vets or insurance.",
+  "premiumBrandTitle": "{appName} Premium",
+  "@premiumBrandTitle": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "getUnlimitedCare": "Get Unlimited Care",
+  "unlockPremium": "Unlock multi-pet support, cloud backup,\nand health export features.",
+  "upgradeNowPrice": "Upgrade Now — {price}/mo",
+  "@upgradeNowPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "notifications": "Notifications",
+  "chooseNotifications": "Choose which notifications you want to receive about your pets.",
+  "appointmentReminders": "Appointment reminders",
+  "appointmentRemindersDesc": "Get notified about your pet’s upcoming appointments.",
+  "markAllRead": "Mark all read",
+  "noNotifications": "No notifications",
+  "allCaughtUp": "You are all caught up! ",
+  "allCaughtUpDesc": "We will notify you when something needs your attention.",
+  "justNow": "Just now",
+  "yesterday": "Yesterday",
+  "minutesAgo": "{count, plural, one{{count} minute ago} other{{count} minutes ago}}",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{count, plural, one{{count} hour ago} other{{count} hours ago}}",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{count, plural, one{{count} day ago} other{{count} days ago}}",
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "goodMorning": "Good morning 👋",
+  "helloPetParent": "Hello, Pet Parent!",
+  "makePetHappy": "Let’s make your pet happy today.",
+  "quickActions": "Quick Actions",
+  "everythingYourPetNeeds": "Everything your pet needs",
+  "upcomingAppointment": "Upcoming Appointment",
+  "healthOverview": "Health Overview",
+  "unableToLoadPets": "Unable to load your pets.",
+  "myCompanions": "My Companions",
+  "companionsCount": "{count, plural, one{{count} beloved companion} other{{count} beloved companions}}",
+  "@companionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "everyGreatStory": "Every great story starts here",
+  "addFirstCompanionDesc": "Add your first companion and give them the care they deserve.",
+  "addFirstPet": "Add your first pet",
+  "appointments": "Appointments",
+  "scheduleVisits": "Schedule visits",
+  "healthRecords": "Health Records",
+  "trackHealth": "Track health",
+  "vaccinations": "Vaccinations",
+  "vaccines": "Vaccines",
+  "myPets": "My Pets",
+  "petProfiles": "Pet profiles",
+  "keepTrackVaccineDoses": "Keep track of vaccine doses",
+  "medicalHistory": "Medical History",
+  "checkPetHealthRecords": "Check your pet’s health records",
+  "addNewPet": "Add New Pet",
+  "addPet": "Add Pet",
+  "editPet": "Edit Pet",
+  "petDetails": "Pet Details",
+  "deletePet": "Delete Pet",
+  "deleting": "Deleting...",
+  "basicInformation": "Basic Information",
+  "petName": "Pet name",
+  "species": "Species",
+  "breed": "Breed",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "dog": "Dog",
+  "cat": "Cat",
+  "bird": "Bird",
+  "birthDate": "Birth date",
+  "weight": "Weight",
+  "weightLbs": "Weight (lbs)",
+  "neuteredSpayed": "Neutered / Spayed",
+  "medicalNotes": "Medical notes",
+  "hintPetName": "e.g. Luna",
+  "hintBreed": "e.g. Golden Retriever",
+  "hintWeight": "0.0",
+  "hintAllergies": "Allergies, chronic conditions, etc.",
+  "hintPetNotes": "Add notes about your pet...",
+  "hintEnterPetName": "Enter pet name",
+  "hintEnterBreed": "Enter breed",
+  "hintEnterWeight": "Enter weight",
+  "hintDateMDY": "mm/dd/yyyy",
+  "savingYourPet": "Saving your pet…",
+  "yourPets": "Your Pets",
+  "manageFurryFriends": "Manage all your furry friends in one place.",
+  "noPetsAdded": "You haven’t added any pets yet.",
+  "noMatchingPets": "No matching pets found.",
+  "petNameRequired": "Pet name is required",
+  "breedRequired": "Breed is required",
+  "weightRequired": "Weight is required",
+  "invalidWeight": "Enter a valid weight",
+  "birthDateRequired": "Birth date is required",
+  "petUpdated": "Pet updated successfully",
+  "notes": "Notes",
+  "notScheduled": "Not scheduled",
+  "activeSeries": "Active series: {count}",
+  "@activeSeries": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ageYears": "{count, plural, one{{count} year} other{{count} years}}",
+  "@ageYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ageMonths": "{count, plural, one{{count} month} other{{count} months}}",
+  "@ageMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ageYearsOld": "{count, plural, one{{count} year old} other{{count} years old}}",
+  "@ageYearsOld": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ageMonthsOld": "{count, plural, one{{count} month old} other{{count} months old}}",
+  "@ageMonthsOld": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessThanMonth": "Less than a month",
+  "lessThanYear": "Less than a year",
+  "puppyKitten": "Puppy / Kitten",
+  "petsCount": "{count, plural, one{{count} pet} other{{count} pets}}",
+  "@petsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "health": "Health",
+  "allHealthRecords": "All Health Records",
+  "selectPetToViewRecords": "Select a pet to view their records.",
+  "searchByNameOrBreed": "Search by name or breed...",
+  "failedToLoadPets": "Failed to load pets.",
+  "unableToLoadHealthRecords": "Unable to load health records.",
+  "couldNotLoadRecords": "We could not load the health records.",
+  "healthRecordAdded": "Health record added successfully",
+  "addHealthRecord": "Add Health Record",
+  "recordInformation": "Record Information",
+  "recordType": "Record type",
+  "selectRecordTypeSubtitle": "Select the type of health record",
+  "whatKindOfRecord": "What kind of health record are you adding?",
+  "title": "Title",
+  "hintRecordTitle": "e.g. Annual checkup",
+  "pleaseEnterTitle": "Please enter a title",
+  "date": "Date",
+  "whenDidThisHappen": "When did this happen?",
+  "veterinarian": "Veterinarian",
+  "hintVetName": "e.g. Dr. Sarah Smith",
+  "hintAdditionalInfo": "Add any additional information...",
+  "keepRecordsUpToDate": "Keep your pet’s health records up to date to make it easier to track their health history.",
+  "noHealthRecordsYet": "No health records yet",
+  "healthRecordsWillAppear": "Health records for all your pets will appear here.",
+  "healthRecordsForPetWillAppear": "Health records for {petName} will appear here.",
+  "@healthRecordsForPetWillAppear": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "noFilteredRecords": "No {type} records",
+  "@noFilteredRecords": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "noFilteredRecordsForPet": "There are no {type} records for {petName}.",
+  "@noFilteredRecordsForPet": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "showingRecordsFor": "Showing records for",
+  "addingRecordFor": "Adding record for",
+  "recordsCount": "{count, plural, one{{count} record} other{{count} records}}",
+  "@recordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourPetsHealth": "Your pets’ health",
+  "recordsAcrossPets": "{records} across {pets}",
+  "@recordsAcrossPets": {
+    "placeholders": {
+      "records": {
+        "type": "String"
+      },
+      "pets": {
+        "type": "String"
+      }
+    }
+  },
+  "vaccination": "Vaccination",
+  "checkup": "Checkup",
+  "medication": "Medication",
+  "allergy": "Allergy",
+  "surgery": "Surgery",
+  "treatment": "Treatment",
+  "grooming": "Grooming",
+  "allVaccinations": "All Vaccinations",
+  "unableToLoadVaccinations": "Unable to load vaccinations.",
+  "failedToLoadVaccinations": "Failed to load vaccinations",
+  "noVaccinationsYet": "No vaccinations yet",
+  "keepPetHealthyAddVaccinations": "Keep your pet healthy by adding their vaccinations.",
+  "vaccinationRecordsWillAppear": "Vaccination records for all your pets will appear here.",
+  "addVaccination": "Add Vaccination",
+  "savingVaccination": "Saving vaccination…",
+  "vaccinationAdded": "Vaccination added successfully",
+  "vaccinationDetails": "Vaccination Details",
+  "vaccinationHistory": "Vaccination history",
+  "vaccinationSeries": "Vaccination series",
+  "createNewSeries": "Create new series",
+  "useExistingSeries": "Use existing series",
+  "vaccinationDate": "Vaccination date",
+  "vaccinationDateRequired": "Vaccination date is required",
+  "hintVaccinationNotes": "Optional notes about this vaccination...",
+  "vaccine": "Vaccine",
+  "vaccineName": "Vaccine name",
+  "hintVaccineName": "e.g. Rabies",
+  "vaccineNameRequired": "Vaccine name is required",
+  "numberOfDoses": "Number of doses",
+  "hintDoses": "e.g. 3",
+  "enterValidDoses": "Enter a valid number of doses",
+  "doseProgress": "Dose progress",
+  "requiredDoses": "Required doses",
+  "dose": "Dose",
+  "doseNumber": "Dose {number}",
+  "@doseNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "nextDose": "Next dose: {number}",
+  "@nextDose": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dosesCompleted": "{completed}/{total} doses completed",
+  "@dosesCompleted": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dosesOfRequired": "{completed} / {total} doses",
+  "@dosesOfRequired": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dosesCount": "{count, plural, one{{count} dose} other{{count} doses}}",
+  "@dosesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "status": "Status",
+  "created": "Created",
+  "description": "Description",
+  "completed": "Completed",
+  "inProgress": "In progress",
+  "selectSeries": "Select series",
+  "selectASeries": "Select a series",
+  "selectVaccinationSeries": "Select Vaccination Series",
+  "noActiveSeries": "No active vaccination series found. ",
+  "createNewSeriesInstead": "Create a new series instead.",
+  "loadingSeries": "Loading series...",
+  "noSeriesFound": "No series found.",
+  "searchVaccine": "Search vaccine...",
+  "unknownPet": "Unknown pet",
+  "appointment": "Appointment",
+  "newAppointment": "New Appointment",
+  "editAppointment": "Edit Appointment",
+  "scheduleAppointment": "Schedule Appointment",
+  "schedulingAppointment": "Scheduling appointment…",
+  "cancelAppointmentTitle": "Cancel appointment?",
+  "cancelAppointmentMessage": "Are you sure you want to cancel this appointment? This action cannot be undone.",
+  "cancelVisit": "Cancel visit",
+  "upcoming": "Upcoming",
+  "past": "Past",
+  "noAppointmentsYet": "No appointments yet.",
+  "noAppointmentsOnDay": "No appointments on this day.",
+  "pleaseSelectPet": "Please select a pet",
+  "pleaseSelectDateTime": "Please select date and time",
+  "selectPet": "Select pet",
+  "type": "Type",
+  "dateAndTime": "Date & time",
+  "hintDateTime": "mm / dd / yyyy , --:-- --",
+  "hintAnythingVetShouldKnow": "Anything the vet should know...",
+  "dateRequired": "Date is required",
+  "vetNameRequired": "Veterinarian name is required",
+  "editing": "Editing",
+  "petDetailsUnavailable": "Pet details unavailable",
+  "completedOn": "Completed {date}",
+  "@completedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentWithPet": "Appointment — {petName}",
+  "@appointmentWithPet": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "doctorWithPet": "{doctor} — {petName}",
+  "@doctorWithPet": {
+    "placeholders": {
+      "doctor": {
+        "type": "String"
+      },
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "noNotesAdded": "No notes added."
+}

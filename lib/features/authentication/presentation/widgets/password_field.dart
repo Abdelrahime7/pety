@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/validators/password_validator.dart';
@@ -16,11 +17,11 @@ Widget buildPasswordField(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'PASSWORD',
+        context.l10n.password.toUpperCase(),
         style: context.style.tileTitle.copyWith(
           fontSize: 11.sp,
           fontWeight: FontWeight.w700,
-          letterSpacing: 0.8,
+          letterSpacing: context.tracking(0.8),
           color: context.colors.onSurfaceVariant,
         ),
       ),
@@ -42,17 +43,17 @@ Widget buildPasswordField(
           color: context.colors.onSurfaceVariant,
         ),
         onSuffixIconPressed: onSuffixIconPressed,
-        validator: validatePassword,
+        validator: (value) => validatePassword(context.l10n, value),
       ),
       if (showForgotPassword) ...[
         SizedBox(height: 10.h),
         Align(
-          alignment: Alignment.centerRight,
+          alignment: AlignmentDirectional.centerEnd,
           child: GestureDetector(
             onTap: resetPassword,
 
             child: Text(
-              'Forgot Password?',
+              context.l10n.forgotPassword,
               style: context.style.buttonText.copyWith(fontSize: 13.sp),
             ),
           ),

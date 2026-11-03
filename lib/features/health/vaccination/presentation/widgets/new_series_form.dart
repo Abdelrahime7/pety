@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/pets/widgets/field_label.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class NewSeriesForm extends StatelessWidget {
   final TextEditingController vaccineNameController;
   final TextEditingController requiredDosesController;
@@ -17,29 +18,29 @@ class NewSeriesForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const FieldLabel(label: 'VACCINE NAME'),
+        FieldLabel(label: context.l10n.vaccineName.toUpperCase()),
         const SizedBox(height: 6),
         CustomeTextField(
           controller: vaccineNameController,
-          hintText: 'e.g. Rabies',
+          hintText: context.l10n.hintVaccineName,
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'Vaccine name is required';
+              return context.l10n.vaccineNameRequired;
             }
             return null;
           },
         ),
         const SizedBox(height: 14),
-        const FieldLabel(label: 'NUMBER OF DOSES'),
+        FieldLabel(label: context.l10n.numberOfDoses.toUpperCase()),
         const SizedBox(height: 6),
         CustomeTextField(
           controller: requiredDosesController,
-          hintText: 'e.g. 3',
+          hintText: context.l10n.hintDoses,
           keyboardType: TextInputType.number,
           validator: (value) {
             final doses = int.tryParse(value?.trim() ?? '');
             if (doses == null || doses <= 0) {
-              return 'Enter a valid number of doses';
+              return context.l10n.enterValidDoses;
             }
             return null;
           },

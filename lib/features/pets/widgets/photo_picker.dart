@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class PhotoPicker extends StatelessWidget {
   final Function(File)? onImageSelected;
   final File? imageFile;
@@ -49,7 +50,7 @@ class PhotoPicker extends StatelessWidget {
                       ),
                       SizedBox(height: 6),
                       Text(
-                        'UPLOAD PHOTO',
+                        context.l10n.uploadPhoto.toUpperCase(),
                         style: TextStyle(
                           color: context.colors.onSurfaceVariant,
                           fontSize: 9,
@@ -64,9 +65,9 @@ class PhotoPicker extends StatelessWidget {
                   ),
           ),
 
-          Positioned(
+          PositionedDirectional(
             bottom: 0,
-            right: 0,
+            end: 0,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(

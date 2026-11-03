@@ -7,6 +7,7 @@ import 'package:pet_care/features/health/presentation/widgets/health_pet_card.da
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthScreen extends ConsumerStatefulWidget {
   const HealthScreen({super.key});
 
@@ -44,17 +45,17 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Health',
+                        context.l10n.health,
                         style: TextStyle(
                           fontSize: 26.sp,
                           fontWeight: FontWeight.w900,
                           color: context.colors.onSurface,
-                          letterSpacing: -0.5,
+                          letterSpacing: context.tracking(-0.5),
                         ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Select a pet to view their records.',
+                        context.l10n.selectPetToViewRecords,
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: context.colors.onSurfaceVariant,
@@ -94,7 +95,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   controller: _searchController,
                   onChanged: (value) => setState(() => _query = value),
                   decoration: InputDecoration(
-                    hintText: 'Search by name or breed...',
+                    hintText: context.l10n.searchByNameOrBreed,
                     hintStyle: TextStyle(
                       color: context.colors.onSurfaceVariant,
                       fontSize: 14.sp,
@@ -131,7 +132,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                   ),
                   error: (error, _) => Center(
                     child: Text(
-                      'Failed to load pets.',
+                      context.l10n.failedToLoadPets,
                       style: TextStyle(color: context.colors.error),
                     ),
                   ),
@@ -147,8 +148,8 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                       return Center(
                         child: Text(
                           allPets.isEmpty
-                              ? "You haven't added any pets yet."
-                              : 'No matching pets found.',
+                              ? context.l10n.noPetsAdded
+                              : context.l10n.noMatchingPets,
                           style: TextStyle(
                             color: context.colors.onSurfaceVariant,
                             fontSize: 14.sp,

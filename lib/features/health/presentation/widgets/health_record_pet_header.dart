@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HealthRecordPetHeader extends StatelessWidget {
   final Pet pet;
 
@@ -61,12 +62,12 @@ class HealthRecordPetHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ADDING RECORD FOR',
+                  context.l10n.addingRecordFor.toUpperCase(),
                   style: TextStyle(
                     fontSize: 9.5.sp,
                     fontWeight: FontWeight.w700,
                     color: context.colors.onSurfaceVariant,
-                    letterSpacing: 0.6,
+                    letterSpacing: context.tracking(0.6),
                   ),
                 ),
                 SizedBox(height: 2.h),
