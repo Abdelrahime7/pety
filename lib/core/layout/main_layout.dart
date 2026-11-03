@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class MainLayout extends StatefulWidget {
@@ -41,9 +42,9 @@ class _MainLayoutState extends State<MainLayout> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(
-          content: Text('Press back again to exit'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text(context.l10n.pressBackAgainToExit),
+          duration: const Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -85,7 +86,7 @@ class _MainLayoutState extends State<MainLayout> {
           items: [
             BottomNavigationBarItem(
               icon: _navIcon('assets/icons/home.png', currentIndex == 0),
-              label: 'Home',
+              label: context.l10n.navHome,
             ),
             BottomNavigationBarItem(
               icon: _navIcon(
@@ -93,7 +94,7 @@ class _MainLayoutState extends State<MainLayout> {
                 currentIndex == 1,
                 size: 26,
               ),
-              label: 'Pets',
+              label: context.l10n.navPets,
             ),
             BottomNavigationBarItem(
               icon: _navIcon(
@@ -101,15 +102,15 @@ class _MainLayoutState extends State<MainLayout> {
                 currentIndex == 2,
                 size: 26,
               ),
-              label: 'Health',
+              label: context.l10n.navHealth,
             ),
             BottomNavigationBarItem(
               icon: _navIcon('assets/icons/calendar.png', currentIndex == 3),
-              label: 'Calendar',
+              label: context.l10n.navCalendar,
             ),
             BottomNavigationBarItem(
               icon: _navIcon('assets/icons/profile.png', currentIndex == 4),
-              label: 'Profile',
+              label: context.l10n.navProfile,
             ),
           ],
         ),
