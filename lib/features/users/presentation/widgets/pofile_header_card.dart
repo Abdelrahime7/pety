@@ -12,6 +12,7 @@ import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart'
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class ProfileHeaderCard extends ConsumerWidget {
   final dynamic user;
 
@@ -77,7 +78,7 @@ class ProfileHeaderCard extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  displayName.isNotEmpty ? displayName : 'Pet Care Member',
+                  displayName.isNotEmpty ? displayName : context.l10n.petCareMember,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.style.headerName,
@@ -86,7 +87,7 @@ class ProfileHeaderCard extends ConsumerWidget {
                 const SizedBox(height: 2),
 
                 Text(
-                  email.isNotEmpty ? email : 'Anonymous User',
+                  email.isNotEmpty ? email : context.l10n.anonymousUser,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.style.regular13,
@@ -118,7 +119,7 @@ class ProfileHeaderCard extends ConsumerWidget {
                       const SizedBox(width: 4),
 
                       Text(
-                        isPremium ? 'PREMIUM' : 'FREE PLAN',
+                        isPremium ? context.l10n.premium.toUpperCase() : context.l10n.freePlan.toUpperCase(),
                         style: context.style.planBadge,
                       ),
                     ],
@@ -181,8 +182,8 @@ class ProfileHeaderCard extends ConsumerWidget {
                             return const SizedBox.shrink();
                           }
 
-                          return Positioned(
-                            right: -3,
+                          return PositionedDirectional(
+                            end: -3,
                             top: -5,
                             child: Container(
                               constraints: const BoxConstraints(

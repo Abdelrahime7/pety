@@ -70,9 +70,9 @@ class ProfilePictureWidget extends StatelessWidget {
           ),
         ),
 
-        Positioned(
+        PositionedDirectional(
           bottom: size > 80 ? -4 : -2,
-          right: size > 80 ? -4 : -2,
+          end: size > 80 ? -4 : -2,
           child: GestureDetector(
             onTap: onEdit,
             child: Container(

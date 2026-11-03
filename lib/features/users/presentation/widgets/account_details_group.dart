@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pet_care/features/users/domain/entity/user.dart';
 import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AccountDetailsGroup extends StatelessWidget {
   final User? user;
 
@@ -57,17 +58,17 @@ class AccountDetailsGroup extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'SUBSCRIPTION',
+                          context.l10n.subscription.toUpperCase(),
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             color: inkSoft,
-                            letterSpacing: 1.0,
+                            letterSpacing: context.tracking(1.0),
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          isPremium ? 'Premium Plan' : 'Free Plan',
+                          isPremium ? context.l10n.premiumPlan : context.l10n.freePlan,
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -92,7 +93,7 @@ class AccountDetailsGroup extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        'Upgrade',
+                        context.l10n.upgrade,
                         style: TextStyle(
                           color: context.colors.primary,
                           fontSize: 12,
@@ -125,12 +126,12 @@ class AccountDetailsGroup extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'MEMBER SINCE',
+                      context.l10n.memberSince.toUpperCase(),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: inkSoft,
-                        letterSpacing: 1.0,
+                        letterSpacing: context.tracking(1.0),
                       ),
                     ),
                     const SizedBox(height: 2),

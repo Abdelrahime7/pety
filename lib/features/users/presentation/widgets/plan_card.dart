@@ -2,6 +2,7 @@ import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class PlanCard extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -96,9 +97,9 @@ class PlanCard extends StatelessWidget {
 
           // Floating "BEST VALUE" Pill Badge
           if (badgeText != null)
-            Positioned(
+            PositionedDirectional(
               top: -10.h,
-              left: 20.w,
+              start: 20.w,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
                 decoration: BoxDecoration(
@@ -111,7 +112,7 @@ class PlanCard extends StatelessWidget {
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
-                    letterSpacing: 0.5,
+                    letterSpacing: context.tracking(0.5),
                   ),
                 ),
               ),
