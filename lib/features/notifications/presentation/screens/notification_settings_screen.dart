@@ -5,6 +5,7 @@ import 'package:pet_care/features/notifications/presentation/riverpod/notificati
 import 'package:pet_care/features/notifications/presentation/widgets/notification_setting_tile.dart';
 import 'package:pet_care/features/users/domain/entity/user.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class NotificationSettingsScreen extends ConsumerWidget {
   final User user;
 
@@ -35,13 +36,13 @@ class NotificationSettingsScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: context.colors.surface,
         elevation: 0,
-        title: Text('Notification Settings', style: context.style.headerName),
+        title: Text(context.l10n.notificationSettings, style: context.style.headerName),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
           Text(
-            'Notifications',
+            context.l10n.notifications,
             style: context.style.subtitle.copyWith(
               color: context.colors.onSurface,
             ),
@@ -50,8 +51,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           const SizedBox(height: 8),
 
           Text(
-            'Choose which notifications you want to receive '
-            'about your pets.',
+            context.l10n.chooseNotifications,
             style: context.style.regular14.copyWith(
               color: context.colors.onSurfaceVariant,
             ),
@@ -61,8 +61,8 @@ class NotificationSettingsScreen extends ConsumerWidget {
 
           NotificationSettingTile(
             icon: Icons.calendar_month_outlined,
-            title: 'Appointment reminders',
-            subtitle: 'Get notified about your pet\'s upcoming appointments.',
+            title: context.l10n.appointmentReminders,
+            subtitle: context.l10n.appointmentRemindersDesc,
             value: isEnabled,
             onChanged: isLoading
                 ? null

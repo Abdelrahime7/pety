@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class NotificationEmptyState extends StatelessWidget {
   const NotificationEmptyState({super.key});
 
@@ -30,7 +31,7 @@ class NotificationEmptyState extends StatelessWidget {
             const SizedBox(height: 20),
 
             Text(
-              'No notifications',
+              context.l10n.noNotifications,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -39,8 +40,7 @@ class NotificationEmptyState extends StatelessWidget {
             const SizedBox(height: 8),
 
             Text(
-              'You are all caught up! '
-              'We will notify you when something needs your attention.',
+              '${context.l10n.allCaughtUp}/n${context.l10n.allCaughtUpDesc}',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.textTheme.bodyMedium?.color?.withValues(

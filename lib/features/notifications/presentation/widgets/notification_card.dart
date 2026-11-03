@@ -4,6 +4,7 @@ import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/notifications/domain/entities/notification.dart';
 import 'package:pet_care/features/notifications/domain/enums/notification_type.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class NotificationCard extends StatelessWidget {
   final Notification notification;
   final VoidCallback onTap;
@@ -27,20 +28,20 @@ class NotificationCard extends StatelessWidget {
     }
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
 
-    if (difference.inMinutes < 1) return 'Just now';
+    if (difference.inMinutes < 1) return context.l10n.justNow;
     if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m ago';
+      return context.l10n.minutesAgo(difference.inMinutes);
     }
     if (difference.inHours < 24) {
-      return '${difference.inHours}h ago';
+      return context.l10n.hoursAgo(difference.inHours);
     }
-    if (difference.inDays == 1) return 'Yesterday';
+    if (difference.inDays == 1) return context.l10n.yesterday;
     if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return context.l10n.daysAgo(difference.inDays);
     }
 
     return '${date.day}/${date.month}/${date.year}';
@@ -170,7 +171,7 @@ class NotificationCard extends StatelessWidget {
                     const SizedBox(height: 8),
 
                     Text(
-                      _formatDate(notification.createdAt),
+                      _formatDate(context, notification.createdAt),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.textTheme.bodySmall?.color?.withValues(
                           alpha: isRead ? 0.3 : 0.5,
