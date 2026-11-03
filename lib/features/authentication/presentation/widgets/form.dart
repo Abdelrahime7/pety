@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
@@ -57,19 +58,19 @@ class _AuthFormState extends ConsumerState<AuthForm> {
           children: [
             // 1. FULL NAME (Register only)
             if (!widget.isLogin && widget.nameController != null) ...[
-              buildFieldLabel('FULL NAME', context),
+              buildFieldLabel(context.l10n.fullName.toUpperCase(), context),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.nameController!,
                 keyboardType: TextInputType.name,
-                hintText: 'John Doe',
+                hintText: context.l10n.hintFullName,
                 prefixIcon: Icon(
                   Icons.person_outline_rounded,
                   size: 18.sp,
                   color: context.colors.onSurfaceVariant,
                 ),
                 validator: (value) => value == null || value.trim().isEmpty
-                    ? 'Please enter your name'
+                    ? context.l10n.pleaseEnterName
                     : null,
               ),
               HeightSpace(height: 14.h),
@@ -93,7 +94,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
             if (!widget.isLogin &&
                 widget.confirmPasswordController != null) ...[
               HeightSpace(height: 14.h),
-              buildFieldLabel('CONFIRM PASSWORD', context),
+              buildFieldLabel(context.l10n.confirmPassword.toUpperCase(), context),
               HeightSpace(height: 6.82.h),
               CustomeTextField(
                 controller: widget.confirmPasswordController!,
@@ -114,9 +115,9 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                 onSuffixIconPressed: widget.onConfirmIconPressed,
                 validator: (value) {
                   if (value != widget.passwordController.text) {
-                    return 'Passwords do not match';
+                    return context.l10n.passwordsDoNotMatch;
                   }
-                  return validatePassword(value);
+                  return validatePassword(context.l10n, value);
                 },
               ),
             ],
@@ -129,8 +130,10 @@ class _AuthFormState extends ConsumerState<AuthForm> {
               height: 49.5.h,
               child: AppPrimaryButton(
                 text: authState.isLoading
-                    ? 'Loading...'
-                    : (widget.isLogin ? 'Sign In' : 'Sign Up'),
+                    ? context.l10n.loading
+                    : (widget.isLogin
+                          ? context.l10n.signIn
+                          : context.l10n.signUp),
                 onPressed: authState.isLoading ? null : _submit,
               ),
             ),

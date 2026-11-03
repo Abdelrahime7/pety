@@ -1,3 +1,4 @@
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,12 +17,12 @@ Widget buildAuthToggleTab(BuildContext context,{
     child: Row(
       children: [
         _buildTabItem(context,
-          label: 'Login',
+          label: context.l10n.login,
           isSelected: isLogin,
           onTap: () => onToggle(true),
         ),
         _buildTabItem(context,
-          label: 'Register',
+          label: context.l10n.register,
           isSelected: !isLogin,
           onTap: () => onToggle(false),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
 Widget buildSeparator(BuildContext context) {
@@ -14,7 +15,7 @@ Widget buildSeparator(BuildContext context) {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           child: Text(
-            'Or continue with',
+            context.l10n.orContinueWith,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.sp,

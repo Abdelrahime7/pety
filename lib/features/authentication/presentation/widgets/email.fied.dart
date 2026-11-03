@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/validators/email_validator.dart';
@@ -12,11 +13,11 @@ Widget buildEmailField(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'EMAIL ADDRESS',
+        context.l10n.emailAddress.toUpperCase(),
         style: context.style.tileTitle.copyWith(
           fontSize: 11.sp,
           fontWeight: FontWeight.w700,
-          letterSpacing: 0.8,
+          letterSpacing: context.tracking(0.8),
           color: context.colors.onSurfaceVariant,
         ),
       ),
@@ -24,13 +25,13 @@ Widget buildEmailField(
       CustomeTextField(
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
-        hintText: 'name@example.com',
+        hintText: context.l10n.hintEmail,
         prefixIcon: Icon(
           Icons.mail_outline_rounded,
           size: 18.sp,
           color: context.colors.onSurfaceVariant,
         ),
-        validator: validateEmail,
+        validator: (value) => validateEmail(context.l10n, value),
       ),
     ],
   );
