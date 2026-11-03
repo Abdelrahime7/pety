@@ -8,6 +8,7 @@ Widget buildDropdown(
   required String value,
   required List<String> items,
   required ValueChanged<String?> onChanged,
+  String Function(String value)? itemLabel,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +54,7 @@ Widget buildDropdown(
           ),
         ),
         items: items.map((item) {
-          return DropdownMenuItem<String>(value: item, child: Text(item));
+          return DropdownMenuItem<String>(value: item, child: Text(itemLabel?.call(item) ?? item));
         }).toList(),
       ),
     ],

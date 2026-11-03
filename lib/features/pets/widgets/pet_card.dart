@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/display_labels.dart';
 class PetCard extends StatelessWidget {
   final Pet pet;
   final VoidCallback onTap;
 
   const PetCard({super.key, required this.pet, required this.onTap});
 
-  String _calculateAge(DateTime birthDate) {
+  String _calculateAge(BuildContext context, DateTime birthDate) {
     final now = DateTime.now();
     int years = now.year - birthDate.year;
     int months = now.month - birthDate.month;
@@ -18,19 +20,19 @@ class PetCard extends StatelessWidget {
       years--;
       months += 12;
     }
-    if (years > 0) return '$years years';
-    if (months > 0) return '$months months';
+    if (years > 0) return context.l10n.ageYears(years);
+    if (months > 0) return context.l10n.ageMonths(months);
 
-    return 'Less than a month';
+    return context.l10n.lessThanMonth;
   }
 
   @override
   Widget build(BuildContext context) {
-    final ageStr = _calculateAge(pet.birthDate);
+    final ageStr = _calculateAge(context, pet.birthDate);
 
     // Changing standard to show Gender based on allowed data model
-    final genderText = pet.gender;
-    final isMale = genderText.toLowerCase() == 'male';
+    final genderText = genderLabel(context.l10n, pet.gender);
+    final isMale = pet.gender.toLowerCase() == 'male';
 
     // Color coding gender playfully
     final tagBgColor = isMale
@@ -153,7 +155,7 @@ class PetCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(999.r),
                         ),
                         child: Text(
-                          '${pet.weight} lbs',
+                          '${pet.weight} ${context.l10n.unitLbs}',
                           style: TextStyle(
                             color: inkMuted,
                             fontSize: 11.sp,

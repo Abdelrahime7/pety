@@ -19,7 +19,7 @@ class InfoItem extends StatelessWidget {
           Flexible(
             child: Text(
               value,
-              textAlign: TextAlign.right,
+              textAlign: TextAlign.end,
               style: context.style.tileTitle,
             ),
           ),
