@@ -14,6 +14,7 @@ import 'package:pet_care/features/home/presentation/widgets/upcoming_appointment
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -44,8 +45,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SizedBox(height: 28.h),
 
               HomeSectionHeader(
-                title: 'Quick Actions',
-                subtitle: 'Everything your pet needs',
+                title: context.l10n.quickActions,
+                subtitle: context.l10n.everythingYourPetNeeds,
               ),
 
               SizedBox(height: 14.h),
@@ -55,8 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SizedBox(height: 28.h),
 
               HomeSectionHeader(
-                title: 'Upcoming Appointment',
-                actionText: 'See all',
+                title: context.l10n.upcomingAppointment,
+                actionText: context.l10n.seeAll,
                 onActionTap: () {
                   appRouter.push(calendar);
                 },
@@ -69,8 +70,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SizedBox(height: 28.h),
 
               HomeSectionHeader(
-                title: 'Health Overview',
-                actionText: 'View records',
+                title: context.l10n.healthOverview,
+                actionText: context.l10n.viewRecords,
                 onActionTap: () {
                   appRouter.push(health);
                 },
@@ -95,7 +96,7 @@ Widget _buildPetsSection(WidgetRef ref, BuildContext context) {
 
     error: (error, stackTrace) => Padding(
       padding: const EdgeInsets.all(20),
-      child: Text('Unable to load your pets.', style: context.style.regular14),
+      child: Text(context.l10n.unableToLoadPets, style: context.style.regular14),
     ),
 
     data: (pets) => HomePetsSection(

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/theme/app_colors.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:intl/intl.dart';
 class UpcomingAppointmentCard extends StatelessWidget {
   final Appointment? appointment;
 
@@ -40,11 +42,11 @@ class UpcomingAppointmentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  _monthName(date.month),
+                  _monthName(context, date),
                   style: context.style.sectionHeader.copyWith(
                     fontSize: 10.sp,
                     color: AppColors.tealDark,
-                    letterSpacing: 0.8,
+                    letterSpacing: context.tracking(0.8),
                   ),
                 ),
                 SizedBox(height: 2.h),
@@ -71,7 +73,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 Text(
-                  _formatTime(date),
+                  _formatTime(context, date),
                   style: context.style.regular12.copyWith(
                     color: AppColors.tealDark,
                     fontWeight: FontWeight.w600,
@@ -90,30 +92,11 @@ class UpcomingAppointmentCard extends StatelessWidget {
     );
   }
 
-  String _monthName(int month) {
-    const months = [
-      'JAN',
-      'FEB',
-      'MAR',
-      'APR',
-      'MAY',
-      'JUN',
-      'JUL',
-      'AUG',
-      'SEP',
-      'OCT',
-      'NOV',
-      'DEC',
-    ];
-
-    return months[month - 1];
+  String _monthName(BuildContext context, DateTime date) {
+    return DateFormat.MMM(context.l10n.localeName).format(date).toUpperCase();
   }
 
-  String _formatTime(DateTime date) {
-    final hour = date.hour % 12 == 0 ? 12 : date.hour % 12;
-    final minute = date.minute.toString().padLeft(2, '0');
-    final period = date.hour >= 12 ? 'PM' : 'AM';
-
-    return '$hour:$minute $period';
+  String _formatTime(BuildContext context, DateTime date) {
+    return DateFormat.jm(context.l10n.localeName).format(date);
   }
 }
