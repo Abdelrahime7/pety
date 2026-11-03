@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
 class AppSaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
-  final String text;
+  /// Optional custom label. Defaults to the translated "Save".
+  final String? text;
 
   const AppSaveButton({
     super.key,
     required this.onPressed,
     this.isLoading = false,
-    this.text = 'Save',
+    this.text,
   });
 
   @override
@@ -27,7 +29,7 @@ class AppSaveButton extends StatelessWidget {
               ),
             )
           : Text(
-              text,
+              text ?? context.l10n.save,
               style: TextStyle(
                 color: onPressed != null
                     ? context.colors.primary
