@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:pet_care/core/constant/l10n/to_english_digit.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_icon.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_label.dart';
@@ -36,7 +38,7 @@ class AppointmentDetailsTopBar extends StatelessWidget {
           ),
         ),
         Text(
-          'Appointment',
+        context.l10n.appointment,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w700,
@@ -77,14 +79,13 @@ class AppointmentPetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final petName = pet?.name.isNotEmpty == true ? pet!.name : 'Pet';
+    final petName = pet?.name.isNotEmpty == true ? pet!.name : context.l10n.pet;
     final petDetails = pet != null
-        ? '${pet!.breed} • ${_formatAge(pet!.birthDate)}'
-        : 'Pet details unavailable';
-
+       ? '${pet!.breed} • ${_formatAge(context, pet!.birthDate)}'
+: context.l10n.petDetailsUnavailable;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
@@ -139,7 +140,7 @@ class AppointmentPetCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20.r),
                           ),
                           child: Text(
-                            isPast ? 'Completed' : 'Upcoming',
+                            isPast ?context.l10n.completed : context.l10n.upcoming,
                             style: TextStyle(
                               fontSize: 11.sp,
                               fontWeight: FontWeight.w700,
@@ -178,22 +179,20 @@ class AppointmentPetCard extends StatelessWidget {
       ),
     );
   }
-
-  String _formatAge(DateTime birthDate) {
-    final now = DateTime.now();
-    var years = now.year - birthDate.year;
-    var months = now.month - birthDate.month;
-    if (now.day < birthDate.day) months--;
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-    if (years > 0) return '$years ${years == 1 ? 'yr' : 'yrs'} old';
-    if (months > 0) return '$months ${months == 1 ? 'mo' : 'mos'} old';
-    return 'Puppy / Kitten';
+String _formatAge(BuildContext context, DateTime birthDate) {
+  final now = DateTime.now();
+  var years = now.year - birthDate.year;
+  var months = now.month - birthDate.month;
+  if (now.day < birthDate.day) months--;
+  if (months < 0) {
+    years--;
+    months += 12;
   }
+  if (years > 0) return context.l10n.ageYearsOld(years);
+  if (months > 0) return context.l10n.ageMonthsOld(months);
+  return context.l10n.puppyKitten;
 }
-
+}
 class AppointmentInfoCard extends StatelessWidget {
   final Appointment appointment;
 
@@ -201,12 +200,19 @@ class AppointmentInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormat('EEEE, MMMM d, yyyy').format(appointment.date);
-    final time = DateFormat('h:mm a').format(appointment.date);
+   final date = toEnglishDigits(
+  DateFormat('EEEE, MMMM d, yyyy', context.l10n.localeName)
+      .format(appointment.date),
+);
 
+final time = toEnglishDigits(
+  DateFormat('h:mm a', context.l10n.localeName)
+      .format(appointment.date),
+);
+  
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.colors.surfaceContainer,
         borderRadius: BorderRadius.circular(22.r),
         boxShadow: [
           BoxShadow(
@@ -221,8 +227,8 @@ class AppointmentInfoCard extends StatelessWidget {
           // TYPE
           AppointmentDetailRow(
             icon: appointmentTypeIcon(appointment.type),
-            label: 'TYPE',
-            value: appointmentTypeLabel(appointment.type),
+            label: context.l10n.type,
+            value: appointmentTypeLabel(context.l10n,appointment.type),
           ),
 
           const _DetailDivider(),
@@ -230,8 +236,8 @@ class AppointmentInfoCard extends StatelessWidget {
           // DATE & TIME
           AppointmentDetailRow(
             icon: Icons.calendar_today_outlined,
-            label: 'DATE & TIME',
-            value: '$date • $time',
+            label: context.l10n.dateAndTime,
+            value:'$date - $time'
           ),
 
           const _DetailDivider(),
@@ -239,10 +245,10 @@ class AppointmentInfoCard extends StatelessWidget {
           // VETERINARIAN
           AppointmentDetailRow(
             icon: Icons.person_outline_rounded,
-            label: 'VETERINARIAN',
+            label: context.l10n.veterinarian,
             value: appointment.veterinarian.isNotEmpty
                 ? appointment.veterinarian
-                : 'Not specified',
+                : context.l10n.notSpecified,
           ),
 
           const _DetailDivider(),
@@ -250,10 +256,10 @@ class AppointmentInfoCard extends StatelessWidget {
           // NOTES
           AppointmentDetailRow(
             icon: Icons.sticky_note_2_outlined,
-            label: 'NOTES',
+            label: context.l10n.notes,
             value: appointment.notes.isNotEmpty
                 ? appointment.notes
-                : 'No notes added.',
+                : context.l10n.noNotesAdded,
             isNotes: true,
           ),
         ],

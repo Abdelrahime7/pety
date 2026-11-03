@@ -9,6 +9,7 @@ import 'package:pet_care/features/appointments/presentation/riverpod/appointment
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/week_day_selector.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_card.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AppointmentsScreen extends ConsumerStatefulWidget {
   const AppointmentsScreen({super.key});
 
@@ -71,7 +72,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Appointments',
+                        context.l10n.appointments,
                         style: TextStyle(
                           fontSize: 21.sp,
                           fontWeight: FontWeight.w900,
@@ -100,7 +101,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                           ),
                         ],
                       ),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.add,
                         color: Colors.white,
                         size: 21,
@@ -114,7 +115,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
 
               // Week day selector
               Align(
-                alignment: Alignment.centerRight,
+                alignment: AlignmentDirectional.centerEnd,
                 child: TextButton(
                   onPressed: () => setState(() => _showAllAppointments = true),
                   style: TextButton.styleFrom(
@@ -124,7 +125,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    'All',
+                    context.l10n.all,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
@@ -157,7 +158,7 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
 
                     if (appointmentState.error != null) {
                       return Center(
-                        child: Text('Error: ${appointmentState.error}'),
+                        child: Text(context.l10n.errorWithMessage('${appointmentState.error}')),
                       );
                     }
 
@@ -165,8 +166,8 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                       return Center(
                         child: Text(
                           _showAllAppointments
-                              ? 'No appointments yet.'
-                              : 'No appointments on this day.',
+                              ? context.l10n.noAppointmentsYet
+                              : context.l10n.noAppointmentsOnDay,
                           style: TextStyle(
                             color: context.colors.onSurfaceVariant,
                           ),
@@ -178,13 +179,13 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> {
                       physics: const BouncingScrollPhysics(),
                       children: [
                         if (upcoming.isNotEmpty) ...[
-                          const _SectionHeader(title: 'Upcoming'),
+                          _SectionHeader(title: context.l10n.upcoming),
                           ...upcoming.map(
                             (a) => AppointmentCard(appointment: a),
                           ),
                         ],
                         if (past.isNotEmpty) ...[
-                          const _SectionHeader(title: 'Past'),
+                          _SectionHeader(title: context.l10n.past),
                           ...past.map((a) => AppointmentCard(appointment: a)),
                         ],
                       ],
@@ -214,7 +215,7 @@ class _SectionHeader extends StatelessWidget {
         style: TextStyle(
           fontSize: 12.sp,
           fontWeight: FontWeight.bold,
-          letterSpacing: 0.5,
+          letterSpacing: context.tracking(0.5),
           color: context.colors.onSurfaceVariant,
         ),
       ),

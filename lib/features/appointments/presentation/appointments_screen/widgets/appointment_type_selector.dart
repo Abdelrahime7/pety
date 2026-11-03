@@ -5,6 +5,7 @@ import 'package:pet_care/features/appointments/domain/enums/appointment_types.da
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_icon.dart';
 import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_type_label.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
 Widget buildAppointmentTypeSelector(
   BuildContext context, {
   required AppointmentType selectedType,
@@ -32,7 +33,7 @@ Widget buildAppointmentTypeSelector(
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
 
       prefixIcon: Container(
-        margin: EdgeInsets.only(left: 8.w, right: 8.w, top: 8.h, bottom: 8.h),
+        margin: EdgeInsetsDirectional.only(start: 8.w, end: 8.w, top: 8.h, bottom: 8.h),
         decoration: BoxDecoration(
           color: context.colors.primary.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(10.r),
@@ -66,9 +67,9 @@ Widget buildAppointmentTypeSelector(
     selectedItemBuilder: (context) {
       return AppointmentType.values.map((type) {
         return Align(
-          alignment: Alignment.centerLeft,
+          alignment: AlignmentDirectional.centerStart,
           child: Text(
-            appointmentTypeLabel(type),
+            appointmentTypeLabel(context.l10n, type),
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -116,7 +117,7 @@ Widget buildAppointmentTypeSelector(
 
               Expanded(
                 child: Text(
-                  appointmentTypeLabel(type),
+                  appointmentTypeLabel(context.l10n, type),
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,

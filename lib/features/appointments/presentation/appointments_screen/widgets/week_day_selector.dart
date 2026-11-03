@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
+import 'package:pet_care/core/constant/l10n/l10x.dart';
+import 'package:intl/intl.dart';
 /// Horizontal row of selectable day chips (MON 20, TUE 21, ...).
 class WeekDaySelector extends StatelessWidget {
   final List<DateTime> days;
@@ -49,16 +51,6 @@ class _DayChip extends StatelessWidget {
     required this.onTap,
   });
 
-  static const _weekdayLabels = [
-    'MON',
-    'TUE',
-    'WED',
-    'THU',
-    'FRI',
-    'SAT',
-    'SUN',
-  ];
-
   @override
   Widget build(BuildContext context) {
     final accentColor =
@@ -78,7 +70,7 @@ class _DayChip extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              _weekdayLabels[day.weekday - 1],
+              DateFormat.E(context.l10n.localeName).format(day).toUpperCase(),
               style: TextStyle(
                 fontSize: 11,
                 color: isSelected
