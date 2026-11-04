@@ -29,3 +29,4 @@ final allHealthRecordsProvider = FutureProvider<List<HealthRecord>>((
       return [];
   }
 });
+final healthFilterProvider = StateProvider.autoDispose<String>((ref) => 'All');
