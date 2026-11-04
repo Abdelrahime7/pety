@@ -21,11 +21,12 @@ class AllHealthRecordsScreen extends ConsumerStatefulWidget {
 
 class _AllHealthRecordsScreenState
     extends ConsumerState<AllHealthRecordsScreen> {
-  String _selectedFilter = 'All';
 
   @override
   Widget build(BuildContext context) {
     final recordsAsync = ref.watch(allHealthRecordsProvider);
+        final selectedFilter = ref.watch(healthFilterProvider);
+
     final petsAsync = ref.watch(petProvider);
 
     final petNames = <String, String>{
@@ -77,15 +78,13 @@ class _AllHealthRecordsScreenState
           ),
         ),
         data: (records) {
-          final filtered = _selectedFilter == 'All'
-              ? records
-              : records
-                    .where(
-                      (r) =>
-                          r.type.name.toLowerCase() ==
-                          _selectedFilter.toLowerCase(),
-                    )
-                    .toList();
+          
+
+         final filtered = selectedFilter == 'All'
+    ? records
+    : records.where((record) {
+        return record.recordType.name == selectedFilter;
+      }).toList();
 
           return RefreshIndicator(
             color: context.colors.primary,
@@ -103,9 +102,9 @@ class _AllHealthRecordsScreenState
                 ),
                 const SizedBox(height: 20),
                 OwnerHealthRecordFilterChips(
-                  selected: _selectedFilter,
+                  selected: selectedFilter,
                   onSelected: (value) =>
-                      setState(() => _selectedFilter = value),
+                      ref.read(healthFilterProvider.notifier).state = value
                 ),
                 const SizedBox(height: 16),
                 if (filtered.isEmpty)
