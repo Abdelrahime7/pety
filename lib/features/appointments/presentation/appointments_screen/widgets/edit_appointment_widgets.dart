@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -147,12 +148,15 @@ class EditPetImage extends StatelessWidget {
       ),
       child: url.isEmpty
           ? Icon(Icons.pets, color: context.colors.onSurfaceVariant)
-          : Image.network(
-              url,
-              fit: fit,
-              errorBuilder: (_, _, _) =>
-                  Icon(Icons.pets, color: context.colors.onSurfaceVariant),
-            ),
+          : CachedNetworkImage(
+  imageUrl: url,
+  fit: BoxFit.cover,
+  errorWidget: (_, _, _) => Icon(
+    Icons.pets,
+    color: context.colors.onSurfaceVariant,
+    size: 24,
+  ),
+),
     );
   }
 }

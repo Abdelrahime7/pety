@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/l10n/to_english_digit.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
@@ -231,15 +232,20 @@ class _PetAvatar extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: photoUrl.isNotEmpty
-            ? Image.network(
-                photoUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => Icon(
-                  Icons.pets,
-                  size: 20.sp,
-                  color: context.colors.onSurfaceVariant,
-                ),
-              )
+            ? CachedNetworkImage(
+        imageUrl: photoUrl,
+        fit: BoxFit.cover,
+        placeholder: (_, _) => Icon(
+          Icons.pets_rounded,
+          size: 48,
+          color: context.colors.onSurfaceVariant,
+        ),
+        errorWidget: (_, _, _) => Icon(
+          Icons.pets_rounded,
+          size: 48,
+          color: context.colors.onSurfaceVariant,
+        ),
+      )
             : Icon(
                 Icons.pets,
                 size: 20.sp,

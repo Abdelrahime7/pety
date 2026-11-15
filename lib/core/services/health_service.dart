@@ -13,7 +13,7 @@ class HealthService {
   // Get health records for one pet.
   Future<Result<List<HealthRecord>>> getRecords(String petId ,String userId) async {
     try {
-      final docs = await dataSource.getPetRecords(userId,userId);
+      final docs = await dataSource.getPetRecords(userId,petId);
 
       final records = docs.map(HealthRecord.fromFirestore).toList()
         ..sort((a, b) => b.date.compareTo(a.date));
