@@ -25,13 +25,14 @@ class AppointmentService {
   // READ ALL FOR MULTIPLE PETS
   Future<Result<List<Appointment>>> getAppointmentsForPets(
     List<String> petIds,
+    String userId,
   ) async {
     try {
       if (petIds.isEmpty) {
         return const Success([]);
       }
 
-      final docs = await dataSource.getAppointmentsForPets(petIds);
+      final docs = await dataSource.getAppointmentsForPets(userId,petIds);
 
       final appointments = docs
           .map((doc) => Appointment.fromFirestore(doc))
@@ -71,9 +72,9 @@ class AppointmentService {
   }
 
   // READ ALL (for a specific pet)
-  Future<Result<List<Appointment>>> getAppointmentsForPet(String petId) async {
+  Future<Result<List<Appointment>>> getAppointmentsForPet(String petId,String userId) async {
     try {
-      final docs = await dataSource.getAppointmentsForPet(petId);
+      final docs = await dataSource.getAppointmentsForPet(userId,petId);
 
       final appointments = docs
           .map((doc) => Appointment.fromFirestore(doc))

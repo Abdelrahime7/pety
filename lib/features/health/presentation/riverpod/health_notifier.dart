@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/dependencies_injection/di.dart';
@@ -13,21 +14,25 @@ class HealthRecordsNotifier
     extends FamilyAsyncNotifier<List<HealthItem>, String> {
   late final HealthService _healthService;
   late final VaccinationService _vaccinationService;
+    String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
 
   @override
   FutureOr<List<HealthItem>> build(String petId) async {
     _healthService = ref.read(healthServiceProvider);
     _vaccinationService = ref.read(vaccinationRecordServiceProvider);
 
-    final healthResult = await _healthService.getRecords(petId);
+    final healthResult = await _healthService.getRecords(petId,_ownerId!);
 
     if (healthResult is Failure<List<HealthRecord>>) {
       state = AsyncError(healthResult.message, StackTrace.current);
 
       return [];
     }
-
-    final vaccinationResult = await _vaccinationService.getAll(petId);
+    final ownerId=_ownerId;
+if (ownerId == null) {
+  return [];
+}
+    final vaccinationResult = await _vaccinationService.getAll(ownerId,petId);
 
     if (vaccinationResult is Failure<List<VaccinationRecord>>) {
       state = AsyncError(vaccinationResult.message, StackTrace.current);
@@ -59,14 +64,17 @@ class HealthRecordsNotifier
     state = const AsyncLoading();
 
     try {
-      final healthResult = await _healthService.getRecords(arg);
+      final healthResult = await _healthService.getRecords(arg,_ownerId!);
 
       if (healthResult is Failure<List<HealthRecord>>) {
         state = AsyncError(healthResult.message, StackTrace.current);
         return;
       }
-
-      final vaccinationResult = await _vaccinationService.getAll(arg);
+       final ownerId = _ownerId; 
+if (ownerId == null) {
+  return ;
+}
+      final vaccinationResult = await _vaccinationService.getAll(ownerId,arg);
 
       if (vaccinationResult is Failure<List<VaccinationRecord>>) {
         state = AsyncError(vaccinationResult.message, StackTrace.current);

@@ -18,17 +18,18 @@ class VaccinationDataSource {
   ) async {
     await _collection(collectionName).doc(id).set(data);
   }
+Future<List<Map<String, dynamic>>> getAll(
+  String collectionName,
+  String ownerId,
+  String petId,
+) async {
+  final snapshot = await _collection(collectionName)
+      .where('ownerId', isEqualTo: ownerId)
+      .where('petId', isEqualTo: petId)
+      .get();
 
-  Future<List<Map<String, dynamic>>> getAll(
-    String collectionName,
-    String petId,
-  ) async {
-    final snapshot = await _collection(
-      collectionName,
-    ).where('petId', isEqualTo: petId).get();
-
-    return snapshot.docs.map((doc) => doc.data()).toList();
-  }
+  return snapshot.docs.map((doc) => doc.data()).toList();
+}
 
   Future<Result<List<QueryDocumentSnapshot<Map<String, dynamic>>>>>
   getAllOwnerVaccinations(String ownerId, String collectionName) async {
@@ -70,22 +71,31 @@ class VaccinationDataSource {
   Future<void> delete(String collectionName, String id) async {
     await _collection(collectionName).doc(id).delete();
   }
+Future<int> getCount(
+  String collectionName,
+  String ownerId,
+  String petId,
+) async {
+  final aggregateQuery = await _collection(collectionName)
+      .where('ownerId', isEqualTo: ownerId)
+      .where('petId', isEqualTo: petId)
+      .count()
+      .get();
 
-  Future<int> getCount(String collectionName, String petId) async {
-    final aggregateQuery = await _collection(
-      collectionName,
-    ).where('petId', isEqualTo: petId).count().get();
+  return aggregateQuery.count ?? 0;
+}
+  Future<int> getActiveSerieCount(
+  String collectionName,
+  String ownerId,
+  String petId,
+) async {
+  final aggregateQuery = await _collection(collectionName)
+      .where('ownerId', isEqualTo: ownerId)
+      .where('petId', isEqualTo: petId)
+      .where('isCompleted', isEqualTo: false)
+      .count()
+      .get();
 
-    return aggregateQuery.count ?? 0;
-  }
-
-  Future<int> getActiveSerieCount(String collectionName, String petId) async {
-    final aggregateQuery = await _collection(collectionName)
-        .where('petId', isEqualTo: petId)
-        .where('isCompleted', isEqualTo: false)
-        .count()
-        .get();
-
-    return aggregateQuery.count ?? 0;
-  }
+  return aggregateQuery.count ?? 0;
+}
 }

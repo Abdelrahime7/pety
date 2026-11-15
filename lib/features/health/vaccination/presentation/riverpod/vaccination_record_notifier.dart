@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
@@ -11,22 +12,27 @@ class VaccinationRecordNotifier
     extends FamilyAsyncNotifier<List<VaccinationRecord>, String> {
   VaccinationService<VaccinationRecord> get _service =>
       ref.read(vaccinationRecordServiceProvider);
+  String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
 
   // ---------------------------------------------------------------------------
   // BUILD / READ ALL
   // ---------------------------------------------------------------------------
 
   @override
-  FutureOr<List<VaccinationRecord>> build(String petId) async {
-    final result = await _service.getAll(petId);
+ @override
+FutureOr<List<VaccinationRecord>> build(String petId) async {
+  final ownerId = _ownerId;
 
-    if (result is Success<List<VaccinationRecord>>) {
-      return result.data;
-    }
+  if (ownerId == null) return [];
 
-    return [];
+  final result = await _service.getAll(ownerId, petId);
+
+  if (result is Success<List<VaccinationRecord>>) {
+    return result.data;
   }
 
+  return [];
+}
   // ---------------------------------------------------------------------------
   // CREATE
   // ---------------------------------------------------------------------------
@@ -45,7 +51,13 @@ class VaccinationRecordNotifier
       );
 
       if (result is Success<void>) {
-        final refreshedResult = await _service.getAll(arg);
+        final ownerId = _ownerId;
+
+if (ownerId == null) {
+  return const Failure('User is not authenticated.');
+}
+
+final refreshedResult = await _service.getAll(ownerId, arg);
 
         if (refreshedResult is Success<List<VaccinationRecord>>) {
           state = AsyncData(refreshedResult.data);
@@ -91,8 +103,13 @@ class VaccinationRecordNotifier
       );
 
       if (result is Success<void>) {
-        final refreshedResult = await _service.getAll(arg);
+final ownerId = _ownerId;
 
+if (ownerId == null) {
+  return const Failure('User is not authenticated.');
+}
+
+final refreshedResult = await _service.getAll(ownerId, arg);
         if (refreshedResult is Success<List<VaccinationRecord>>) {
           state = AsyncData(refreshedResult.data);
         } else if (refreshedResult is Failure<List<VaccinationRecord>>) {
@@ -120,7 +137,13 @@ class VaccinationRecordNotifier
       final result = await _service.delete(vaccinationId);
 
       if (result is Success<void>) {
-        final refreshedResult = await _service.getAll(arg);
+        final ownerId = _ownerId;
+
+if (ownerId == null) {
+  return const Failure('User is not authenticated.');
+}
+
+final refreshedResult = await _service.getAll(ownerId, arg);
 
         if (refreshedResult is Success<List<VaccinationRecord>>) {
           state = AsyncData(refreshedResult.data);

@@ -109,8 +109,11 @@ class NotificationService {
       if (token == null) {
         return Failure('Could not get FCM token.');
       }
+      final saveResult = await saveFcmToken(userId, token);
 
-      await saveFcmToken(userId, token);
+      if (saveResult is Failure<void>) {
+        return Failure(saveResult.message);
+      }
 
       await _initializeLocalNotifications();
       await _setupForegroundNotifications();
@@ -152,9 +155,14 @@ class NotificationService {
       final token = await messaging.getToken();
 
       if (token != null) {
-        await deleteFcmToken(userId, token);
-      }
+        final deleteResult = await deleteFcmToken(userId, token);
 
+        if (deleteResult is Failure<void>) {
+          return Failure(deleteResult.message);
+        }
+      }
+      await _onMessageSubscription?.cancel();
+      _onMessageSubscription = null;
       return const Success(null);
     } catch (e) {
       return Failure(e.toString());

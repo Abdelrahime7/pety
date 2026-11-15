@@ -9,7 +9,6 @@ import 'package:pet_care/core/constant/l10n/provider.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 import 'package:pet_care/core/constant/theme/app_theme.dart';
 import 'package:pet_care/core/constant/theme/theme_prvider.dart';
-import 'package:pet_care/infrastructure/firebase/cloud_messaging/message_notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'infrastructure/firebase/configue/firebase_options.dart';
@@ -23,8 +22,6 @@ Future<void> main() async {
     serverClientId:
         '721972208500-qgkmhmklka2k2ul6rdg38i8ru4cuqpit.apps.googleusercontent.com',
   );
-
-  await setupNotifications();
 
   final prefs = await SharedPreferences.getInstance();
 

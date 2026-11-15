@@ -21,13 +21,13 @@ class VaccinationService<T> {
   // Count
   // --------------------------------------------------------------------------
 
-  Future<Result<int>> count(String petid) async {
+  Future<Result<int>> count(String petid,String userId) async {
     try {
       if (petid.isEmpty) {
         return const Failure('ID is required.');
       }
 
-      final result = await dataSource.getCount(collectionName, petid);
+      final result = await dataSource.getCount(collectionName, userId,petid);
 
       return Success(result);
     } on FirebaseException catch (e) {
@@ -41,7 +41,7 @@ class VaccinationService<T> {
   // Count
   // --------------------------------------------------------------------------
 
-  Future<Result<int>> countActivSeries(String petid) async {
+  Future<Result<int>> countActivSeries(String petid,String ownerId) async {
     try {
       if (petid.isEmpty) {
         return const Failure('ID is required.');
@@ -49,6 +49,7 @@ class VaccinationService<T> {
 
       final result = await dataSource.getActiveSerieCount(
         collectionName,
+        ownerId,
         petid,
       );
 
@@ -84,13 +85,13 @@ class VaccinationService<T> {
   // READ ALL
   // ---------------------------------------------------------------------------
 
-  Future<Result<List<T>>> getAll(String petId) async {
+  Future<Result<List<T>>> getAll( String userId,String petId) async {
     try {
       if (petId.isEmpty) {
         return const Failure('Pet ID is required.');
       }
 
-      final data = await dataSource.getAll(collectionName, petId);
+      final data = await dataSource.getAll(collectionName,userId ,petId);
 
       final entities = data.map(fromMap).toList();
 

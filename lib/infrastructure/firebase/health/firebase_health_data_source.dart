@@ -5,17 +5,18 @@ class FirebaseHealthDataSource {
   final FirebaseFirestore _firestore;
 
   FirebaseHealthDataSource(this._firestore);
+Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getPetRecords(
+  String ownerId,
+  String petId,
+) async {
+  final snapshot = await _firestore
+      .collection('healthRecords')
+      .where('ownerId', isEqualTo: ownerId)
+      .where('petId', isEqualTo: petId)
+      .get();
 
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getPetRecords(
-    String petId,
-  ) async {
-    final snapshot = await _firestore
-        .collection('healthRecords')
-        .where('petId', isEqualTo: petId)
-        .get();
-
-    return snapshot.docs;
-  }
+  return snapshot.docs;
+}
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getAllRecords(
     String ownerId,

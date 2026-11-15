@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
@@ -11,6 +12,9 @@ class VaccinationSerieNotifier
     extends FamilyAsyncNotifier<List<VaccinationSerie>, String> {
   VaccinationService<VaccinationSerie> get _service =>
       ref.read(vaccinationSerieServiceProvider);
+      
+        String? get _ownerId => FirebaseAuth.instance.currentUser?.uid;
+
 
   // ---------------------------------------------------------------------------
   // BUILD / READ ALL
@@ -18,7 +22,12 @@ class VaccinationSerieNotifier
 
   @override
   Future<List<VaccinationSerie>> build(String petId) async {
-    final result = await _service.getAll(petId);
+     final ownerId = _ownerId;
+
+if (ownerId == null) {
+  return [];
+}
+    final result = await _service.getAll(ownerId,petId);
 
     return switch (result) {
       Success<List<VaccinationSerie>>(:final data) => data,
@@ -41,7 +50,13 @@ class VaccinationSerieNotifier
       final result = await _service.create(serie.id!, serie.toMap());
 
       if (result is Success<void>) {
-        final refreshedResult = await _service.getAll(arg);
+         final ownerId = _ownerId;
+
+if (ownerId == null) {
+  return const Failure('User is not authenticated.');
+}
+
+        final refreshedResult = await _service.getAll(ownerId,arg);
 
         if (refreshedResult is Success<List<VaccinationSerie>>) {
           state = AsyncData(refreshedResult.data);
@@ -84,7 +99,12 @@ class VaccinationSerieNotifier
       final result = await _service.update(serie.id!, serie.toMap());
 
       if (result is Success<void>) {
-        final refreshedResult = await _service.getAll(arg);
+         final ownerId = _ownerId;
+
+if (ownerId == null) {
+  return const Failure('User is not authenticated.');
+}
+        final refreshedResult = await _service.getAll(ownerId,arg);
 
         if (refreshedResult is Success<List<VaccinationSerie>>) {
           state = AsyncData(refreshedResult.data);
@@ -113,9 +133,14 @@ class VaccinationSerieNotifier
       final result = await _service.delete(serieId);
 
       if (result is Success<void>) {
-        final refreshedResult = await _service.getAll(arg);
+        final ownerId=_ownerId;
 
-        if (refreshedResult is Success<List<VaccinationSerie>>) {
+if (ownerId == null) {
+  return const Failure('User is not authenticated.');
+}
+                  final refreshedResult = await _service.getAll(ownerId,arg);
+        
+         if (refreshedResult is Success<List<VaccinationSerie>>) {
           state = AsyncData(refreshedResult.data);
         } else if (refreshedResult is Failure<List<VaccinationSerie>>) {
           state = AsyncError(refreshedResult.message, StackTrace.current);
