@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class VaccinationSerie {
   final String? id;
 
+  /// User who owns the pet and this vaccination series.
+  final String ownerId;
+
   /// Pet this vaccination series belongs to.
   final String petId;
 
@@ -12,10 +15,9 @@ class VaccinationSerie {
   /// Total number of doses required to complete the series.
   final int requiredDoses;
 
-  /// number of doses completed
+  /// Number of doses completed.
   final int completedDoses;
 
-  ///
   final bool isCompleted;
 
   /// Optional description of the vaccination series.
@@ -26,6 +28,7 @@ class VaccinationSerie {
 
   VaccinationSerie({
     required this.id,
+    required this.ownerId,
     required this.petId,
     required this.vaccineName,
     required this.requiredDoses,
@@ -38,6 +41,7 @@ class VaccinationSerie {
   factory VaccinationSerie.fromMap(Map<String, dynamic> data) {
     return VaccinationSerie(
       id: data['id'] as String?,
+      ownerId: data['ownerId'] as String,
       petId: data['petId'] as String,
       vaccineName: data['vaccineName'] as String,
       requiredDoses: data['requiredDoses'] as int,
@@ -51,6 +55,7 @@ class VaccinationSerie {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'ownerId': ownerId,
       'petId': petId,
       'vaccineName': vaccineName,
       'requiredDoses': requiredDoses,
@@ -63,6 +68,7 @@ class VaccinationSerie {
 
   VaccinationSerie copyWith({
     String? id,
+    String? ownerId,
     String? petId,
     String? vaccineName,
     int? requiredDoses,
@@ -73,6 +79,7 @@ class VaccinationSerie {
   }) {
     return VaccinationSerie(
       id: id ?? this.id,
+      ownerId: ownerId ?? this.ownerId,
       petId: petId ?? this.petId,
       vaccineName: vaccineName ?? this.vaccineName,
       requiredDoses: requiredDoses ?? this.requiredDoses,

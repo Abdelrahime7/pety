@@ -18,11 +18,14 @@ class VaccinationNotifier extends FamilyAsyncNotifier<void, String> {
   VaccinationService<VaccinationSerie> get _serieService =>
       ref.read(vaccinationSerieServiceProvider);
 
+
   @override
   FutureOr<void> build(String petId) {}
 
   Future<Result<void>> addVaccination(AddVaccinationRequest request) async {
     try {
+
+   
       late VaccinationSerie serie;
       late int doseNumber;
 
@@ -49,7 +52,9 @@ class VaccinationNotifier extends FamilyAsyncNotifier<void, String> {
         // -----------------------------
 
         serie = VaccinationSerie(
+          
           id: const Uuid().v4(),
+          ownerId: request.ownerId,
           petId: request.petId,
           vaccineName: request.vaccineName!.trim(),
           requiredDoses: request.requiredDoses!,

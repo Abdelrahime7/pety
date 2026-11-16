@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 
@@ -281,17 +282,17 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 child: _selectedImage != null
                     ? Image.file(_selectedImage!, fit: BoxFit.cover)
                     : widget.pet.photoUrl.isNotEmpty
-                    ? Image.network(
-                        widget.pet.photoUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) {
-                          return Icon(
-                            Icons.pets_rounded,
-                            size: 48,
-                            color: context.colors.onSurfaceVariant,
-                          );
-                        },
-                      )
+                    ? CachedNetworkImage(
+  imageUrl: widget.pet.photoUrl,
+  fit: BoxFit.cover,
+  errorWidget: (_, _, _) {
+    return Icon(
+      Icons.pets_rounded,
+      size: 48,
+      color: context.colors.onSurfaceVariant,
+    );
+  },
+)
                     : Icon(
                         Icons.pets_rounded,
                         size: 48,

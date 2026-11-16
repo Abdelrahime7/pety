@@ -39,6 +39,8 @@ class HealthRecordsList extends StatelessWidget {
       error: (_, _) => HealthErrorState(onRetry: onRetry),
 
       data: (items) {
+      
+
         final filteredItems = _filterItems(items);
 
         if (filteredItems.isEmpty) {
@@ -61,25 +63,26 @@ class HealthRecordsList extends StatelessWidget {
   }
 
   List<HealthItem> _filterItems(List<HealthItem> items) {
-    if (selectedFilter == 'All') {
-      return items;
-    }
+ 
 
-    final filter = selectedFilter.toLowerCase();
-
-    return items.where((item) {
-      if (item.type == HealthItemType.vaccination) {
-        return filter == 'vaccination';
-      }
-
-      if (item is HealthRecord) {
-        return item.recordType.name.toLowerCase() == filter;
-      }
-
-      return false;
-    }).toList();
+  if (selectedFilter == 'All') {
+    return items;
   }
 
+  final filter = selectedFilter.toLowerCase();
+
+  return items.where((item) {
+    if (item.type == HealthItemType.vaccination) {
+      return filter == 'vaccination';
+    }
+
+    if (item is HealthRecord) {
+      return item.recordType.name.toLowerCase() == filter;
+    }
+
+    return false;
+  }).toList();
+}
   Widget _buildItem(BuildContext context, HealthItem item) {
     if (item is VaccinationRecord) {
       return VaccinationRecordCard(

@@ -43,7 +43,7 @@ class UserFirestoreDataSource {
       'name': request.name,
       'email': request.email,
       'subscriptionTier': request.subscriptionTier,
-    });
+    }, SetOptions(merge: true));
   }
 
   // PATCH - update only specific fields

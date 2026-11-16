@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -431,15 +432,15 @@ class _AppointmentPetImage extends StatelessWidget {
         color: context.colors.outlineVariant,
         child: url.isEmpty
             ? Icon(Icons.pets, color: context.colors.onSurfaceVariant, size: 24)
-            : Image.network(
-                url,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => Icon(
-                  Icons.pets,
-                  color: context.colors.onSurfaceVariant,
-                  size: 24,
-                ),
-              ),
+            : CachedNetworkImage(
+  imageUrl: url,
+  fit: BoxFit.cover,
+  errorWidget: (_, _, _) => Icon(
+    Icons.pets,
+    color: context.colors.onSurfaceVariant,
+    size: 24,
+  ),
+),
       ),
     );
   }

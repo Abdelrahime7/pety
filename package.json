@@ -1,0 +1,29 @@
+{
+  "name": "pet_care",
+  "version": "1.0.0",
+  "description": "Pety+ is a mobile application designed to help pet owners manage and monitor their pets' health information in one place.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdelrahime7/pety.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Abdelrahime7/pety/issues"
+  },
+  "homepage": "https://github.com/Abdelrahime7/pety#readme",
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "firebase": "^13.2.0"
+  }
+}

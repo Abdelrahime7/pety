@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -366,7 +367,10 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: pet.photoUrl.isNotEmpty
-                        ? Image.network(pet.photoUrl, fit: BoxFit.cover)
+                        ?  CachedNetworkImage(
+          imageUrl: pet.photoUrl,
+          fit: BoxFit.cover,
+        )
                         : Container(
                             color: context.colors.outlineVariant,
                             child: Icon(

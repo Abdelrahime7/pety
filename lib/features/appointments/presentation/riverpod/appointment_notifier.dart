@@ -56,7 +56,7 @@ class AppointmentNotifier extends Notifier<AppointmentState> {
       final petIds = pets.map((p) => p.id).toList();
 
       // 2. Fetch appointments for these pets
-      final result = await _service.getAppointmentsForPets(petIds);
+      final result = await _service.getAppointmentsForPets(petIds,_ownerId!);
 
       if (result is Success<List<Appointment>>) {
         state = state.copyWith(appointments: result.data, isLoading: false);

@@ -8,6 +8,7 @@ class User {
   final String? photoUrl;
   final SubscriptionTier subscriptionTier;
   final DateTime createdAt;
+  final bool appointmentNotificationsEnabled;
 
   User({
     required this.userId,
@@ -16,6 +17,7 @@ class User {
     this.photoUrl,
     required this.subscriptionTier,
     required this.createdAt,
+    this.appointmentNotificationsEnabled = false,
   });
 
   factory User.fromMap(String id, Map<String, dynamic> map) {
@@ -31,6 +33,8 @@ class User {
       createdAt: map['createdAt'] is Timestamp
           ? (map['createdAt'] as Timestamp).toDate()
           : DateTime.now(),
+      appointmentNotificationsEnabled:
+          map['appointmentNotificationsEnabled'] as bool? ?? false,
     );
   }
 
@@ -41,6 +45,7 @@ class User {
       'photoUrl': photoUrl,
       'subscriptionTier': subscriptionTier.name,
       'createdAt': Timestamp.fromDate(createdAt),
+      'appointmentNotificationsEnabled': appointmentNotificationsEnabled,
     };
   }
 }

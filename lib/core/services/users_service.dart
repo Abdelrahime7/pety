@@ -120,5 +120,12 @@ class UserService {
     }
   }
 
+  Future<Result<void>> updateAppointmentNotifications({
+    required String userId,
+    required bool enabled,
+  }) async {
+    return patchUser(userId, {'appointmentNotificationsEnabled': enabled});
+  }
+
   // FIRESTORE EXCEPTION MAPPER
 }

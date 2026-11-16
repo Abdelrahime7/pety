@@ -16,39 +16,47 @@ class AppointmentFirestoreDataSource {
   /// Fetches appointments for a list of pet IDs.
   /// Automatically chunks queries into batches of 30 to comply with Firestore whereIn limits.
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  getAppointmentsForPets(List<String> petIds) async {
-    if (petIds.isEmpty) return [];
+    getAppointmentsForPets(
+  String userId,
+  List<String> petIds,
+) async {
+  if (petIds.isEmpty) return [];
 
-    final List<QueryDocumentSnapshot<Map<String, dynamic>>> allDocs = [];
-    const chunkSize = 30;
+  final allDocs =
+      <QueryDocumentSnapshot<Map<String, dynamic>>>[];
 
-    for (var i = 0; i < petIds.length; i += chunkSize) {
-      final end = (i + chunkSize < petIds.length)
-          ? i + chunkSize
-          : petIds.length;
-      final chunk = petIds.sublist(i, end);
+  const chunkSize = 30;
 
-      final snapshot = await _firestore
-          .collection('appointments')
-          .where('petId', whereIn: chunk)
-          .get();
+  for (var i = 0; i < petIds.length; i += chunkSize) {
+    final end = (i + chunkSize < petIds.length)
+        ? i + chunkSize
+        : petIds.length;
 
-      allDocs.addAll(snapshot.docs);
-    }
+    final chunk = petIds.sublist(i, end);
 
-    return allDocs;
-  }
-
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  getAppointmentsForPet(String petId) async {
     final snapshot = await _firestore
         .collection('appointments')
-        .where('petId', isEqualTo: petId)
-        .orderBy('date')
+        .where('userId', isEqualTo: userId)
+        .where('petId', whereIn: chunk)
         .get();
 
-    return snapshot.docs;
+    allDocs.addAll(snapshot.docs);
   }
+
+  return allDocs;
+}
+
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+    getAppointmentsForPet(String userId, String petId) async {
+  final snapshot = await _firestore
+      .collection('appointments')
+      .where('userId', isEqualTo: userId)
+      .where('petId', isEqualTo: petId)
+      .orderBy('date')
+      .get();
+
+  return snapshot.docs;
+}
 
   /// Legacy query by ownerId if stored
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getAppointments(
