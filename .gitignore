@@ -127,3 +127,6 @@ rad.json
 TestResults.xml
 firebase.exe
 analyze_output.txt
+# Android release signing
+android/keystore/
+android/key.properties
