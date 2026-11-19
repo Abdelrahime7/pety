@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
 
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
+import 'package:pet_care/features/appointments/presentation/appointments_screen/widgets/appointment_card.dart';
 import 'package:pet_care/features/appointments/presentation/riverpod/appointment_provider.dart';
 import 'package:pet_care/features/home/presentation/widgets/home_header.dart';
 import 'package:pet_care/features/home/presentation/widgets/home_section_header.dart';
 import 'package:pet_care/features/home/presentation/widgets/pets_section.dart';
 import 'package:pet_care/features/home/presentation/widgets/quick_actions_section.dart';
-import 'package:pet_care/features/home/presentation/widgets/upcoming_appointment_card.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
@@ -25,6 +25,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+
     final appointments = ref.watch(appointmentProvider).appointments;
     final nearestAppointment = _getNearestAppointment(appointments);
 
@@ -65,7 +66,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               SizedBox(height: 14.h),
 
-              UpcomingAppointmentCard(appointment: nearestAppointment),
+
+if (nearestAppointment != null)
+  AppointmentCard(appointment: nearestAppointment)
+else
+  Padding(
+    padding: EdgeInsets.symmetric(vertical: 16.h),
+    child: Text(
+      context.l10n.noAppointmentsOnDay, // add this string to your l10n files
+      style: context.style.regular14,
+    ),
+  ),
 
               SizedBox(height: 28.h),
 
@@ -89,8 +100,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 }
 
 Widget _buildPetsSection(WidgetRef ref, BuildContext context) {
-  final petsAsync = ref.watch(petProvider);
 
+  final petsAsync = ref.watch(petProvider);
   return petsAsync.when(
     loading: () => const Center(child: CircularProgressIndicator()),
 

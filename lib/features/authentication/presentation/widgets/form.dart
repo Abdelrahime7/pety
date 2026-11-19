@@ -164,11 +164,13 @@ class _AuthFormState extends ConsumerState<AuthForm> {
 
   Future<void> resetPassword() async {
     final email = widget.emailController.text.trim();
-
+  
     final result = await ref.read(authProvider.notifier).resetPassword(email);
+       if (!mounted) return;   // <- after the await
 
     switch (result) {
       case Success(:final data):
+
         showNotification(context, data);
 
       case Failure(:final message):

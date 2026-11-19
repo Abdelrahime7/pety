@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/infrastructure/firebase/health/firebase_health_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/health/firebase_health_data_source.dart';
 import 'package:pet_care/features/health/domain/entity/health_record.dart';
 
 class HealthService {

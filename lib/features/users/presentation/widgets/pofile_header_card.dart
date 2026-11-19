@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/core/constant/widgets/widht_widget.dart';
-import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/domain/enums/subscription_tier.dart';
 import 'package:pet_care/features/users/presentation/riverpod/unread_notificatins_provider.dart';
 import 'package:pet_care/features/users/presentation/riverpod/user_prvider.dart';
 import 'package:pet_care/features/users/presentation/widgets/profile_picture.dart';

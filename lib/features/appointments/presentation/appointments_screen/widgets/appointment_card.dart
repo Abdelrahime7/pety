@@ -1,5 +1,4 @@
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/l10n/l10x.dart';
 import 'package:pet_care/core/constant/l10n/to_english_digit.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 import 'package:pet_care/features/appointments/domain/entity/appointment.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 
@@ -232,20 +232,7 @@ class _PetAvatar extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: photoUrl.isNotEmpty
-            ? CachedNetworkImage(
-        imageUrl: photoUrl,
-        fit: BoxFit.cover,
-        placeholder: (_, _) => Icon(
-          Icons.pets_rounded,
-          size: 48,
-          color: context.colors.onSurfaceVariant,
-        ),
-        errorWidget: (_, _, _) => Icon(
-          Icons.pets_rounded,
-          size: 48,
-          color: context.colors.onSurfaceVariant,
-        ),
-      )
+            ? AppNetworkImage(url: photoUrl)
             : Icon(
                 Icons.pets,
                 size: 20.sp,

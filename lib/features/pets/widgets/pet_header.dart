@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 
@@ -25,20 +25,7 @@ class PetHeader extends StatelessWidget {
   ),
   clipBehavior: Clip.antiAlias,
   child: pet.photoUrl.isNotEmpty
-      ? CachedNetworkImage(
-          imageUrl: pet.photoUrl,
-          fit: BoxFit.cover,
-          placeholder: (_, _) => Icon(
-            Icons.pets_rounded,
-            size: 48,
-            color: context.colors.onSurfaceVariant,
-          ),
-          errorWidget: (_, _, _) => Icon(
-            Icons.pets_rounded,
-            size: 48,
-            color: context.colors.onSurfaceVariant,
-          ),
-        )
+      ? AppNetworkImage(url: pet.photoUrl)
       : Icon(
           Icons.pets_rounded,
           size: 48,

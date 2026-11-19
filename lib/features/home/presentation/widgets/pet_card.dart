@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_care/core/constant/theme/app_colors.dart';
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
 class HomePetCard extends StatelessWidget {
@@ -66,21 +66,13 @@ class HomePetCard extends StatelessWidget {
   }
 
   Widget _buildPetImage(BuildContext context) {
-    if (pet.photoUrl.isNotEmpty) {
-      return CachedNetworkImage(
-  imageUrl: pet.photoUrl,
-  fit: BoxFit.cover,
-  errorWidget: (_, _, _) {
-    return Icon(
-      Icons.pets_rounded,
-      size: 48,
-      color: context.colors.onSurfaceVariant,
-    );
-  },
-);
+    if (pet.photoUrl.isEmpty) {
+      return _buildPlaceholder(context);
     }
 
-    return _buildPlaceholder(context);
+    return AppNetworkImage(url: pet.photoUrl,
+      
+    );
   }
 
   Widget _buildPlaceholder(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/services/pet_service.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
-import 'package:pet_care/infrastructure/firebase/pets/firebase_pet_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/pets/firebase_pet_data_source.dart';
 
 class MockPetFirestoreDataSource extends Mock
     implements PetFirestoreDataSource {}

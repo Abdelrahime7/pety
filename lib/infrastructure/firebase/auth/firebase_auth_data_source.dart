@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pet_care/features/authentication/data/user_data.dart';
-import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/user/user_data_source.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _auth;

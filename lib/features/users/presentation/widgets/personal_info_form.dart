@@ -94,8 +94,8 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                     ? Theme(
                         data: Theme.of(context).copyWith(
                           textSelectionTheme: TextSelectionThemeData(
-                            selectionColor: context.colors.primary.withOpacity(
-                              0.2,
+                            selectionColor: context.colors.primary.withValues(
+                             alpha:  0.2,
                             ), // the highlight color behind selected text
                             cursorColor:
                                 context.colors.primary, // the blinking cursor

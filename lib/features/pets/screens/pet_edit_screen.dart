@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'dart:io';
 
@@ -7,11 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/app_routers.dart';
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
-import 'package:pet_care/features/pets/domain/enums/speciesOptions.dart';
+import 'package:pet_care/features/pets/domain/enums/species_options.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/edit_drop_down.dart';
 
@@ -282,17 +282,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                 child: _selectedImage != null
                     ? Image.file(_selectedImage!, fit: BoxFit.cover)
                     : widget.pet.photoUrl.isNotEmpty
-                    ? CachedNetworkImage(
-  imageUrl: widget.pet.photoUrl,
-  fit: BoxFit.cover,
-  errorWidget: (_, _, _) {
-    return Icon(
-      Icons.pets_rounded,
-      size: 48,
-      color: context.colors.onSurfaceVariant,
-    );
-  },
-)
+                    ? AppNetworkImage(url: widget.pet.photoUrl)
                     : Icon(
                         Icons.pets_rounded,
                         size: 48,

@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 
 class ProfilePictureWidget extends StatelessWidget {
   final String? imageUrl;
@@ -30,17 +31,7 @@ class ProfilePictureWidget extends StatelessWidget {
     }
     // 2. Otherwise show image from server
     else if (imageUrl != null && imageUrl!.isNotEmpty) {
-      image = CachedNetworkImage(
-  imageUrl: imageUrl!,
-  fit: BoxFit.cover,
-  errorWidget: (_, _, _) {
-    return Icon(
-      Icons.person,
-      color: context.colors.outlineVariant,
-      size: size * 0.55,
-    );
-  },
-);
+      image = AppNetworkImage(url:imageUrl! );
     }
     // 3. No image
     else {
