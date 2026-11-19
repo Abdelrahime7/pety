@@ -80,6 +80,7 @@ void resetPassword(
   final email = emailController.trim();
 
   final result = await ref.read(authProvider.notifier).resetPassword(email);
+if (!context.mounted) return;   // screen gone? then stop here
 
   switch (result) {
     case Success(:final data):
