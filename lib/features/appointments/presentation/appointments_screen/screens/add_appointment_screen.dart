@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,7 @@ import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/core/constant/routers/routes_strings.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 import 'package:pet_care/core/constant/widgets/app_close_button.dart';
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 import 'package:pet_care/core/constant/widgets/app_save_button.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/core/constant/widgets/field_label.dart';
@@ -367,10 +367,7 @@ class _AddAppointmentScreenState extends ConsumerState<AddAppointmentScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.r),
                     child: pet.photoUrl.isNotEmpty
-                        ?  CachedNetworkImage(
-          imageUrl: pet.photoUrl,
-          fit: BoxFit.cover,
-        )
+                        ? AppNetworkImage(url: pet.photoUrl)
                         : Container(
                             color: context.colors.outlineVariant,
                             child: Icon(
