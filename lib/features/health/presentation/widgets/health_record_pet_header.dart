@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pet_care/core/constant/theme/context_x.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 
@@ -45,17 +45,7 @@ class HealthRecordPetHeader extends StatelessWidget {
                     color: context.colors.onSurfaceVariant,
                     size: 23.sp,
                   )
-                : CachedNetworkImage(
-  imageUrl: pet.photoUrl,
-  fit: BoxFit.cover,
-  errorWidget: (_, _, _) {
-    return Icon(
-      Icons.pets,
-      color: context.colors.onSurfaceVariant,
-      size: 23.sp,
-    );
-  },
-),
+                : AppNetworkImage(url:  pet.photoUrl),
           ),
           SizedBox(width: 12.w),
           Expanded(
