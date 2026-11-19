@@ -123,7 +123,7 @@ class _SeriesPickerSheetState extends State<SeriesPickerSheet> {
                       )
                     : ListView.separated(
                         itemCount: filteredSeries.length,
-                        separatorBuilder: (_, __) => Divider(
+                        separatorBuilder: (_, _) => Divider(
                           height: 1,
                           color: context.colors.outlineVariant,
                         ),
