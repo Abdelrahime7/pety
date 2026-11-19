@@ -11,7 +11,7 @@ import 'package:pet_care/core/constant/widgets/app_network_image.dart';
 import 'package:pet_care/core/constant/widgets/custom_text_field.dart';
 import 'package:pet_care/features/authentication/presentation/helpers/helpers.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
-import 'package:pet_care/features/pets/domain/enums/speciesOptions.dart';
+import 'package:pet_care/features/pets/domain/enums/species_options.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
 import 'package:pet_care/features/pets/widgets/edit_drop_down.dart';
 

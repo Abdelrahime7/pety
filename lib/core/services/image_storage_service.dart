@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:pet_care/core/constant/result/result.dart';
-import 'package:pet_care/infrastructure/networks/dio/Dio_exceptions_mapper.dart';
+import 'package:pet_care/infrastructure/networks/dio/dio_exceptions_mapper.dart';
 import 'package:pet_care/infrastructure/cloudinary/cloudinary_service.dart';
 
 class ImageService {

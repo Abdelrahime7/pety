@@ -8,7 +8,7 @@ import 'package:pet_care/features/authentication/presentation/helpers/helpers.da
 import 'package:pet_care/features/health/vaccination/presentation/riverpod/health_card_privder.dart';
 import 'package:pet_care/features/pets/domain/entity/pet.dart';
 import 'package:pet_care/features/pets/riverpod/pet_provider.dart';
-import 'package:pet_care/features/pets/widgets/Iinfo_card.dart';
+import 'package:pet_care/features/pets/widgets/info_card.dart';
 import 'package:pet_care/features/pets/widgets/healt_card.dart';
 import 'package:pet_care/features/pets/widgets/info_item.dart';
 import 'package:pet_care/features/pets/widgets/pet_header.dart';

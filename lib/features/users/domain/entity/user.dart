@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/domain/enums/subscription_tier.dart';
 
 class User {
   final String userId;

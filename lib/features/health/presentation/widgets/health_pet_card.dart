@@ -102,8 +102,8 @@ class HealthPetCard extends StatelessWidget {
   String _age(BuildContext context, DateTime birthDate) {
     final now = DateTime.now();
     var years = now.year - birthDate.year;
-    if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now))
-      years--;
+    if (DateTime(now.year, birthDate.month, birthDate.day).isAfter(now)) years--;
+
     return years > 0
         ? context.l10n.ageYears(years)
         : context.l10n.lessThanYear;

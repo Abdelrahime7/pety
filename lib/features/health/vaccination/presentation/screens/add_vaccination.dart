@@ -13,7 +13,7 @@ import 'package:pet_care/features/health/vaccination/presentation/riverpod/vacci
 import 'package:pet_care/features/health/vaccination/presentation/widgets/existing_series_selector.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/new_series_form.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/saving_overlay.dart';
-import 'package:pet_care/features/health/vaccination/presentation/widgets/series_Picker_Sheet.dart';
+import 'package:pet_care/features/health/vaccination/presentation/widgets/series_picker_sheet.dart';
 import 'package:pet_care/features/health/vaccination/presentation/widgets/series_option_card.dart';
 import 'package:pet_care/features/pets/widgets/field_label.dart';
 

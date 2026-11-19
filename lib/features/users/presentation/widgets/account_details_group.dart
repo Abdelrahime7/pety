@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:pet_care/features/users/domain/entity/user.dart';
-import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
+import 'package:pet_care/features/users/domain/enums/subscription_tier.dart';
 
 import 'package:pet_care/core/constant/l10n/l10x.dart';
 class AccountDetailsGroup extends StatelessWidget {

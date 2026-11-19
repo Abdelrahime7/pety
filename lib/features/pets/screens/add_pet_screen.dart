@@ -259,7 +259,7 @@ class _AddPetScreenState extends ConsumerState<AddPetScreen> {
                                 children: [
                                   Switch.adaptive(
                                     value: _isNeutered,
-                                    activeColor: context.colors.primary,
+                                    activeThumbColor: context.colors.primary,
                                     onChanged: (val) =>
                                         setState(() => _isNeutered = val),
                                   ),
