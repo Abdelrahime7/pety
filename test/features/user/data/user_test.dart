@@ -7,7 +7,7 @@ import 'package:pet_care/core/services/users_service.dart';
 import 'package:pet_care/features/users/data/user_data.dart';
 import 'package:pet_care/features/users/domain/entity/user.dart';
 import 'package:pet_care/features/users/domain/enums/subscriptionTier.dart';
-import 'package:pet_care/infrastructure/firebase/firebase_store/user_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/user/user_data_source.dart';
 
 class MockUserFirestoreDataSource extends Mock
     implements UserFirestoreDataSource {}

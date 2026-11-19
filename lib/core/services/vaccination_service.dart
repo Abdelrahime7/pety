@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:pet_care/core/constant/result/result.dart';
 import 'package:pet_care/infrastructure/firebase/firebase_store/firestore_mapprt.dart';
-import 'package:pet_care/infrastructure/firebase/firebase_store/vaccination_data_source.dart';
+import 'package:pet_care/infrastructure/firebase/data_source/vaccination/vaccination_data_source.dart';
 
 class VaccinationService<T> {
   final VaccinationDataSource dataSource;
